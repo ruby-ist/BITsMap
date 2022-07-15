@@ -1,33 +1,33 @@
 <template>
-  <div id="main">
-    <button class="ui icon teal button">
-      <i class="info circle icon"></i>
-    </button>
-    <br/>
-    <br/>
-    <button class="ui icon teal button"  @click="$emit('change')">
-      <i class="map icon" :class="{ outline: !lined }"></i>
-    </button>
-  </div>
+    <div id="main">
+        <button class="ui icon teal button">
+            <i class="info circle icon"></i>
+        </button>
+        <br/>
+        <br/>
+        <button class="ui icon teal button" @click="$emit('change')">
+            <i class="map icon" :class="{ outline: !lined }"></i>
+        </button>
+    </div>
 </template>
 
 <script>
-  export default{
-    props: { lined: Boolean },
+export default {
+    props: {lined: Boolean},
     emits: ["change"]
-  }
+}
 </script>
 
 <style scoped>
-  #main{
-  	position: fixed;
-  	left: 50px;
+#main {
+    position: fixed;
+    left: 50px;
     bottom: 60px;
-    z-index: 2;
-  }
+    z-index: 3;
+}
 
-  button.ui.icon.teal.button{
+button.ui.icon.teal.button {
     border: 1px solid black;
     box-shadow: 0 0 2px black;
-  }
+}
 </style>

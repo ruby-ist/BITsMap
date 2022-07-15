@@ -1,43 +1,54 @@
 <template>
-  <div>
-    <div v-for="tag in tags">
-      <div :id="tag['id']" :style="{ top: tag['top'], left: tag['left'] }" class="tag">
-          {{ tag["name"] }}
-      </div>
+    <div>
+        <div v-for="tag in tags">
+            <div :id="tag['id']" :style="{ top: tag['top'], left: tag['left'] }" class="tag"
+                 @click="getDetails(tag['id'])">
+                {{ tag["name"] }}
+            </div>
+        </div>
+
+        <div v-if="details !== {}">
+            <ShowBox :details="details" />
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-  export default{
+export default {
     props: ['level'],
-    data(){
-      return{
-        tags: []
-      }
+    data() {
+        return {
+            tags: [],
+            details: {}
+        }
     },
 
     methods: {
-      async getTags(level){
-        let response = await this.$http.$get(`http://localhost:4567/map/tags/${this.level}`);
-        this.tags = await response["tags"];
-      }
+        async getTags(level) {
+            let response = await this.$http.$get(`http://localhost:4567/map/tags/${this.level}`);
+            this.tags = await response["tags"];
+        },
+
+        async getDetails(id) {
+            this.details = await this.$http.$get(`http://localhost:4567/map/details/${id}?level=${this.level}`);
+            $('.show-box').show();
+        },
     },
 
     watch: {
-      level(num){
-        this.getTags();
-      }
+        level(num) {
+            this.getTags();
+        }
     },
 
     mounted() {
-      this.getTags();
+        this.getTags();
     }
-  }
+}
 </script>
 
-<style>
-  .tag{
+<style scoped>
+.tag {
     position: absolute;
     font-weight: 400;
     font-size: 1rem;
@@ -48,5 +59,6 @@
     width: 60px;
     text-wrap: normal;
     z-index: 1;
-  }
+    cursor: pointer;
+}
 </style>
