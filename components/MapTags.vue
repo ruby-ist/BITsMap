@@ -1,0 +1,52 @@
+<template>
+  <div>
+    <div v-for="tag in tags">
+      <div :id="tag['id']" :style="{ top: tag['top'], left: tag['left'] }" class="tag">
+          {{ tag["name"] }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default{
+    props: ['level'],
+    data(){
+      return{
+        tags: []
+      }
+    },
+
+    methods: {
+      async getTags(level){
+        let response = await this.$http.$get(`http://localhost:4567/map/tags/${this.level}`);
+        this.tags = await response["tags"];
+      }
+    },
+
+    watch: {
+      level(num){
+        this.getTags();
+      }
+    },
+
+    mounted() {
+      this.getTags();
+    }
+  }
+</script>
+
+<style>
+  .tag{
+    position: absolute;
+    font-weight: 400;
+    font-size: 1rem;
+    text-align: center;
+    color: white;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+    font-family: 'Inter', sans-serif;
+    width: 60px;
+    text-wrap: normal;
+    z-index: 1;
+  }
+</style>

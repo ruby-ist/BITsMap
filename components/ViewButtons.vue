@@ -1,13 +1,13 @@
 <template>
   <div id="main">
-    <div class="ui icon violet button">
+    <button class="ui icon teal button">
       <i class="info circle icon"></i>
-    </div>
+    </button>
     <br/>
     <br/>
-    <div class="ui icon violet button"  @click="$emit('change')">
+    <button class="ui icon teal button"  @click="$emit('change')">
       <i class="map icon" :class="{ outline: !lined }"></i>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -20,8 +20,14 @@
 
 <style scoped>
   #main{
-    position: fixed;
-    left: 30px;
-    bottom: 40px;
+  	position: fixed;
+  	left: 50px;
+    bottom: 60px;
+    z-index: 2;
+  }
+
+  button.ui.icon.teal.button{
+    border: 1px solid black;
+    box-shadow: 0 0 2px black;
   }
 </style>

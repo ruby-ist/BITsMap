@@ -2,11 +2,14 @@
   <div>
     <div id="map">
       <div v-if="svg">
-        <img :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width">
+        <img :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
       </div>
       <div v-else>
-        <img :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width">
+        <img :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
       </div>
+
+      <MapTags :level="level" />
+      <MapLegends :level="level" />
     </div>
 
     <ViewButtons @change="changeView" :lined="svg" />
@@ -30,7 +33,7 @@ export default {
   },
 
   methods: {
-    unshrinkable() {
+    unShrinkable() {
       return (this.height/1.5 < screen.height) || (this.width/1.5 < screen.width);
     },
 
@@ -38,15 +41,17 @@ export default {
       if (this.height < 3800 && this.width < 3400) {
         this.height *= 1.5;
         this.width *= 1.5;
+        this.level++;
       }
     },
 
     zoomOut() {
       if (this.height > 1148.46 && this.width > 1013.34) {
-        if(this.unshrinkable())
+        if(this.unShrinkable())
           return;
         this.height /= 1.5;
         this.width /= 1.5;
+        this.level--;
       }
     },
 
@@ -62,9 +67,15 @@ export default {
 }
 
 </script>
+
 <style lang="scss">
-#map {
-  overflow: scroll;
-}
+  #map {
+    position: relative;
+    overflow: scroll;
+
+    &::-webkit-scrollbar{
+      display: none;
+    }
+  }
 
 </style>
