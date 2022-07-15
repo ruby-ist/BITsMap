@@ -4,14 +4,12 @@
         <div class="ui small teal label main">{{ details['main'] }}</div>
 
         <div class="ui pointing secondary menu">
-            <a v-for="floor in details['floors']"
-               :class="{item: true, active: floor['name'].includes('Ground')}"
-               :data-tab="floor['name'].replace(' ', '')">{{ floor['name'] }}
+            <a v-for="(floor, index) in details['floors']"
+               class="item" :data-tab="floor['name'].replace(' ', '')"  @click="goToFloor(index)">{{ floor['name'] }}
             </a>
         </div>
 
         <div v-for="floor in details['floors']" class="ui tab segment"
-             :class="{active: floor['name'].includes('Ground')}"
              :data-tab="floor['name'].replace(' ','')">
             <ul>
                 <div v-for="room in floor['rooms']">
@@ -31,18 +29,33 @@ export default {
     props: ['details'],
 
     methods: {
-        getDown(){
+        getDown() {
             $('.show-box').hide();
+        },
+
+        async goToFloor(n){
+            let item = $('.item.active')
+            if( item.length !== 0 )
+                item[0].classList.remove('active');
+
+            let tab = $('.tab.active')
+            if( tab.length !== 0 )
+                tab[0].classList.remove('active');
+
+            item = $('.item')
+            item[(n+2)].classList.add('active');
+
+            tab = $('.tab');
+            tab[n].classList.add('active');
         }
     },
 
     mounted() {
-        $('.menu .item').tab();
         $('.show-box').hide();
     },
 
     updated() {
-        $('.menu .item').tab();
+        this.goToFloor(0);
     }
 }
 </script>
@@ -102,7 +115,7 @@ export default {
         }
     }
 
-    div.ui.circular.icon.button{
+    div.ui.circular.icon.button {
         position: absolute;
         top: 8%;
         right: 4%;

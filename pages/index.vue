@@ -1,5 +1,6 @@
 <template>
     <div>
+        <NavBar />
         <div id="map">
             <div v-if="svg">
                 <img :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
@@ -74,6 +75,7 @@ export default {
 #map {
     position: relative;
     overflow: scroll;
+    margin-top: 10vh;
 
     &::-webkit-scrollbar {
         display: none;
