@@ -6,7 +6,7 @@
         </a>
         <div class="right menu">
             <div class="item">
-                <SearchBar />
+                <SearchBar @custom="customHandler" />
             </div>
         </div>
     </div>
@@ -14,7 +14,12 @@
 
 <script>
 export default {
-
+    emits: ["find"],
+    methods: {
+        customHandler(args){
+            this.$emit('find', args);
+        }
+    }
 }
 </script>
 

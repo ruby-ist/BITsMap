@@ -1,13 +1,9 @@
 <template>
     <div>
-        <NavBar />
+        <NavBar @find="findHandler"/>
         <div id="map">
-            <div v-if="svg">
-                <img :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
-            </div>
-            <div v-else>
-                <img :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
-            </div>
+            <img v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
+            <img v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
 
             <MapTags :level="level"/>
             <MapLegends :level="level"/>
@@ -23,8 +19,7 @@ export default {
     data() {
         return {
             level: 4,
-            top: 1800,
-            left: 2550,
+            position: {"x": 1800, "y": 2550},
             pinned: false,
             mapFile: "Map.svg",
             height: 3876,
@@ -60,12 +55,38 @@ export default {
 
         changeView() {
             this.svg = !this.svg;
+        },
+
+        fullZoom() {
+            let times = 4 - this.level;
+            while (times--)
+                this.zoomIn();
+        },
+
+        goTo(pos) {
+            $('#map')[0].scrollLeft = pos["x"] - screen.width / 2;
+            $('html')[0].scrollTop = pos["y"] - screen.height / 2 + 200;
+        },
+
+        async findHandler(id) {
+            let data = await this.$http.$get(`http://localhost:4567/map/location/${id}`);
+            let left = parseInt(data["left"].slice(0, -2));
+            let top = parseInt(data["top"].slice(0, -2));
+            console.log(`${top}, ${left}`);
+            this.position = {"x": left, "y": top};
+            this.fullZoom();
+            $(`#${data['id']}`).click();
         }
     },
 
     mounted() {
-        document.querySelector('#map').scrollTop = this.top - screen.height / 2 + 150;
-        $('#map')[0].scrollLeft = this.left - screen.width;
+        this.goTo(this.position);
+    },
+
+    watch: {
+        async position(newValue) {
+            await this.goTo(newValue);
+        }
     }
 }
 

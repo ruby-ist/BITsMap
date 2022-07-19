@@ -6,7 +6,11 @@
         </div>
         <div class="suggestion-box">
             <section v-if="response.length !== 0">
-                <div v-for="match in response" class="suggestion" @mouseenter="hoverSelection" @mouseleave="(event) =>  {event.target.classList.remove('selected')}">
+                <div v-for="match in response"
+                     class="suggestion"
+                     @mouseenter="hoverSelection"
+                     @mouseleave="$event.target.classList.remove('selected')"
+                     @click="clickHandler(match['id'])">
                     <div>
                         <div class="ui medium teal header">{{ match["match"] }}</div>
                         <div>{{ match["floor"] }}, {{ match["name"] }}</div>
@@ -24,6 +28,7 @@
 
 <script>
 export default {
+    emits: ["custom"],
     data() {
         return {
             query: "",
@@ -79,6 +84,10 @@ export default {
             else{
                 this.selectFirst();
             }
+        },
+
+        clickHandler(id){
+            this.$emit('custom', id);
         }
     },
 
@@ -88,6 +97,10 @@ export default {
         $('body:not(.suggestion-box)').on('click', function () {
             element.hide();
         });
+    },
+
+    updated() {
+        $('.suggestion-box')[0].scrollTop = 0;
     }
 }
 </script>
