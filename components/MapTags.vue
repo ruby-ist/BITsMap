@@ -7,7 +7,7 @@
             </div>
         </div>
 
-        <div v-if="details !== {}">
+        <div v-show="details !== {}">
             <ShowBox :details="details" />
         </div>
     </div>

@@ -1,17 +1,14 @@
 <template>
     <div id="main" class="ui secondary menu">
 
-            <a class="item ui huge header">
-                GeoBITs
-            </a>
-            <div class="right menu">
-                <div class="item">
-                    <div class="ui large icon input">
-                        <input type="text" placeholder="Search...">
-                        <i class="search link teal icon"></i>
-                    </div>
-                </div>
+        <a class="item ui huge header">
+            GeoBITs
+        </a>
+        <div class="right menu">
+            <div class="item">
+                <SearchBar />
             </div>
+        </div>
     </div>
 </template>
 
@@ -22,32 +19,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    #main{
-        position: fixed;
-        top: 0;
-        z-index: 4;
-        width: 103vw;
-        height: 10vh;
-        background: #EAF6F6;
-        display: flex;
-        border-bottom: 1px solid #16A89D;
+#main {
+    position: fixed;
+    top: 0;
+    z-index: 4;
+    width: 103vw;
+    height: 10vh;
+    background: #EAF6F6;
+    display: flex;
+    border-bottom: 1px solid #16A89D;
 
-        .header{
-            color: #16A89D !important;
-            padding-left: 6vw;
-            background: transparent;
-            font-weight: 600;
-        }
-
-        div.ui.large.icon.input{
-            margin-right: 6vw;
-
-            input {
-                width: 50vw;
-                border-radius: 20px;
-                border: 1px solid #16A89D;
-            }
-        }
+    .header {
+        color: #16A89D !important;
+        padding-left: 6vw;
+        background: transparent;
+        font-weight: 600;
     }
+}
 
 </style>
