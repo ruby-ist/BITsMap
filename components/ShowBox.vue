@@ -101,7 +101,7 @@ export default {
 
     div.ui.tab.segment {
         max-height: 18vh;
-        overflow: scroll;
+        overflow-y: scroll;
         background: white;
         font-size: 1rem;
         box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15) inset;

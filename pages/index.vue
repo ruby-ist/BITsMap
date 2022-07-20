@@ -8,7 +8,7 @@
             <MapTags :level="level" :num="floor_no"/>
             <MapLegends :level="level"/>
             <Pin :left="pinLeft" :top="pinTop" />
-            <Location :left="locationX" :top="locationY" />
+            <Location :left="locationX" :top="locationY"/>
         </div>
 
         <ViewButtons @change="changeView" @getLocation="geoLocate" :lined="svg"/>
@@ -32,7 +32,8 @@ export default {
             locationY: 0,
             pinLeft: 0,
             pinTop: 0,
-            floor_no: 0
+            floor_no: 0,
+            callBackId: 0,
         }
     },
 
@@ -111,16 +112,14 @@ export default {
             this.floor_no = f_no;
         },
 
-        geoLocate() {
+        async geoLocate() {
             if (!navigator.geolocation) {
                 alert("Geolocation is not supported in this browser.");
             } else {
-                let options = {
-                    enableHighAccuracy: false,
-                    timeout: 5000,
-                    maximumAge: 0
-                }
-                navigator.geolocation.getCurrentPosition(this.success, this.error)
+                if(this.callBackId !== 0)
+                    navigator.geolocation.clearWatch(this.callBackId);
+                this.callBackId = navigator.geolocation.watchPosition(await this.success, this.error);
+                console.log(this.callBackId);
             }
         },
 
@@ -128,9 +127,15 @@ export default {
             let x = position.coords.longitude.toPrecision(7) * 100000;
             let y = position.coords.latitude.toPrecision(7) * 100000;
             x = (x - 7727333) * (this.width / 907.0);
-            y = (y - 1149133) * (this.height / 1016.0 );
+            y = this.height - (y - 1149133) * (this.height / 1016.0 );
+
+            let offsetX = (2.924 / 100) * this.width;
+            let offsetY = - (0.258 / 100) * this.height;
+
+            x += offsetX;
+            y += offsetY;
             this.setLocation(x, y);
-            this.position = {'x': x, 'y': y}
+            this.position = {'x': x , 'y': y}
         },
 
         error() {
@@ -140,6 +145,35 @@ export default {
 
     mounted() {
         this.goTo(this.position);
+        // let isDown = false;
+        // let startX;
+        // let scrollLeft;
+        // map.addEventListener('mousedown', (e) => {
+        //     isDown = true;
+        //     startX = e.pageX - document.querySelector('#map').offsetLeft;
+        //     scrollLeft = document.querySelector('#map').scrollLeft;
+        // });
+        // map.addEventListener('mouseleave', () => {
+        //     isDown = false;
+        // });
+        // map.addEventListener('mouseup', () => {
+        //     isDown = false;
+        // });
+        // map.addEventListener('mousemove', (e) => {
+        //     if(!isDown) return;
+        //     e.preventDefault();
+        //     const x = e.pageX - document.querySelector('#map').offsetLeft;
+        //     const walk = (x - startX); //scroll-fast
+        //     document.querySelector('#map').scrollLeft = scrollLeft - walk;
+        // });
+    },
+
+    updated() {
+        const that = this;
+        $('#map').on('click', function () {
+            $('#location').hide();
+            navigator.geolocation.clearWatch(that.callBackId);
+        });
     },
 
     watch: {
@@ -156,9 +190,15 @@ export default {
     position: relative;
     overflow: scroll;
     margin-top: 10vh;
+    width: 100vw;
+    height: 100vh;
 
     &::-webkit-scrollbar {
         display: none;
+    }
+
+    img {
+        position: absolute;
     }
 }
 
