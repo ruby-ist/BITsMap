@@ -7,10 +7,11 @@
 
             <MapTags :level="level" :num="floor_no"/>
             <MapLegends :level="level"/>
-            <Pin :show="pinShow" :left="pinLeft" :top="pinTop" />
+            <Pin :left="pinLeft" :top="pinTop" />
+            <Location :left="locationX" :top="locationY" />
         </div>
 
-        <ViewButtons @change="changeView" :lined="svg"/>
+        <ViewButtons @change="changeView" @getLocation="geoLocate" :lined="svg"/>
         <ZoomButtons @zoomin="zoomIn" @zoomout="zoomOut"/>
     </div>
 </template>
@@ -27,6 +28,8 @@ export default {
             width: 3420,
             svg: true,
             pinShow: false,
+            locationX: 0,
+            locationY: 0,
             pinLeft: 0,
             pinTop: 0,
             floor_no: 0
@@ -46,6 +49,8 @@ export default {
                 this.width *= 1.5;
                 map.scrollLeft = map.scrollLeft * 1.5;
                 html.scrollTop = html.scrollTop * 1.5;
+                this.locationX = this.locationX * 1.5;
+                this.locationY = this.locationY * 1.5;
                 this.level++;
             }
             $('.show-box').hide();
@@ -61,6 +66,8 @@ export default {
                 this.width /= 1.5;
                 map.scrollLeft = map.scrollLeft / 1.5;
                 html.scrollTop = html.scrollTop / 1.5;
+                this.locationX = this.locationX / 1.5;
+                this.locationY = this.locationY / 1.5;
                 this.level--;
             }
             $('.show-box').hide();
@@ -82,9 +89,15 @@ export default {
         },
 
         setPin(x,y){
-            this.pinShow = true;
+            $('#pin').show();
             this.pinLeft = x;
             this.pinTop = y;
+        },
+
+        setLocation(x,y){
+            $('#location').show();
+            this.locationX = x;
+            this.locationY = y;
         },
 
         async findHandler(id, f_no) {
@@ -96,7 +109,33 @@ export default {
             this.position = {"x": left, "y": top};
             $(`#${data['id']}`).click();
             this.floor_no = f_no;
-        }
+        },
+
+        geoLocate() {
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported in this browser.");
+            } else {
+                let options = {
+                    enableHighAccuracy: false,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+                navigator.geolocation.getCurrentPosition(this.success, this.error)
+            }
+        },
+
+        success(position) {
+            let x = position.coords.longitude.toPrecision(7) * 100000;
+            let y = position.coords.latitude.toPrecision(7) * 100000;
+            x = (x - 7727333) * (this.width / 907.0);
+            y = (y - 1149133) * (this.height / 1016.0 );
+            this.setLocation(x, y);
+            this.position = {'x': x, 'y': y}
+        },
+
+        error() {
+            alert("Unable to get your location.");
+        },
     },
 
     mounted() {

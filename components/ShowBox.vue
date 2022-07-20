@@ -37,6 +37,7 @@ export default {
     methods: {
         getDown() {
             $('.show-box').css('bottom','-50vw');
+            $('#pin').hide();
         },
 
         async goToFloor(n){

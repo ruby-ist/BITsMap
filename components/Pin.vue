@@ -1,5 +1,5 @@
 <template>
-    <div v-show="show" id="pin" :style="{left: `${left}px`, top: `${top}px`}">
+    <div id="pin" :style="{left: `${left}px`, top: `${top}px`}">
         <img :src="require(`~/assets/images/pin.svg`)">
     </div>
 </template>
@@ -9,7 +9,11 @@ export default {
     props: {
         left: Number,
         top: Number,
-        show: Boolean
+
+    },
+
+    mounted() {
+        $('#pin').hide();
     }
 }
 </script>
