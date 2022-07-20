@@ -8,14 +8,14 @@
         </div>
 
         <div v-show="details !== {}">
-            <ShowBox :details="details" />
+            <ShowBox :details="details" :floorNum="num" ref="showBox"/>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['level'],
+    props: ['level', 'num'],
     data() {
         return {
             tags: [],
@@ -31,7 +31,7 @@ export default {
 
         async getDetails(id) {
             this.details = await this.$http.$get(`http://localhost:4567/map/details/${id}?level=${this.level}`);
-            $('.show-box').show();
+            $('.show-box').css('bottom', '0');
         },
     },
 

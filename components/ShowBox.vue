@@ -26,11 +26,17 @@
 
 <script>
 export default {
-    props: ['details'],
+    props: ['details', 'floorNum'],
+
+    data(){
+        return{
+            initialFloor: 0
+        }
+    },
 
     methods: {
         getDown() {
-            $('.show-box').hide();
+            $('.show-box').css('bottom','-50vw');
         },
 
         async goToFloor(n){
@@ -47,15 +53,18 @@ export default {
 
             tab = $('.tab');
             tab[n].classList.add('active');
+            this.initialFloor = 0;
         }
     },
 
-    mounted() {
-        $('.show-box').hide();
+    updated() {
+        this.goToFloor(this.initialFloor);
     },
 
-    updated() {
-        this.goToFloor(0);
+    watch: {
+        floorNum(newValue){
+            this.initialFloor = newValue;
+        }
     }
 }
 </script>
@@ -63,7 +72,7 @@ export default {
 <style lang="scss" scoped>
 .show-box {
     position: fixed;
-    bottom: 0;
+    bottom: -50vw;
     width: 80vw;
     left: 50%;
     transform: translateX(-50%);
@@ -73,6 +82,7 @@ export default {
     border-top: 6px solid teal;
     border-radius: 20px 20px 0 0;
     padding: 3% 4%;
+    transition: bottom 1s ease-out;
 
     .title {
         font-weight: 500;

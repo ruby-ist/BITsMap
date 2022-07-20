@@ -10,7 +10,7 @@
                      class="suggestion"
                      @mouseenter="hoverSelection"
                      @mouseleave="$event.target.classList.remove('selected')"
-                     @click="clickHandler(match['id'])">
+                     @click="clickHandler(match['id'], match['floor_no'])">
                     <div>
                         <div class="ui medium teal header">{{ match["match"] }}</div>
                         <div>{{ match["floor"] }}, {{ match["name"] }}</div>
@@ -86,8 +86,8 @@ export default {
             }
         },
 
-        clickHandler(id){
-            this.$emit('custom', id);
+        clickHandler(id, f_no){
+            this.$emit('custom', id, f_no);
         }
     },
 

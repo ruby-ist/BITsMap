@@ -16,8 +16,8 @@
 export default {
     emits: ["find"],
     methods: {
-        customHandler(args){
-            this.$emit('find', args);
+        customHandler(id, f_no){
+            this.$emit('find', id, f_no);
         }
     }
 }
