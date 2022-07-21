@@ -36,7 +36,10 @@ export default {
 
     methods: {
         getDown() {
-            $('.show-box').css('bottom','-50vw');
+            $('.show-box').css({
+                'bottom' : "-50vh",
+                'height' : '0',
+            });
             $('#pin').hide();
         },
 
@@ -73,7 +76,7 @@ export default {
 <style lang="scss" scoped>
 .show-box {
     position: fixed;
-    bottom: -50vw;
+    bottom: -50vh;
     width: 80vw;
     left: 50%;
     transform: translateX(-50%);
@@ -131,6 +134,32 @@ export default {
         top: 8%;
         right: 4%;
         border: 2px solid teal;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .show-box{
+        width: 100vw;
+        padding: 6% 8%;
+
+        div.ui.secondary.pointing.menu {
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar{
+                display: none;
+            }
+
+            .item{
+                margin-bottom: 0;
+            }
+        }
+
+        div.ui.tab.segment{
+            min-height: 20vh;
+            padding: 20px 10% 20px 5%;
+        }
     }
 }
 </style>

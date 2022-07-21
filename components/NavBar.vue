@@ -42,4 +42,13 @@ export default {
     }
 }
 
+@media screen and (max-width: 520px){
+    #main{
+        justify-content: center;
+        .header{
+            display: none;
+        }
+    }
+}
+
 </style>

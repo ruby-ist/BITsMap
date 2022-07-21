@@ -29,4 +29,10 @@ button.ui.icon.teal.button {
     border: 1px solid black;
     box-shadow: 0 0 2px black;
 }
+
+@media screen and (max-width: 520px) {
+    #main{
+        right: 25px;
+    }
+}
 </style>

@@ -54,24 +54,29 @@ export default {
                 this.locationY = this.locationY * 1.5;
                 this.level++;
             }
-            $('.show-box').hide();
+            $('.show-box').css({
+                'bottom' : "-50vh",
+                'height' : '0',
+            });
         },
 
         zoomOut() {
             let map = $('#map')[0];
-            let html = $('html')[0];
             if (this.height > 1148.46 && this.width > 1013.34) {
                 if (this.unShrinkable())
                     return;
                 this.height /= 1.5;
                 this.width /= 1.5;
                 map.scrollLeft = map.scrollLeft / 1.5;
-                html.scrollTop = html.scrollTop / 1.5;
+                map.scrollTop = map.scrollTop / 1.5;
                 this.locationX = this.locationX / 1.5;
                 this.locationY = this.locationY / 1.5;
                 this.level--;
             }
-            $('.show-box').hide();
+            $('.show-box').css({
+                'bottom' : "-50vh",
+                'height' : '0',
+            });
         },
 
         changeView() {
@@ -85,8 +90,9 @@ export default {
         },
 
         goTo(pos) {
-            $('#map')[0].scrollLeft = pos["x"] - screen.width / 2;
-            $('html')[0].scrollTop = pos["y"] - screen.height / 2 + 200;
+            let map = $('#map')[0];
+            map.scrollLeft = pos["x"] - screen.width / 2;
+            map.scrollTop = pos["y"] - screen.height / 2 + 200;
         },
 
         setPin(x,y){
@@ -102,7 +108,7 @@ export default {
         },
 
         async findHandler(id, f_no) {
-            let data = await this.$http.$get(`http://localhost:4567/map/location/${id}`);
+            let data = await this.$http.$get(`https://geobits.herokuapp.com/map/location/${id}`);
             let left = parseInt(data["left"].slice(0, -2));
             let top = parseInt(data["top"].slice(0, -2));
             this.fullZoom();
@@ -129,8 +135,8 @@ export default {
             x = (x - 7727333) * (this.width / 907.0);
             y = this.height - (y - 1149133) * (this.height / 1016.0 );
 
-            let offsetX = (2.924 / 100) * this.width;
-            let offsetY = - (0.258 / 100) * this.height;
+            let offsetX = (1.258 / 100) * this.width;
+            let offsetY = - (2.258 / 100) * this.height;
 
             x += offsetX;
             y += offsetY;
@@ -145,27 +151,6 @@ export default {
 
     mounted() {
         this.goTo(this.position);
-        // let isDown = false;
-        // let startX;
-        // let scrollLeft;
-        // map.addEventListener('mousedown', (e) => {
-        //     isDown = true;
-        //     startX = e.pageX - document.querySelector('#map').offsetLeft;
-        //     scrollLeft = document.querySelector('#map').scrollLeft;
-        // });
-        // map.addEventListener('mouseleave', () => {
-        //     isDown = false;
-        // });
-        // map.addEventListener('mouseup', () => {
-        //     isDown = false;
-        // });
-        // map.addEventListener('mousemove', (e) => {
-        //     if(!isDown) return;
-        //     e.preventDefault();
-        //     const x = e.pageX - document.querySelector('#map').offsetLeft;
-        //     const walk = (x - startX); //scroll-fast
-        //     document.querySelector('#map').scrollLeft = scrollLeft - walk;
-        // });
     },
 
     updated() {

@@ -24,8 +24,8 @@ export default {
     transform: translate(-50%, -50%);
 
     img{
-        height: 48px;
-        width: 48px;
+        height: 72px;
+        width: 72px;
     }
 }
 </style>
