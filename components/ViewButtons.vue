@@ -1,7 +1,7 @@
 <template>
     <div id="main">
         <button class="ui icon teal button" @click="$emit('getLocation')">
-            <i class="search location icon"></i>
+            <i class="street view icon"></i>
         </button>
         <br/>
         <br/>

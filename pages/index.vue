@@ -135,8 +135,8 @@ export default {
             x = (x - 7727333) * (this.width / 907.0);
             y = this.height - (y - 1149133) * (this.height / 1016.0 );
 
-            let offsetX = (1.258 / 100) * this.width;
-            let offsetY = - (2.258 / 100) * this.height;
+            let offsetX = (2.258 / 100) * this.width;
+            let offsetY = - (1.258 / 100) * this.height;
 
             x += offsetX;
             y += offsetY;

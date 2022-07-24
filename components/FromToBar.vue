@@ -1,7 +1,8 @@
 <template>
     <div class="input-wrapper">
         <div class="ui large icon input">
-            <input v-model="query" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp" @keydown.enter="getSuggestion" type="text" placeholder="Search...">
+            <input v-model="query" @keyup="getSuggestion" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp" type="text"
+                   placeholder="Search...">
             <i class="search link teal icon" @click="getSuggestion"></i>
         </div>
         <div class="suggestion-box" ref="suggestion-box">
@@ -9,8 +10,8 @@
                 <div v-for="match in response"
                      class="suggestion"
                      @mouseenter="hoverSelection"
-                     @mouseleave="$event.target.classList.remove('selected')"
-                     @click="clickHandler(match['id'], match['floor_no'])">
+                     @click="clickHandler(match['id'], match['match'])"
+                     @mouseleave="$event.target.classList.remove('selected')">
                     <div>
                         <div class="ui medium teal header">{{ match["match"] }}</div>
                         <div>{{ match["floor"] }}, {{ match["name"] }}</div>
@@ -19,7 +20,7 @@
             </section>
             <section v-else>
                 <div class="no-result">
-                    No result found!
+                    no result found
                 </div>
             </section>
         </div>
@@ -28,14 +29,12 @@
 
 <script>
 export default {
-    emits: ["custom"],
     data() {
         return {
             query: "",
             response: [],
         }
     },
-
     methods: {
         async getSuggestion() {
             let element = $(this.$refs["suggestion-box"]);
@@ -48,9 +47,13 @@ export default {
             }
         },
 
-        hoverSelection( event ){
+        clickHandler(id, name){
+            this.query = name;
+        },
+
+        hoverSelection(event) {
             let selected = $('.suggestion.selected');
-            if(selected.length !== 0)
+            if (selected.length !== 0)
                 selected[0].classList.remove('selected');
             event.target.classList.add('selected');
         },
@@ -61,34 +64,28 @@ export default {
                 element[0].classList.add('selected');
         },
 
-        moveDown(){
+        moveDown() {
             let selected = $('.selected')
             let next = selected.next();
             if (next.length) {
                 selected.removeClass('selected');
                 next.addClass('selected');
                 next.focus()
-            }
-            else{
+            } else {
                 this.selectFirst();
             }
         },
 
-        moveUp(){
+        moveUp() {
             let selected = $('.selected')
             let prev = selected.prev();
             if (prev.length) {
                 selected.removeClass('selected');
                 prev.addClass('selected');
-            }
-            else{
+            } else {
                 this.selectFirst();
             }
         },
-
-        clickHandler(id, f_no){
-            this.$emit('custom', id, f_no);
-        }
     },
 
     mounted() {
@@ -108,16 +105,17 @@ export default {
 <style lang="scss" scoped>
 
 div.ui.large.icon.input {
-
     input {
-        width: 50vw;
-        border-radius: 20px;
+        width: 25vw;
+        border-radius: 5px;
         border: 1px solid #16A89D;
     }
 }
 
-.input-wrapper {
+.input-wrapper.item {
     position: relative;
+    display: inline-flex !important;
+    padding: 0.5rem 2px !important;
 }
 
 .suggestion-box {
@@ -136,7 +134,7 @@ div.ui.large.icon.input {
         cursor: pointer;
         border-bottom: 1px solid #EAF6F6;
 
-        &.selected{
+        &.selected {
             background: #EAF6F6;
         }
 
@@ -144,6 +142,7 @@ div.ui.large.icon.input {
             padding-left: 0;
         }
     }
+
     .no-result{
         padding: 3% 6%;
         color: teal;
@@ -152,13 +151,13 @@ div.ui.large.icon.input {
 }
 
 @media screen and (max-width: 520px) {
-    div.ui.large.icon.input{
-        input{
+    div.ui.large.icon.input {
+        input {
             width: 80vw;
         }
     }
 
-    .suggestion-box{
+    .suggestion-box {
         width: 80vw;
     }
 }
