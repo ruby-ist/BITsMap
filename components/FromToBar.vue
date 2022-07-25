@@ -1,9 +1,15 @@
 <template>
     <div class="input-wrapper">
         <div class="ui large icon input">
-            <input v-model="query" @keyup="getSuggestion" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp" type="text"
-                   placeholder="Search...">
-            <i class="search link teal icon" @click="getSuggestion"></i>
+            <input v-model="query"
+                   @keyup="getSuggestion"
+                   @keydown.down.prevent="moveDown"
+                   @keydown.up.prevent="moveUp"
+                   @keydown.enter.prevent="enterHandler"
+                   @keyup.enter.prevent="hideSuggestion"
+                   @keydown.delete="$emit('setPlace', '')"
+                   type="text"
+                   :placeholder="placeholder">
         </div>
         <div class="suggestion-box" ref="suggestion-box">
             <section v-if="response.length !== 0">
@@ -29,6 +35,8 @@
 
 <script>
 export default {
+    props: ["placeholder"],
+    emits: ["setPlace"],
     data() {
         return {
             query: "",
@@ -49,6 +57,11 @@ export default {
 
         clickHandler(id, name){
             this.query = name;
+            this.$emit('setPlace', id);
+        },
+
+        enterHandler(){
+            $('.selected').click();
         },
 
         hoverSelection(event) {
@@ -59,7 +72,7 @@ export default {
         },
 
         selectFirst(){
-            let element = $('.suggestion');
+            let element = $(this.$refs["suggestion-box"]).children().children().first();
             if(element.length !== 0)
                 element[0].classList.add('selected');
         },
@@ -86,18 +99,30 @@ export default {
                 this.selectFirst();
             }
         },
+
+        hideSuggestion(){
+            $(this.$refs["suggestion-box"]).hide();
+            this.response = []
+        }
     },
 
     mounted() {
         let element = $(this.$refs["suggestion-box"]);
         element.hide();
         $('body:not(.suggestion-box)').on('click', function () {
+            this.response = [];
             element.hide();
         });
     },
 
     updated() {
         $(this.$refs["suggestion-box"])[0].scrollTop = 0;
+    },
+
+    watch:{
+        query(newValue){
+            $('.selected').removeClass('selected');
+        }
     }
 }
 </script>
@@ -122,7 +147,7 @@ div.ui.large.icon.input {
     min-height: 100px;
     max-height: 500px;
     overflow: scroll;
-    width: 50vw;
+    width: 25vw;
     position: absolute;
     background: white;
     top: 130%;

@@ -5,7 +5,7 @@
             GeoBITs
         </a>
         <div class="right menu">
-            <DirectionBar v-if="navigation" />
+            <DirectionBar v-if="navigation" @success="transport"/>
             <SearchBar v-else class="item" @custom="customHandler" />
             <i class="large link teal icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }" @click="toggleNavigation"></i>
         </div>
@@ -25,8 +25,13 @@ export default {
             this.$emit('find', id, f_no);
         },
 
+        transport(obj){
+            this.$emit('draw', obj)
+        },
+
         toggleNavigation(){
             this.navigation = !this.navigation;
+            $('.cls-2').css('visibility','hidden');
         }
     }
 }

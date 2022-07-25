@@ -1,9 +1,10 @@
 <template>
     <div>
-        <NavBar @find="findHandler"/>
+        <NavBar @find="findHandler" @draw="drawPath"/>
         <div id="map">
             <img v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
             <img v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
+            <MapRoute :path="direction" v-if="direction"/>
 
             <MapTags :level="level" :num="floor_no"/>
             <MapLegends :level="level"/>
@@ -34,6 +35,7 @@ export default {
             pinTop: 0,
             floor_no: 0,
             callBackId: 0,
+            direction: null,
         }
     },
 
@@ -147,10 +149,15 @@ export default {
         error() {
             alert("Unable to get your location.");
         },
+
+        drawPath(obj){
+            this.direction = obj;
+        }
     },
 
     mounted() {
         this.goTo(this.position);
+        console.log(this.direction);
     },
 
     updated() {
