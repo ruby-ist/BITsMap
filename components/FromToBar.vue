@@ -49,7 +49,7 @@ export default {
             if (this.query !== "") {
                 element.show();
                 element.innerText = `<div class="ui segment"><div class="ui active blue elastic loader"></div></div>`;
-                this.response = await this.$http.$get(`https://geobits.herokuapp.com/map/search?query=${encodeURIComponent(this.query)}`);
+                this.response = await this.$http.$get(`http://localhost:4567/map/search?query=${encodeURIComponent(this.query)}`);
             } else {
                 element.hide();
             }

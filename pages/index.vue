@@ -110,7 +110,7 @@ export default {
         },
 
         async findHandler(id, f_no) {
-            let data = await this.$http.$get(`https://geobits.herokuapp.com/map/location/${id}`);
+            let data = await this.$http.$get(`http://localhost:4567/map/location/${id}`);
             let left = parseInt(data["left"].slice(0, -2));
             let top = parseInt(data["top"].slice(0, -2));
             this.fullZoom();
