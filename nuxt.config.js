@@ -10,7 +10,7 @@ export default {
         },
         meta: [
             {charset: 'utf-8'},
-            {name: "viewport", content: "width=device-width, initial-scale=1"},
+            {name: "viewport", content: "width=device-width, initial-scale=1, user-scalable=0"},
             {
                 hid: "description",
                 name: "description",
@@ -29,7 +29,8 @@ export default {
         script: [
             {src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"},
             {src: "https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.js"},
-            {src: "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"}
+            {src: "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"},
+            {src: "https://hammerjs.github.io/dist/hammer.min.js"}
         ]
     },
 

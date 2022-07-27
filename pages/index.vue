@@ -4,7 +4,7 @@
         <div id="map">
             <img v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
             <img v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
-            <MapRoute :path="direction" v-if="direction"/>
+            <MapRoute :path="direction" v-if="direction" :height="height" :width="width"/>
 
             <MapTags :level="level" :num="floor_no"/>
             <MapLegends :level="level"/>
@@ -24,7 +24,6 @@ export default {
             level: 4,
             position: {"x": 1800, "y": 2150},
             pinned: false,
-            mapFile: "Map.svg",
             height: 3876,
             width: 3420,
             svg: true,
@@ -85,10 +84,16 @@ export default {
             this.svg = !this.svg;
         },
 
-        fullZoom() {
+        fullZoomIn() {
             let times = 4 - this.level;
             while (times--)
                 this.zoomIn();
+        },
+
+        fullZoomOut() {
+            let times = this.level;
+            while (times--)
+                this.zoomOut();
         },
 
         goTo(pos) {
@@ -113,7 +118,7 @@ export default {
             let data = await this.$http.$get(`http://localhost:4567/map/location/${id}`);
             let left = parseInt(data["left"].slice(0, -2));
             let top = parseInt(data["top"].slice(0, -2));
-            this.fullZoom();
+            this.fullZoomIn();
             this.setPin(left - 20, top - 10);
             this.position = {"x": left, "y": top};
             $(`#${data['id']}`).click();
@@ -150,14 +155,36 @@ export default {
             alert("Unable to get your location.");
         },
 
-        drawPath(obj){
+        async drawPath(obj){
+            this.svg = false;
+            await this.fullZoomOut();
             this.direction = obj;
+            console.log(this.direction);
         }
     },
 
     mounted() {
         this.goTo(this.position);
-        console.log(this.direction);
+        // $(document).on('mousemove', (event) => {
+        //     let map = $('#map')[0];
+        //     const {
+        //         clientX,
+        //         clientY
+        //     } = event
+        //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
+        // });
+
+        // let mc = new Hammer($('#map')[0], {touchAction: "auto"});
+        // let that = this;
+        // mc.get('press').set({ time: 700 } );
+        // mc.on('press',function(event){
+        //     let x = event.srcEvent.offsetX;
+        //     let y = event.srcEvent.offsetY;
+        //     that.setPin(x,y);
+        // });
+        // mc.get('pinch').set({ enable: true });
+        // mc.on('pinchstart pinchin pinchend', () => { that.zoomOut() });
+        // mc.on('pinchstart pinchout pinchend', () => { that.zoomIn() });
     },
 
     updated() {
