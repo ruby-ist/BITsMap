@@ -30,6 +30,7 @@ export default {
         },
 
         async getDetails(id) {
+            $('#pin').hide();
             this.details = await this.$http.$get(`http://localhost:4567/map/details/${id}?level=${this.level}`);
             $('.show-box').css({
                 'bottom' : '0',

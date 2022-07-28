@@ -81,7 +81,7 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     background: whitesmoke;
-    z-index: 2;
+    z-index: 3;
     border: 1px solid teal;
     border-top: 6px solid teal;
     border-radius: 20px 20px 0 0;

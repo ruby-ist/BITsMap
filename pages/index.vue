@@ -8,7 +8,7 @@
 
             <MapTags :level="level" :num="floor_no"/>
             <MapLegends :level="level"/>
-            <Pin :left="pinLeft" :top="pinTop" />
+            <Pin :left="pinLeft" :top="pinTop" :svg="svg" :zoomlevel="level" :show="clipShow"/>
             <Location :left="locationX" :top="locationY"/>
         </div>
 
@@ -27,7 +27,7 @@ export default {
             height: 3876,
             width: 3420,
             svg: true,
-            pinShow: false,
+            clipShow: false,
             locationX: 0,
             locationY: 0,
             pinLeft: 0,
@@ -45,12 +45,11 @@ export default {
 
         zoomIn() {
             let map = $('#map')[0];
-            let html = $('html')[0];
             if (this.height < 3800 && this.width < 3400) {
                 this.height *= 1.5;
                 this.width *= 1.5;
                 map.scrollLeft = map.scrollLeft * 1.5;
-                html.scrollTop = html.scrollTop * 1.5;
+                map.scrollTop = map.scrollTop * 1.5;
                 this.locationX = this.locationX * 1.5;
                 this.locationY = this.locationY * 1.5;
                 this.level++;
@@ -59,6 +58,7 @@ export default {
                 'bottom' : "-50vh",
                 'height' : '0',
             });
+            $('#pin').hide();
         },
 
         zoomOut() {
@@ -78,6 +78,7 @@ export default {
                 'bottom' : "-50vh",
                 'height' : '0',
             });
+            $('#pin').hide();
         },
 
         changeView() {
@@ -164,7 +165,36 @@ export default {
     },
 
     mounted() {
+        let query = this.$route.query;
+        if(typeof query.level !== "undefined") {
+            let level = 4 - parseInt(query.level);
+            let x = parseInt(query.left);
+            let y = parseInt(query.top);
+
+            while (level--) {
+                x *= 1.5;
+                y *= 1.5;
+            }
+            this.position = {'x': x, 'y': y};
+
+            if (query.svg === "false")
+                this.svg = false;
+
+            this.setPin(x, y);
+        }
+
         this.goTo(this.position);
+
+        let mc = new Hammer($('#map')[0], {touchAction: "auto"});
+        let that = this;
+        mc.get('press').set({ time: 700 } );
+        mc.on('press',function(event){
+            let x = event.srcEvent.layerX - 16;
+            let y = event.srcEvent.layerY - 32;
+            that.setPin(x,y);
+            that.clipShow = true;
+        });
+
         // $(document).on('mousemove', (event) => {
         //     let map = $('#map')[0];
         //     const {
@@ -172,15 +202,6 @@ export default {
         //         clientY
         //     } = event
         //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
-        // });
-
-        // let mc = new Hammer($('#map')[0], {touchAction: "auto"});
-        // let that = this;
-        // mc.get('press').set({ time: 700 } );
-        // mc.on('press',function(event){
-        //     let x = event.srcEvent.offsetX;
-        //     let y = event.srcEvent.offsetY;
-        //     that.setPin(x,y);
         // });
         // mc.get('pinch').set({ enable: true });
         // mc.on('pinchstart pinchin pinchend', () => { that.zoomOut() });
