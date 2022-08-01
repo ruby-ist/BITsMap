@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@nuxt/http": "^0.6.4",
+    "@nuxtjs/composition-api": "^0.33.1",
     "@nuxtjs/proxy": "^2.1.0",
+    "@pinia/nuxt": "0.2.1",
     "core-js": "^3.19.3",
     "nuxt": "^2.15.8",
+    "pinia": "^2.0.17",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",

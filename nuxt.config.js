@@ -38,6 +38,11 @@ export default {
         '@nuxt/http'
     ],
 
+    buildModules: [
+        '@nuxtjs/composition-api/module',
+        '@pinia/nuxt'
+    ],
+
     http: {
         proxy: true
     },

@@ -2,7 +2,7 @@
     <div id="main" class="ui secondary menu">
 
         <a class="item ui huge header">
-            GeoBITs
+            GeoBITs{{ value }}
         </a>
         <div class="right menu">
             <DirectionBar v-if="navigation" @success="transport"/>
@@ -13,12 +13,18 @@
 </template>
 
 <script>
+import { mapWritableState } from 'pinia'
+import { useStore } from "@/store/main";
+
 export default {
     emits: ["find"],
     data(){
         return {
             navigation: false,
         }
+    },
+    computed: {
+        ...mapWritableState(useStore, ['value']),
     },
     methods: {
         customHandler(id, f_no){
@@ -33,6 +39,9 @@ export default {
             this.navigation = !this.navigation;
             $('.cls-2').css('visibility','hidden');
         }
+    },
+    mounted(){
+        this.value = 5;
     }
 }
 </script>

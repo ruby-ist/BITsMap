@@ -18,6 +18,9 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia'
+import { useStore} from "@/store/main";
+
 export default {
     data() {
         return {
@@ -36,6 +39,10 @@ export default {
             callBackId: 0,
             direction: null,
         }
+    },
+
+    computed: {
+        ...mapStores(useStore, ['value'])
     },
 
     methods: {
@@ -165,6 +172,7 @@ export default {
     },
 
     mounted() {
+        alert(this.mainStore.value);
         let query = this.$route.query;
         if(typeof query.level !== "undefined") {
             let level = 4 - parseInt(query.level);
