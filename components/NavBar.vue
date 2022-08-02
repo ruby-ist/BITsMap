@@ -2,29 +2,24 @@
     <div id="main" class="ui secondary menu">
 
         <a class="item ui huge header">
-            GeoBITs{{ value }}
+            GeoBITs
         </a>
         <div class="right menu">
             <DirectionBar v-if="navigation" @success="transport"/>
-            <SearchBar v-else class="item" @custom="customHandler" />
-            <i class="large link teal icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }" @click="toggleNavigation"></i>
+            <SearchBar v-else class="item" />
+            <i class="large link teal icon"
+               :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"
+               @click="toggleNavigation"></i>
         </div>
     </div>
 </template>
 
 <script>
-import { mapWritableState } from 'pinia'
-import { useStore } from "@/store/main";
-
 export default {
-    emits: ["find"],
     data(){
         return {
             navigation: false,
         }
-    },
-    computed: {
-        ...mapWritableState(useStore, ['value']),
     },
     methods: {
         customHandler(id, f_no){
@@ -40,9 +35,6 @@ export default {
             $('.cls-2').css('visibility','hidden');
         }
     },
-    mounted(){
-        this.value = 5;
-    }
 }
 </script>
 

@@ -8,14 +8,14 @@
         </div>
 
         <div v-show="details !== {}">
-            <ShowBox :details="details" :floorNum="num" ref="showBox"/>
+            <ShowBox :details="details" ref="showBox"/>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['level', 'num'],
+    props: ['level'],
     data() {
         return {
             tags: [],

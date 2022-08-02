@@ -25,13 +25,20 @@
 </template>
 
 <script>
+import { mapState} from "pinia";
+import {useSearchStore} from "@/store/search";
+
 export default {
-    props: ['details', 'floorNum'],
+    props: ['details'],
 
     data(){
         return{
             initialFloor: 0
         }
+    },
+
+    computed: {
+        ...mapState(useSearchStore, ['floorNum'])
     },
 
     methods: {

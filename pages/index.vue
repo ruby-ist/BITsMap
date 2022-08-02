@@ -1,12 +1,12 @@
 <template>
     <div>
-        <NavBar @find="findHandler" @draw="drawPath"/>
+        <NavBar @draw="drawPath"/>
         <div id="map">
             <img v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
             <img v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
             <MapRoute :path="direction" v-if="direction" :height="height" :width="width"/>
 
-            <MapTags :level="level" :num="floor_no"/>
+            <MapTags :level="level"/>
             <MapLegends :level="level"/>
             <Pin :left="pinLeft" :top="pinTop" :svg="svg" :zoomlevel="level" :show="clipShow"/>
             <Location :left="locationX" :top="locationY"/>
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import { mapStores } from 'pinia'
-import { useStore} from "@/store/main";
+import {mapState} from 'pinia'
+import {useSearchStore} from "@/store/search";
 
 export default {
     data() {
@@ -35,14 +35,13 @@ export default {
             locationY: 0,
             pinLeft: 0,
             pinTop: 0,
-            floor_no: 0,
             callBackId: 0,
             direction: null,
         }
     },
 
     computed: {
-        ...mapStores(useStore, ['value'])
+        ...mapState(useSearchStore, ['searchId'])
     },
 
     methods: {
@@ -62,8 +61,8 @@ export default {
                 this.level++;
             }
             $('.show-box').css({
-                'bottom' : "-50vh",
-                'height' : '0',
+                'bottom': "-50vh",
+                'height': '0',
             });
             $('#pin').hide();
         },
@@ -82,8 +81,8 @@ export default {
                 this.level--;
             }
             $('.show-box').css({
-                'bottom' : "-50vh",
-                'height' : '0',
+                'bottom': "-50vh",
+                'height': '0',
             });
             $('#pin').hide();
         },
@@ -110,37 +109,25 @@ export default {
             map.scrollTop = pos["y"] - screen.height / 2 + 200;
         },
 
-        setPin(x,y){
+        setPin(x, y) {
             $('#pin').show();
             this.pinLeft = x;
             this.pinTop = y;
         },
 
-        setLocation(x,y){
+        setLocation(x, y) {
             $('#location').show();
             this.locationX = x;
             this.locationY = y;
-        },
-
-        async findHandler(id, f_no) {
-            let data = await this.$http.$get(`http://localhost:4567/map/location/${id}`);
-            let left = parseInt(data["left"].slice(0, -2));
-            let top = parseInt(data["top"].slice(0, -2));
-            this.fullZoomIn();
-            this.setPin(left - 20, top - 10);
-            this.position = {"x": left, "y": top};
-            $(`#${data['id']}`).click();
-            this.floor_no = f_no;
         },
 
         async geoLocate() {
             if (!navigator.geolocation) {
                 alert("Geolocation is not supported in this browser.");
             } else {
-                if(this.callBackId !== 0)
+                if (this.callBackId !== 0)
                     navigator.geolocation.clearWatch(this.callBackId);
                 this.callBackId = navigator.geolocation.watchPosition(await this.success, this.error);
-                console.log(this.callBackId);
             }
         },
 
@@ -148,33 +135,31 @@ export default {
             let x = position.coords.longitude.toPrecision(7) * 100000;
             let y = position.coords.latitude.toPrecision(7) * 100000;
             x = (x - 7727333) * (this.width / 907.0);
-            y = this.height - (y - 1149133) * (this.height / 1016.0 );
+            y = this.height - (y - 1149133) * (this.height / 1016.0);
 
             let offsetX = (2.258 / 100) * this.width;
-            let offsetY = - (1.258 / 100) * this.height;
+            let offsetY = -(1.258 / 100) * this.height;
 
             x += offsetX;
             y += offsetY;
             this.setLocation(x, y);
-            this.position = {'x': x , 'y': y}
+            this.position = {'x': x, 'y': y}
         },
 
         error() {
             alert("Unable to get your location.");
         },
 
-        async drawPath(obj){
+        async drawPath(obj) {
             this.svg = false;
             await this.fullZoomOut();
             this.direction = obj;
-            console.log(this.direction);
         }
     },
 
     mounted() {
-        alert(this.mainStore.value);
         let query = this.$route.query;
-        if(typeof query.level !== "undefined") {
+        if (typeof query.level !== "undefined") {
             let level = 4 - parseInt(query.level);
             let x = parseInt(query.left);
             let y = parseInt(query.top);
@@ -195,11 +180,11 @@ export default {
 
         let mc = new Hammer($('#map')[0], {touchAction: "auto"});
         let that = this;
-        mc.get('press').set({ time: 700 } );
-        mc.on('press',function(event){
+        mc.get('press').set({time: 700});
+        mc.on('press', function (event) {
             let x = event.srcEvent.layerX - 16;
             let y = event.srcEvent.layerY - 32;
-            that.setPin(x,y);
+            that.setPin(x, y);
             that.clipShow = true;
         });
 
@@ -227,6 +212,16 @@ export default {
     watch: {
         async position(newValue) {
             await this.goTo(newValue);
+        },
+
+        async searchId(newValue) {
+            let data = await this.$http.$get(`http://localhost:4567/map/location/${newValue}`);
+            let left = parseInt(data["left"].slice(0, -2));
+            let top = parseInt(data["top"].slice(0, -2));
+            this.fullZoomIn();
+            this.setPin(left - 20, top - 10);
+            this.position = {"x": left, "y": top};
+            $(`#${data['id']}`).click();
         }
     }
 }

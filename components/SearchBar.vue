@@ -27,8 +27,10 @@
 </template>
 
 <script>
+import { mapWritableState, mapActions } from 'pinia'
+import { useSearchStore } from "@/store/search";
+
 export default {
-    emits: ["custom"],
     data() {
         return {
             query: "",
@@ -36,7 +38,13 @@ export default {
         }
     },
 
+    computed: {
+        ...mapWritableState(useSearchStore, ['searchId', 'floorNum']),
+    },
+
     methods: {
+        ...mapActions(useSearchStore, ['searchData']),
+
         async getSuggestion() {
             let element = $(this.$refs["suggestion-box"]);
             if (this.query !== "") {
@@ -87,7 +95,8 @@ export default {
         },
 
         clickHandler(id, f_no){
-            this.$emit('custom', id, f_no);
+            this.searchId = id;
+            this.floorNum = f_no;
         }
     },
 
