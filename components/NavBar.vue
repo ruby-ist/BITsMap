@@ -22,10 +22,6 @@ export default {
         }
     },
     methods: {
-        customHandler(id, f_no){
-            this.$emit('find', id, f_no);
-        },
-
         transport(obj){
             this.$emit('draw', obj)
         },

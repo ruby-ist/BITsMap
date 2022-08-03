@@ -25,13 +25,13 @@ export default {
 
     methods: {
         async getTags(level) {
-            let response = await this.$http.$get(`http://localhost:4567/map/tags/${this.level}`);
+            let response = await this.$http.$get(`https://geobits.herokuapp.com/map/tags/${this.level}`);
             this.tags = await response["tags"];
         },
 
         async getDetails(id) {
             $('#pin').hide();
-            this.details = await this.$http.$get(`http://localhost:4567/map/details/${id}?level=${this.level}`);
+            this.details = await this.$http.$get(`https://geobits.herokuapp.com/map/details/${id}?level=${this.level}`);
             $('.show-box').css({
                 'bottom' : '0',
                 'height' : 'initial'

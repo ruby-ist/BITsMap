@@ -4,7 +4,7 @@
         <div id="map">
             <img v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
             <img v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
-            <MapRoute :path="direction" v-if="direction" :height="height" :width="width"/>
+            <MapRoute  :height="height" :width="width"/>
 
             <MapTags :level="level"/>
             <MapLegends :level="level"/>
@@ -18,18 +18,16 @@
 </template>
 
 <script>
-import {mapState} from 'pinia'
+import {mapState, mapWritableState} from 'pinia'
 import {useSearchStore} from "@/store/search";
+import {useMapStore} from "@/store/map";
 
 export default {
     data() {
         return {
-            level: 4,
             position: {"x": 1800, "y": 2150},
-            pinned: false,
             height: 3876,
             width: 3420,
-            svg: true,
             clipShow: false,
             locationX: 0,
             locationY: 0,
@@ -41,9 +39,9 @@ export default {
     },
 
     computed: {
+        ...mapWritableState(useMapStore, ['svg', 'level','fullZoomOutTrigger']),
         ...mapState(useSearchStore, ['searchId'])
     },
-
     methods: {
         unShrinkable() {
             return (this.height / 1.5 < screen.height) || (this.width / 1.5 < screen.width);
@@ -212,6 +210,10 @@ export default {
     watch: {
         async position(newValue) {
             await this.goTo(newValue);
+        },
+
+        fullZoomOutTrigger(newValue){
+            this.fullZoomOut();
         },
 
         async searchId(newValue) {

@@ -201,16 +201,30 @@
 </template>
 
 <script>
+import {mapState, mapWritableState, mapActions} from "pinia";
+import {useMapStore} from "@/store/map";
+import {useDirectionStore} from "@/store/direction";
+
 export default {
-    props: ["path", "height", "width"],
-    mounted(){
-        if (this.path) {
-            let path = this.path["path"];
-            for (let i = 0; i < path.length - 1; i++)
-                $(`#J${path[i]}${path[i + 1]}, #J${path[i + 1]}${path[i]}`).css('visibility', 'visible');
-        }
+    props: ["height", "width"],
+    data(){
+      return{
+          path: {},
+      }
+    },
+    computed:{
+        ...mapWritableState(useMapStore, ['svg']),
+        ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId']),
+    },
+    methods:{
+        ...mapActions(useMapStore, ['fullZoomOut'])
     },
     watch:{
+        async directionTrigger(newValue) {
+            this.svg = false;
+            this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}`);
+            this.fullZoomOut();
+        },
         path: {
             handler(newValue) {
                 console.log(newValue);

@@ -10,37 +10,38 @@
 </template>
 
 <script>
+import {mapWritableState, mapActions} from "pinia";
+import {useDirectionStore} from "@/store/direction";
+
 export default {
     emits: ['success'],
-    data(){
-        return{
-            from: "",
-            to: ""
-        }
+    computed: {
+        ...mapWritableState(useDirectionStore, ['fromId', 'toId'])
     },
     methods: {
+        ...mapActions(useDirectionStore, ['findRoute']),
         setFrom(id){
-            this.from = id;
+            this.fromId = id;
         },
         setTo(id){
-            this.to = id;
+            this.toId = id;
         },
-        async findRoute(){
-            let response = await this.$http.$get(`http://localhost:4567/map/direction?from=${this.from}&to=${this.to}`);
-            this.$emit('success', response);
-        },
+        // async findRoute(){
+        //     let response = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.from}&to=${this.to}`);
+        //     this.$emit('success', response);
+        // },
         checkValue(){
-            if(this.from !== "" && this.to !== "")
+            if(this.fromId !== "" && this.toId !== "")
                 this.$refs.goBtn.classList.remove('disabled');
             else
                 this.$refs.goBtn.classList.add('disabled');
         }
     },
     watch: {
-        to(newValue){
+        toId(newValue){
             this.checkValue();
         },
-        from(newValue){
+        fromId(newValue){
             this.checkValue();
         }
     }
