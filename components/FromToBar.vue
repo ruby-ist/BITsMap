@@ -1,13 +1,13 @@
 <template>
     <div class="input-wrapper">
-        <div class="ui large icon input">
+        <div class="ui large icon input"  :class = "{success: successClass}">
             <input v-model="query"
                    @keyup="getSuggestion"
                    @keydown.down.prevent="moveDown"
                    @keydown.up.prevent="moveUp"
                    @keydown.enter.prevent="enterHandler"
                    @keyup.enter.prevent="hideSuggestion"
-                   @keydown.delete="$emit('setPlace', '')"
+                   @keydown.delete="setBarValue('')"
                    type="text"
                    :placeholder="placeholder">
         </div>
@@ -25,8 +25,11 @@
                 </div>
             </section>
             <section v-else>
-                <div class="no-result">
-                    no result found
+                <div v-if="fetchPending" class="ui segment" id="load-segment">
+                    <div class="ui active centered inline blue elastic loader"></div>
+                </div>
+                <div  v-else class="no-result">
+                    No result found!
                 </div>
             </section>
         </div>
@@ -39,8 +42,10 @@ export default {
     emits: ["setPlace"],
     data() {
         return {
+            successClass: false,
             query: "",
             response: [],
+            fetchPending: false,
         }
     },
     methods: {
@@ -48,16 +53,22 @@ export default {
             let element = $(this.$refs["suggestion-box"]);
             if (this.query !== "") {
                 element.show();
-                element.innerText = `<div class="ui segment"><div class="ui active blue elastic loader"></div></div>`;
+                this.fetchPending = true;
                 this.response = await this.$http.$get(`https://geobits.herokuapp.com/map/search?query=${encodeURIComponent(this.query)}`);
+                this.fetchPending = false;
             } else {
                 element.hide();
             }
         },
 
+        setBarValue(place){
+            this.successClass = (place.length !== 0)
+            this.$emit('setPlace', place);
+        },
+
         clickHandler(id, name){
             this.query = name;
-            this.$emit('setPlace', id);
+            this.setBarValue(id);
         },
 
         enterHandler(){
@@ -120,8 +131,11 @@ export default {
     },
 
     watch:{
-        query(newValue){
+        query(newValue, oldValue){
             $('.selected').removeClass('selected');
+
+            if(newValue.length < oldValue.length)
+                this.setBarValue('');
         }
     }
 }
@@ -131,9 +145,15 @@ export default {
 
 div.ui.large.icon.input {
     input {
-        width: 25vw;
+        width: 21vw;
         border-radius: 5px;
         border: 1px solid #16A89D;
+    }
+
+    &.success{
+        input{
+            color: teal;
+        }
     }
 }
 
@@ -166,6 +186,10 @@ div.ui.large.icon.input {
         .ui.header {
             padding-left: 0;
         }
+    }
+
+    #load-segment{
+        min-height: 100px;
     }
 
     .no-result{

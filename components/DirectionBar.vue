@@ -26,10 +26,6 @@ export default {
         setTo(id){
             this.toId = id;
         },
-        // async findRoute(){
-        //     let response = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.from}&to=${this.to}`);
-        //     this.$emit('success', response);
-        // },
         checkValue(){
             if(this.fromId !== "" && this.toId !== "")
                 this.$refs.goBtn.classList.remove('disabled');

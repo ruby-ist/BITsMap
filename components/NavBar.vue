@@ -7,9 +7,13 @@
         <div class="right menu">
             <DirectionBar v-if="navigation" @success="transport"/>
             <SearchBar v-else class="item" />
-            <i class="large link teal icon"
-               :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"
-               @click="toggleNavigation"></i>
+            <div class="ui compact labeled icon menu" @click="toggleNavigation">
+                <a class="item">
+                    <i class="large link teal icon"
+                       :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
+                    {{ navigation ? "Search" : "Direction" }}
+                </a>
+            </div>
         </div>
     </div>
 </template>
@@ -40,14 +44,22 @@ export default {
     top: 0;
     z-index: 4;
     width: 103vw;
-    height: 10vh;
+    height: 85px;
     background: #EAF6F6;
     display: flex;
     border-bottom: 1px solid #16A89D;
 
-    i.large.teal.link.icon{
-        padding-left: 1rem;
-        border-left: 1px solid teal;
+    div.labeled.menu{
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        margin-left: 20px;
+
+        a.item{
+            margin: 0;
+            color: teal;
+            border-left: 1px solid teal;
+        }
     }
 
     .header {
@@ -59,10 +71,9 @@ export default {
 
     div.right.menu{
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        width: 70vw;
-        margin-right: 50px;
+        margin-right: 70px;
     }
 }
 

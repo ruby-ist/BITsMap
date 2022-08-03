@@ -59,8 +59,8 @@ export default {
             if( tab.length !== 0 )
                 tab[0].classList.remove('active');
 
-            item = $('.item')
-            item[(n+2)].classList.add('active');
+            item = $('.pointing.secondary.menu .item')
+            item[n].classList.add('active');
 
             tab = $('.tab');
             tab[n].classList.add('active');
@@ -93,7 +93,7 @@ export default {
     border-top: 6px solid teal;
     border-radius: 20px 20px 0 0;
     padding: 3% 4%;
-    transition: bottom 1s ease-out;
+    transition: bottom .75s ease-out;
 
     .title {
         font-weight: 500;

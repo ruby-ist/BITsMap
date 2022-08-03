@@ -18,7 +18,10 @@
                 </div>
             </section>
             <section v-else>
-                <div class="no-result">
+                <div v-if="fetchPending" class="ui segment" id="load-segment">
+                    <div class="ui active centered inline blue elastic loader"></div>
+                </div>
+                <div  v-else class="no-result">
                     No result found!
                 </div>
             </section>
@@ -35,6 +38,7 @@ export default {
         return {
             query: "",
             response: [],
+            fetchPending: false,
         }
     },
 
@@ -49,8 +53,9 @@ export default {
             let element = $(this.$refs["suggestion-box"]);
             if (this.query !== "") {
                 element.show();
-                element.innerText = `<div class="ui segment"><div class="ui active blue elastic loader"></div></div>`;
+                this.fetchPending = true;
                 this.response = await this.$http.$get(`https://geobits.herokuapp.com/map/search?query=${encodeURIComponent(this.query)}`);
+                this.fetchPending = false;
             } else {
                 element.hide();
             }
@@ -153,6 +158,11 @@ div.ui.large.icon.input {
             padding-left: 0;
         }
     }
+
+    #load-segment{
+        min-height: 100px;
+    }
+
     .no-result{
         padding: 3% 6%;
         color: teal;
