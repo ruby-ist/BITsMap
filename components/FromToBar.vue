@@ -10,6 +10,9 @@
                    @keydown.delete="setBarValue('')"
                    type="text"
                    :placeholder="placeholder">
+            <i class="map marker alternate icon"
+               @click="provideLocation"
+               :class="{grey: locationUsed, teal: !locationUsed, link: !locationUsed}"></i>
         </div>
         <div class="suggestion-box" ref="suggestion-box">
             <section v-if="response.length !== 0">
@@ -37,6 +40,9 @@
 </template>
 
 <script>
+import {mapWritableState} from "pinia";
+import {useDirectionStore} from "@/store/direction";
+
 export default {
     props: ["placeholder"],
     emits: ["setPlace"],
@@ -47,6 +53,9 @@ export default {
             response: [],
             fetchPending: false,
         }
+    },
+    computed: {
+        ...mapWritableState(useDirectionStore, ['top', 'left', 'locationUsed']),
     },
     methods: {
         async getSuggestion() {
@@ -114,10 +123,33 @@ export default {
         hideSuggestion(){
             $(this.$refs["suggestion-box"]).hide();
             this.response = []
-        }
+        },
+
+        async provideLocation(){
+            if (!navigator.geolocation)
+                alert("Geolocation is not supported in this browser.");
+            else
+                navigator.geolocation.getCurrentPosition(await this.success, this.error);
+        },
+
+        success(position){
+            let x = position.coords.longitude.toPrecision(7) * 100000;
+            let y = position.coords.latitude.toPrecision(7) * 100000;
+            this.left = (x - 7727333) * (3420 / 907.0);
+            this.top = 3876 - (y - 1149133) * (3876 / 1016.0);
+
+            this.query = "Your Location";
+            this.setBarValue("my-location");
+            this.locationUsed = true;
+        },
+
+        error(){
+            alert("Unable to get your location.");
+        },
     },
 
     mounted() {
+        this.locationUsed = false;
         let element = $(this.$refs["suggestion-box"]);
         element.hide();
         $('body:not(.suggestion-box)').on('click', function () {
@@ -136,6 +168,9 @@ export default {
 
             if(newValue.length < oldValue.length)
                 this.setBarValue('');
+
+            if(oldValue === "Your Location")
+                this.locationUsed = false
         }
     }
 }

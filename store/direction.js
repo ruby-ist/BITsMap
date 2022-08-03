@@ -6,6 +6,9 @@ export const useDirectionStore = defineStore('direction', {
             directionTrigger: 0,
             fromId: "",
             toId: "",
+            top: 0,
+            left: 0,
+            locationUsed: false,
         }
     },
     actions: {

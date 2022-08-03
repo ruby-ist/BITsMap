@@ -214,7 +214,7 @@ export default {
     },
     computed:{
         ...mapWritableState(useMapStore, ['svg']),
-        ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId']),
+        ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'top', 'left']),
     },
     methods:{
         ...mapActions(useMapStore, ['fullZoomOut'])
@@ -222,7 +222,7 @@ export default {
     watch:{
         async directionTrigger(newValue) {
             this.svg = false;
-            this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}`);
+            this.path = await this.$http.$get(`http://localhost:4567/map/direction?from=${this.fromId}&to=${this.toId}&top=${this.top}&left=${this.left}`);
             this.fullZoomOut();
         },
         path: {
