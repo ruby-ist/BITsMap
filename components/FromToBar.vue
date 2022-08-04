@@ -40,8 +40,9 @@
 </template>
 
 <script>
-import {mapWritableState} from "pinia";
+import {mapState, mapWritableState} from "pinia";
 import {useDirectionStore} from "@/store/direction";
+import {useToBarStore} from "~/store/toBar";
 
 export default {
     props: ["placeholder"],
@@ -56,6 +57,7 @@ export default {
     },
     computed: {
         ...mapWritableState(useDirectionStore, ['top', 'left', 'locationUsed']),
+        ...mapState(useToBarStore, ['id', 'name', 'showBoxTrigger'])
     },
     methods: {
         async getSuggestion() {
@@ -166,11 +168,18 @@ export default {
         query(newValue, oldValue){
             $('.selected').removeClass('selected');
 
-            if(newValue.length < oldValue.length)
+            if(newValue.length < 3)
                 this.setBarValue('');
 
             if(oldValue === "Your Location")
                 this.locationUsed = false
+        },
+
+        name(newValue){
+            if(this.placeholder === "To") {
+                console.log(this.id, this.name);
+                this.clickHandler(this.id, this.name);
+            }
         }
     }
 }

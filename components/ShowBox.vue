@@ -5,7 +5,7 @@
 
         <div class="ui pointing secondary menu">
             <a v-for="(floor, index) in details['floors']"
-               class="item" :data-tab="floor['name'].replace(' ', '')"  @click="goToFloor(index)">{{ floor['name'] }}
+               class="item" :data-tab="floor['name'].replace(' ', '')" @click="goToFloor(index)">{{ floor['name'] }}
             </a>
         </div>
 
@@ -18,45 +18,55 @@
             </ul>
         </div>
 
-        <div class="ui huge circular icon button" @click="getDown">
-            <i class="angle double down teal icon"></i>
+        <div class="icon-boxes">
+            <div class="ui huge circular teal icon button" id="direction-btn"
+                 @click="goTo(details['id'], details['name'])">
+                <i class="directions icon"></i>
+            </div>
+
+            <div class="ui huge circular icon button" @click="getDown">
+                <i class="angle double down teal icon"></i>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState} from "pinia";
+import {mapActions, mapWritableState} from "pinia";
 import {useSearchStore} from "@/store/search";
+import {useToBarStore} from "~/store/toBar";
 
 export default {
     props: ['details'],
 
-    data(){
-        return{
+    data() {
+        return {
             initialFloor: 0
         }
     },
 
     computed: {
-        ...mapState(useSearchStore, ['floorNum'])
+        ...mapWritableState(useSearchStore, ['floorNum', 'navigation']),
+        ...mapWritableState(useToBarStore, ['id', 'name'])
     },
 
     methods: {
+        ...mapActions(useToBarStore, ['askDirection']),
         getDown() {
             $('.show-box').css({
-                'bottom' : "-50vh",
-                'height' : '0',
+                'bottom': "-50vh",
+                'height': '0',
             });
             $('#pin').hide();
         },
 
-        async goToFloor(n){
+        async goToFloor(n) {
             let item = $('.item.active')
-            if( item.length !== 0 )
+            if (item.length !== 0)
                 item[0].classList.remove('active');
 
             let tab = $('.tab.active')
-            if( tab.length !== 0 )
+            if (tab.length !== 0)
                 tab[0].classList.remove('active');
 
             item = $('.pointing.secondary.menu .item')
@@ -65,6 +75,14 @@ export default {
             tab = $('.tab');
             tab[n].classList.add('active');
             this.initialFloor = 0;
+        },
+
+        goTo(id, name) {
+            this.navigation = true;
+            setTimeout(()=> {
+                this.id = id;
+                this.name = name;
+                }, 500);
         }
     },
 
@@ -73,7 +91,7 @@ export default {
     },
 
     watch: {
-        floorNum(newValue){
+        floorNum(newValue) {
             this.initialFloor = newValue;
         }
     }
@@ -137,15 +155,22 @@ export default {
     }
 
     div.ui.circular.icon.button {
+        border: 1px solid teal;
+    }
+
+    .icon-boxes{
         position: absolute;
         top: 8%;
         right: 4%;
-        border: 2px solid teal;
+
+        .icon{
+            margin: 0 6px;
+        }
     }
 }
 
 @media screen and (max-width: 520px) {
-    .show-box{
+    .show-box {
         width: 100vw;
         padding: 6% 8%;
 
@@ -154,16 +179,16 @@ export default {
             overflow-y: hidden;
             scrollbar-width: none;
 
-            &::-webkit-scrollbar{
+            &::-webkit-scrollbar {
                 display: none;
             }
 
-            .item{
+            .item {
                 margin-bottom: 0;
             }
         }
 
-        div.ui.tab.segment{
+        div.ui.tab.segment {
             min-height: 20vh;
             padding: 20px 10% 20px 5%;
         }

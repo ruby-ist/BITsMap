@@ -221,8 +221,12 @@ export default {
     },
     watch:{
         async directionTrigger(newValue) {
+            $('.show-box').css({
+                'bottom': "-50vh",
+                'height': '0',
+            });
             this.svg = false;
-            this.path = await this.$http.$get(`http://localhost:4567/map/direction?from=${this.fromId}&to=${this.toId}&top=${this.top}&left=${this.left}`);
+            this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}&top=${this.top}&left=${this.left}`);
             this.fullZoomOut();
         },
         path: {

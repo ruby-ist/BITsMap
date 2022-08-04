@@ -7,7 +7,7 @@
         <div class="right menu">
             <DirectionBar v-if="navigation" @success="transport"/>
             <SearchBar v-else class="item" />
-            <div class="ui compact labeled icon menu" @click="toggleNavigation">
+            <div class="ui compact labeled icon menu" id="toggle-direction" @click="toggleNavigation">
                 <a class="item">
                     <i class="large link teal icon"
                        :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
@@ -19,11 +19,12 @@
 </template>
 
 <script>
+import {mapWritableState} from "pinia";
+import {useSearchStore} from "~/store/search";
+
 export default {
-    data(){
-        return {
-            navigation: false,
-        }
+    computed: {
+        ...mapWritableState(useSearchStore, ['navigation'])
     },
     methods: {
         transport(obj){
