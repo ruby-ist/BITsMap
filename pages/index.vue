@@ -125,21 +125,22 @@ export default {
             } else {
                 if (this.callBackId !== 0)
                     navigator.geolocation.clearWatch(this.callBackId);
-                this.callBackId = navigator.geolocation.watchPosition(await this.success, this.error);
+                this.callBackId = navigator.geolocation.watchPosition(await this.success, this.error, {enableHighAccuracy: true});
             }
         },
 
         success(position) {
-            let x = position.coords.longitude.toPrecision(7) * 100000;
-            let y = position.coords.latitude.toPrecision(7) * 100000;
+            let x = position.coords.longitude * 100000;
+            let y = position.coords.latitude * 100000;
+            console.log(x,y);
             x = (x - 7727333) * (this.width / 907.0);
             y = this.height - (y - 1149133) * (this.height / 1016.0);
 
-            let offsetX = (2.258 / 100) * this.width;
-            let offsetY = -(1.258 / 100) * this.height;
-
-            x += offsetX;
-            y += offsetY;
+            // let offsetX = (0.258 / 100) * this.width;
+            // let offsetY = -(1.258 / 100) * this.height;
+            // x += offsetX;
+            // y += offsetY;
+            console.log(`x: ${x}, y: ${y}`);
             this.setLocation(x, y);
             this.position = {'x': x, 'y': y}
         },
@@ -186,14 +187,14 @@ export default {
             that.clipShow = true;
         });
 
-        // $(document).on('mousemove', (event) => {
-        //     let map = $('#map')[0];
-        //     const {
-        //         clientX,
-        //         clientY
-        //     } = event
-        //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
-        // });
+        $(document).on('mousemove', (event) => {
+            let map = $('#map')[0];
+            const {
+                clientX,
+                clientY
+            } = event
+            console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
+        });
         // mc.get('pinch').set({ enable: true });
         // mc.on('pinchstart pinchin pinchend', () => { that.zoomOut() });
         // mc.on('pinchstart pinchout pinchend', () => { that.zoomIn() });
