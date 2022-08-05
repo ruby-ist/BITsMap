@@ -132,15 +132,13 @@ export default {
         success(position) {
             let x = position.coords.longitude * 100000;
             let y = position.coords.latitude * 100000;
-            console.log(x,y);
             x = (x - 7727333) * (this.width / 907.0);
             y = this.height - (y - 1149133) * (this.height / 1016.0);
 
             // let offsetX = (0.258 / 100) * this.width;
             // let offsetY = -(1.258 / 100) * this.height;
-            // x += offsetX;
-            // y += offsetY;
-            console.log(`x: ${x}, y: ${y}`);
+            x += 85;
+            y -= 28;
             this.setLocation(x, y);
             this.position = {'x': x, 'y': y}
         },

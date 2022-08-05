@@ -1,5 +1,5 @@
 <template>
-    <div id="location" :style="{left: `${left}px`, top: `${top}px`}">
+    <div id="location" :style="{left: `${left-36}px`, top: `${top-36}px`}">
         <img :src="require(`~/assets/images/location2.svg`)">
     </div>
 </template>

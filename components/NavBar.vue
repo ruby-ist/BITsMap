@@ -45,7 +45,7 @@ export default {
     top: 0;
     z-index: 4;
     width: 103vw;
-    height: 85px;
+    min-height: 85px;
     background: #EAF6F6;
     display: flex;
     border-bottom: 1px solid #16A89D;
