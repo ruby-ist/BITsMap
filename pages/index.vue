@@ -21,6 +21,7 @@
 import {mapState, mapWritableState} from 'pinia'
 import {useSearchStore} from "@/store/search";
 import {useMapStore} from "@/store/map";
+import {usePinStore} from "@/store/pin";
 
 export default {
     data() {
@@ -40,6 +41,7 @@ export default {
 
     computed: {
         ...mapWritableState(useMapStore, ['svg', 'level','fullZoomOutTrigger']),
+        ...mapWritableState(usePinStore, ['startX', 'startY', 'endX', 'endY']),
         ...mapState(useSearchStore, ['searchId'])
     },
     methods: {
@@ -56,6 +58,10 @@ export default {
                 map.scrollTop = map.scrollTop * 1.5;
                 this.locationX = this.locationX * 1.5;
                 this.locationY = this.locationY * 1.5;
+                this.startX = this.startX * 1.5;
+                this.startY = this.startY * 1.5;
+                this.endX = this.endX * 1.5;
+                this.endY = this.endY * 1.5;
                 this.level++;
             }
             $('.show-box').css({
@@ -76,6 +82,10 @@ export default {
                 map.scrollTop = map.scrollTop / 1.5;
                 this.locationX = this.locationX / 1.5;
                 this.locationY = this.locationY / 1.5;
+                this.startX = this.startX / 1.5;
+                this.startY = this.startY / 1.5;
+                this.endX = this.endX / 1.5;
+                this.endY = this.endY / 1.5;
                 this.level--;
             }
             $('.show-box').css({
@@ -135,8 +145,6 @@ export default {
             x = (x - 7727333) * (this.width / 907.0);
             y = this.height - (y - 1149133) * (this.height / 1016.0);
 
-            // let offsetX = (0.258 / 100) * this.width;
-            // let offsetY = -(1.258 / 100) * this.height;
             x += 85;
             y -= 28;
             this.setLocation(x, y);
@@ -154,22 +162,27 @@ export default {
         }
     },
 
+    beforeCreate() {
+        let query = this.$route.query;
+        if (typeof query.level !== "undefined") {
+            this.level = parseInt(query.level);
+            if (query.svg === "false")
+                this.svg = false;
+        }
+    },
+
     mounted() {
         let query = this.$route.query;
         if (typeof query.level !== "undefined") {
-            let level = 4 - parseInt(query.level);
+            let givenLevel = 4 - parseInt(query.level)
             let x = parseInt(query.left);
             let y = parseInt(query.top);
 
-            while (level--) {
-                x *= 1.5;
-                y *= 1.5;
+            while (givenLevel--) {
+                this.height /= 1.5;
+                this.width /= 1.5
             }
             this.position = {'x': x, 'y': y};
-
-            if (query.svg === "false")
-                this.svg = false;
-
             this.setPin(x, y);
         }
 
@@ -185,14 +198,18 @@ export default {
             that.clipShow = true;
         });
 
-        $(document).on('mousemove', (event) => {
-            let map = $('#map')[0];
-            const {
-                clientX,
-                clientY
-            } = event
-            console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
+        mc.on('doubletap', function (){
+            $('#pin').hide();
         });
+
+        // $(document).on('mousemove', (event) => {
+        //     let map = $('#map')[0];
+        //     const {
+        //         clientX,
+        //         clientY
+        //     } = event
+        //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
+        // });
         // mc.get('pinch').set({ enable: true });
         // mc.on('pinchstart pinchin pinchend', () => { that.zoomOut() });
         // mc.on('pinchstart pinchout pinchend', () => { that.zoomIn() });
@@ -221,6 +238,7 @@ export default {
             let top = parseInt(data["top"].slice(0, -2));
             this.fullZoomIn();
             this.setPin(left - 20, top - 10);
+            this.clipShow = false;
             this.position = {"x": left, "y": top};
             $(`#${data['id']}`).click();
         }

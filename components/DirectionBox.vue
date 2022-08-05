@@ -26,7 +26,7 @@ import {useDirectionStore} from "@/store/direction";
 export default {
     props: ['distance'],
     computed: {
-        ...mapState(useDirectionStore, ['fromName', 'toName'])
+        ...mapState(useDirectionStore, ['fromName', 'toName']),
     },
     methods: {
         getDown() {
@@ -64,6 +64,10 @@ export default {
 
     .place-name {
         display: inline-block;
+    }
+
+    div.ui.teal.label{
+        cursor: pointer;
     }
 
     div.ui.circular.icon.button {

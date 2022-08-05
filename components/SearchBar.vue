@@ -1,8 +1,14 @@
 <template>
     <div class="input-wrapper">
         <div class="ui large icon input">
-            <input v-model="query" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp" @keydown.enter="getSuggestion" type="text" placeholder="Search...">
-            <i class="search link teal icon" @click="getSuggestion"></i>
+            <input v-model="query"
+                   @keydown.down.prevent="moveDown"
+                   @keydown.up.prevent="moveUp"
+                   @keydown.enter="getSuggestion"
+                   ref="input"
+                   type="text"
+                   placeholder="Search...">
+            <i class="search link teal icon" id="search-icon" @click="getSuggestion"></i>
         </div>
         <div class="suggestion-box" ref="suggestion-box">
             <section v-if="response.length !== 0">
@@ -108,8 +114,9 @@ export default {
     mounted() {
         let element = $(this.$refs["suggestion-box"]);
         element.hide();
-        $('body:not(.suggestion-box)').on('click', function () {
-            element.hide();
+        $('body').on('click', function (event) {
+            if(event.target.id !== "search-icon")
+                element.hide();
         });
     },
 

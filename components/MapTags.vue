@@ -22,7 +22,6 @@ export default {
             details: {}
         }
     },
-
     methods: {
         async getTags(level) {
             let response = await this.$http.$get(`https://geobits.herokuapp.com/map/tags/${this.level}`);
@@ -30,7 +29,6 @@ export default {
         },
 
         async getDetails(id) {
-            $('#pin').hide();
             this.details = await this.$http.$get(`https://geobits.herokuapp.com/map/details/${id}?level=${this.level}`);
             $('.show-box').css({
                 'bottom' : '0',
