@@ -197,6 +197,7 @@
             <path id="J158159" class="cls-2" d="M2077.368,1783.44509h.00007a10,10,0,0,1,10,10v147.86a10,10,0,0,1-10,10h-.00006a10,10,0,0,1-10-10v-147.86A10,10,0,0,1,2077.368,1783.44509Z" transform="matrix(0.99977, -0.02158, 0.02158, 0.99977, -323.82695, -87.10405)"/>
             <path id="J158019" class="cls-2" d="M2091.958,1766.5978h0a10,10,0,0,1,10,10V1808.829a10,10,0,0,1-10,10h0a10,10,0,0,1-10-10V1776.5978a10,10,0,0,1,10-10Z" transform="translate(3488.66552 -522.60529) rotate(86.9987)"/>
         </svg>
+        <DirectionBox v-if="path.length !== 0" :distance="path['distance']"/>
     </div>
 </template>
 
@@ -217,7 +218,19 @@ export default {
         ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'top', 'left']),
     },
     methods:{
-        ...mapActions(useMapStore, ['fullZoomOut'])
+        ...mapActions(useMapStore, ['fullZoomOut']),
+        directionBoxUp(){
+            $('.direction-box').css({
+                'bottom': "0vh",
+                'height': 'initial',
+            });
+        }
+    },
+    mounted(){
+      let that = this;
+      $('.cls-2').on('click', function (){
+          that.directionBoxUp();
+      });
     },
     watch:{
         async directionTrigger(newValue) {
@@ -236,6 +249,7 @@ export default {
                 let path = newValue["path"];
                 for (let i = 0; i < path.length - 1; i++)
                     $(`#J${path[i]}${path[i + 1]}, #J${path[i + 1]}${path[i]}`).css('visibility', 'visible');
+                this.directionBoxUp();
             },
             deep: true,
         },
@@ -255,5 +269,6 @@ export default {
 .cls-2 {
     fill: #0d5eff;
     visibility: hidden;
+    cursor: pointer;
 }
 </style>

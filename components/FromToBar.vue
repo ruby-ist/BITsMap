@@ -19,7 +19,7 @@
                 <div v-for="match in response"
                      class="suggestion"
                      @mouseenter="hoverSelection"
-                     @click="clickHandler(match['id'], match['match'])"
+                     @click="clickHandler(match['id'], match['name'])"
                      @mouseleave="$event.target.classList.remove('selected')">
                     <div>
                         <div class="ui medium teal header">{{ match["match"] }}</div>
@@ -42,7 +42,6 @@
 <script>
 import {mapState, mapWritableState} from "pinia";
 import {useDirectionStore} from "@/store/direction";
-import {useToBarStore} from "~/store/toBar";
 
 export default {
     props: ["placeholder"],
@@ -56,8 +55,7 @@ export default {
         }
     },
     computed: {
-        ...mapWritableState(useDirectionStore, ['top', 'left', 'locationUsed']),
-        ...mapState(useToBarStore, ['id', 'name', 'showBoxTrigger'])
+        ...mapWritableState(useDirectionStore, ['top', 'left', 'locationUsed', 'fromName', 'toId', 'toName']),
     },
     methods: {
         async getSuggestion() {
@@ -77,8 +75,16 @@ export default {
             this.$emit('setPlace', place);
         },
 
+        setNameInTheStore(name){
+            if(this.placeholder === "From")
+                this.fromName = name;
+            else
+                this.toName = name;
+        },
+
         clickHandler(id, name){
             this.query = name;
+            this.setNameInTheStore(name);
             this.setBarValue(id);
         },
 
@@ -141,6 +147,7 @@ export default {
             this.top = 3876 - (y - 1149133) * (3876 / 1016.0);
 
             this.query = "Your Location";
+            this.setNameInTheStore("Your Location");
             this.setBarValue("my-location");
             this.locationUsed = true;
         },
@@ -175,10 +182,10 @@ export default {
                 this.locationUsed = false
         },
 
-        name(newValue){
+        toName(newValue){
             if(this.placeholder === "To") {
-                console.log(this.id, this.name);
-                this.clickHandler(this.id, this.name);
+                this.query = this.toName;
+                this.successClass = true;
             }
         }
     }

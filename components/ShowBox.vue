@@ -34,7 +34,7 @@
 <script>
 import {mapActions, mapWritableState} from "pinia";
 import {useSearchStore} from "@/store/search";
-import {useToBarStore} from "~/store/toBar";
+import {useDirectionStore} from "@/store/direction";
 
 export default {
     props: ['details'],
@@ -47,11 +47,10 @@ export default {
 
     computed: {
         ...mapWritableState(useSearchStore, ['floorNum', 'navigation']),
-        ...mapWritableState(useToBarStore, ['id', 'name'])
+        ...mapWritableState(useDirectionStore,['toId', 'toName'])
     },
 
     methods: {
-        ...mapActions(useToBarStore, ['askDirection']),
         getDown() {
             $('.show-box').css({
                 'bottom': "-50vh",
@@ -80,8 +79,8 @@ export default {
         goTo(id, name) {
             this.navigation = true;
             setTimeout(()=> {
-                this.id = id;
-                this.name = name;
+                this.toId = id;
+                this.toName = name;
                 }, 500);
         }
     },
