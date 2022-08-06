@@ -6,7 +6,6 @@
                    @keydown.down.prevent="moveDown"
                    @keydown.up.prevent="moveUp"
                    @keydown.enter.prevent="enterHandler"
-                   @keyup.enter.prevent="hideSuggestion"
                    @keydown.delete="setBarValue('')"
                    type="text"
                    :placeholder="placeholder">
@@ -126,11 +125,6 @@ export default {
             } else {
                 this.selectFirst();
             }
-        },
-
-        hideSuggestion(){
-            $(this.$refs["suggestion-box"]).hide();
-            this.response = []
         },
 
         async provideLocation(){

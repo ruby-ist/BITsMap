@@ -219,7 +219,7 @@ export default {
             map.scrollTop = scrollTop - walkY;
         });
 
-        let mc = new Hammer($('#map')[0], {touchAction: "auto"});
+        let mc = new Hammer(map, {touchAction: "auto"});
         let that = this;
         mc.get('press').set({time: 700});
         mc.on('press', function (event) {
@@ -232,6 +232,17 @@ export default {
         mc.on('doubletap', function (){
             $('#pin').hide();
         });
+
+        map.onwheel = async function (event) {
+            if(event.deltaY <= -100) {
+                event.preventDefault();
+                await that.zoomIn();
+            }
+            if(event.deltaY >= 100) {
+                event.preventDefault();
+                await that.zoomOut();
+            }
+        };
 
         // $(document).on('mousemove', (event) => {
         //     let map = $('#map')[0];
@@ -247,8 +258,9 @@ export default {
     },
 
     updated() {
+        let mc = new Hammer(map, {touchAction: "auto"});
         const that = this;
-        $('#map').on('click', function () {
+        mc.on('doubletap', function () {
             $('#location').hide();
             navigator.geolocation.clearWatch(that.callBackId);
         });
@@ -282,7 +294,7 @@ export default {
 #map {
     position: relative;
     overflow: scroll;
-    margin-top: 10vh;
+    margin-top: 85px;
     width: 100vw;
     height: 100vh;
     cursor: grab;

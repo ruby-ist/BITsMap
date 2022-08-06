@@ -111,6 +111,7 @@ export default {
     border-radius: 20px 20px 0 0;
     padding: 3% 4%;
     transition: bottom .75s ease-out;
+    cursor: default;
 
     .title {
         font-weight: 500;

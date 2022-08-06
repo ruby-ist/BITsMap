@@ -54,6 +54,7 @@ export default {
     padding: 3% 4%;
     transition: bottom .75s ease-out;
     font-family: monospace;
+    cursor: default;
 
     .details{
         background: white;
