@@ -252,9 +252,20 @@ export default {
         //     } = event
         //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
         // });
-        // mc.get('pinch').set({ enable: true });
-        // mc.on('pinchstart pinchin pinchend', () => { that.zoomOut() });
-        // mc.on('pinchstart pinchout pinchend', () => { that.zoomIn() });
+        mc.get('pinch').set({ enable: true });
+        let pinchstarted = false;
+        mc.on('pinchin pinchmove pinchend', (ev) => {
+            if (ev.type === 'pinchmove' && !pinchstarted) {
+                pinchstarted = true;
+                if(ev.additionalEvent === "pinchin")
+                    that.zoomOut();
+                if(ev.additionalEvent === "pinchout")
+                    that.zoomIn();
+                setTimeout(()=>{
+                    pinchstarted = false;
+                }, 2500);
+            }
+        });
     },
 
     updated() {
