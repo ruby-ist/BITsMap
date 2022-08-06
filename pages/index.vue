@@ -10,6 +10,7 @@
             <MapLegends :level="level"/>
             <Pin :left="pinLeft" :top="pinTop" :svg="svg" :zoomlevel="level" :show="clipShow"/>
             <Location :left="locationX" :top="locationY"/>
+            <Compass />
         </div>
 
         <ViewButtons @change="changeView" @getLocation="geoLocate" :lined="svg"/>
@@ -188,6 +189,36 @@ export default {
 
         this.goTo(this.position);
 
+        let isDown = false;
+        let startX;
+        let startY;
+        let scrollTop;
+        let scrollLeft;
+        let map = $('#map')[0];
+        map.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - map.offsetLeft;
+            startY = e.pageY - map.offsetTop;
+            scrollLeft = map.scrollLeft;
+            scrollTop = map.scrollTop;
+        });
+        map.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+        map.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+        map.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - map.offsetLeft;
+            const y = e.pageY - map.offsetTop;
+            const walkX = (x - startX);
+            const walkY = (y - startY);
+            map.scrollLeft = scrollLeft - walkX;
+            map.scrollTop = scrollTop - walkY;
+        });
+
         let mc = new Hammer($('#map')[0], {touchAction: "auto"});
         let that = this;
         mc.get('press').set({time: 700});
@@ -254,6 +285,11 @@ export default {
     margin-top: 10vh;
     width: 100vw;
     height: 100vh;
+    cursor: grab;
+
+    &:active{
+        cursor: grabbing;
+    }
 
     &::-webkit-scrollbar {
         display: none;

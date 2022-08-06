@@ -24,7 +24,7 @@ export default {
     },
     data() {
         return {
-            url: `https://localhost:3000/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomlevel}`,
+            url: `https://geobits.onrender.com/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomlevel}`,
         }
     },
     methods:{
@@ -37,7 +37,7 @@ export default {
         $('#pin').hide();
     },
     updated() {
-        this.url = `https://localhost:3000/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomlevel}`;
+        this.url = `https://geobits.onrender.com/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomlevel}`;
         this.$refs.copyButton.innerText = "Copy";
     }
 }
