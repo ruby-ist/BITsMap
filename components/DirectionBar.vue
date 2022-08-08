@@ -14,7 +14,6 @@ import {mapWritableState, mapActions} from "pinia";
 import {useDirectionStore} from "@/store/direction";
 
 export default {
-    emits: ['success'],
     computed: {
         ...mapWritableState(useDirectionStore, ['fromId', 'toId'])
     },

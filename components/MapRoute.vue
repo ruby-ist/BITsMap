@@ -1,5 +1,5 @@
 <template>
-    <div id='main' :style="{height: `${height}px`, width: `${width}px`}">
+    <div id='routes' :style="{height: `${height}px`, width: `${width}px`}">
         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3420 3876">
             <rect class="cls-1" width="3420" height="3876"/>
             <rect id="J001002" class="cls-2" x="2035.20064" y="603.34078" width="20.00002" height="162.69804" rx="10"
@@ -645,7 +645,7 @@ export default {
 </script>
 
 <style scoped>
-#main {
+#routes {
     position: absolute;
 }
 

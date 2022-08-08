@@ -1,16 +1,18 @@
 <template>
     <div>
-        <NavBar @draw="drawPath"/>
+        <NavBar />
         <div id="map">
-            <img v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width" alt="svg Map">
-            <img v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width" alt="satellite Map">
-            <MapRoute  :height="height" :width="width"/>
+            <img class="the-map" v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width"
+                 alt="svg Map">
+            <img class="the-map" v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width"
+                 alt="satellite Map">
+            <MapRoute :height="height" :width="width"/>
 
             <MapTags :level="level"/>
             <MapLegends :level="level"/>
             <Pin :left="pinLeft" :top="pinTop" :svg="svg" :zoomlevel="level" :show="clipShow"/>
             <Location :left="locationX" :top="locationY"/>
-            <Compass />
+            <Compass/>
         </div>
 
         <ViewButtons @change="changeView" @getLocation="geoLocate" :lined="svg"/>
@@ -37,22 +39,28 @@ export default {
             pinTop: 0,
             callBackId: 0,
             direction: null,
+            mapAltered: false,
+            cache: {},
+            // latitude: 0,
+            // longitude: 0,
         }
     },
 
     computed: {
-        ...mapWritableState(useMapStore, ['svg', 'level','fullZoomOutTrigger']),
+        ...mapWritableState(useMapStore, ['svg', 'level', 'fullZoomOutTrigger']),
         ...mapWritableState(usePinStore, ['startX', 'startY', 'endX', 'endY']),
         ...mapState(useSearchStore, ['searchId'])
     },
     methods: {
-        unShrinkable() {
-            return (this.height / 1.5 < screen.height) || (this.width / 1.5 < screen.width);
+        unShrinkable(scale) {
+            return (this.height / scale < screen.height) || (this.width / scale < screen.width);
         },
 
-        zoomIn() {
+        async zoomIn() {
             let map = $('#map')[0];
             if (this.height < 3800 && this.width < 3400) {
+                if(this.mapAltered)
+                    await this.setCache();
                 this.height *= 1.5;
                 this.width *= 1.5;
                 map.scrollLeft = map.scrollLeft * 1.5;
@@ -64,6 +72,7 @@ export default {
                 this.endX = this.endX * 1.5;
                 this.endY = this.endY * 1.5;
                 this.level++;
+                this.mapAltered = false;
             }
             $('.show-box').css({
                 'bottom': "-50vh",
@@ -71,12 +80,13 @@ export default {
             });
             $('#pin').hide();
         },
-
-        zoomOut() {
+        async zoomOut() {
             let map = $('#map')[0];
             if (this.height > 1148.46 && this.width > 1013.34) {
-                if (this.unShrinkable())
+                if (this.unShrinkable(1.5))
                     return;
+                if(this.mapAltered)
+                    await this.setCache();
                 this.height /= 1.5;
                 this.width /= 1.5;
                 map.scrollLeft = map.scrollLeft / 1.5;
@@ -88,6 +98,7 @@ export default {
                 this.endX = this.endX / 1.5;
                 this.endY = this.endY / 1.5;
                 this.level--;
+                this.mapAltered = false;
             }
             $('.show-box').css({
                 'bottom': "-50vh",
@@ -100,16 +111,16 @@ export default {
             this.svg = !this.svg;
         },
 
-        fullZoomIn() {
+        async fullZoomIn() {
             let times = 4 - this.level;
             while (times--)
-                this.zoomIn();
+                await this.zoomIn();
         },
 
-        fullZoomOut() {
+        async fullZoomOut() {
             let times = this.level;
             while (times--)
-                this.zoomOut();
+                await this.zoomOut();
         },
 
         goTo(pos) {
@@ -128,6 +139,9 @@ export default {
             $('#location').show();
             this.locationX = x;
             this.locationY = y;
+            this.cache["locationX"] = x;
+            this.cache["locationY"] = y;
+            console.log(this.cache);
         },
 
         async geoLocate() {
@@ -156,11 +170,76 @@ export default {
             alert("Unable to get your location.");
         },
 
-        async drawPath(obj) {
-            this.svg = false;
-            await this.fullZoomOut();
-            this.direction = obj;
-        }
+        storeCache(){
+            this.cache["height"] = this.height;
+            this.cache["width"] = this.width;
+            this.cache["locationX"] = this.locationX;
+            this.cache["locationY"] = this.locationY;
+            this.cache["startX"] = this.startX;
+            this.cache["startY"] = this.startY;
+            this.cache["endX"] = this.endX;
+            this.cache["endY"] = this.endY;
+        },
+
+        setCache(){
+            this.height = this.cache["height"];
+            this.width = this.cache["width"];
+            this.locationX = this.cache["locationX"];
+            this.locationY = this.cache["locationY"];
+            this.startX = this.cache["startX"];
+            this.startY = this.cache["startY"];
+            this.endX = this.cache["endX"];
+            this.endY = this.cache["endY"];
+        },
+
+
+        scale(scale) {
+            let map = $('#map .the-map');
+            let height = parseInt(map.css('height').slice(0, -2));
+            let width = parseInt(map.css('width').slice(0, -2));
+
+            height = height * scale;
+            width = width * scale;
+            this.height = height;
+            this.width = width;
+
+            let tags = $('.tag');
+            $.each(tags, function (k, tag) {
+                let left = parseInt($(tag).css('left').slice(0, -2));
+                let top = parseInt($(tag).css('top').slice(0, -2));
+
+                $(tag).css({
+                    'left': `${left * scale}px`,
+                    'top': `${top * scale}px`
+                });
+            });
+
+            let legends = $('.legend');
+            $.each(legends, function (k, legend) {
+                let left = parseInt($(legend).css('left').slice(0, -2));
+                let top = parseInt($(legend).css('top').slice(0, -2));
+
+                $(legend).css({
+                    'left': `${left * scale}px`,
+                    'top': `${top * scale}px`
+                });
+            });
+
+            map.scrollLeft = map.scrollLeft * scale;
+            map.scrollTop = map.scrollTop * scale;
+            this.locationX = this.locationX * scale;
+            this.locationY = this.locationY * scale;
+            this.startX = this.startX * scale;
+            this.startY = this.startY * scale;
+            this.endX = this.endX * scale;
+            this.endY = this.endY * scale;
+
+            $('.show-box').css({
+                'bottom': "-50vh",
+                'height': '0',
+            });
+            $('#pin').hide();
+        },
     },
 
     beforeCreate() {
@@ -188,7 +267,7 @@ export default {
         }
 
         this.goTo(this.position);
-
+        this.storeCache();
         let isDown = false;
         let startX;
         let startY;
@@ -209,7 +288,7 @@ export default {
             isDown = false;
         });
         map.addEventListener('mousemove', (e) => {
-            if(!isDown) return;
+            if (!isDown) return;
             e.preventDefault();
             const x = e.pageX - map.offsetLeft;
             const y = e.pageY - map.offsetTop;
@@ -219,7 +298,7 @@ export default {
             map.scrollTop = scrollTop - walkY;
         });
 
-        let mc = new Hammer(map, {touchAction: "auto"});
+        let mc = new Hammer(map, {touchAction: 'manipulation'});
         let that = this;
         mc.get('press').set({time: 700});
         mc.on('press', function (event) {
@@ -229,21 +308,20 @@ export default {
             that.clipShow = true;
         });
 
-        mc.on('doubletap', function (){
+        mc.on('doubletap', function () {
             $('#pin').hide();
         });
 
         map.onwheel = async function (event) {
-            if(event.deltaY <= -100) {
+            if (event.deltaY <= -100) {
                 event.preventDefault();
                 await that.zoomIn();
             }
-            if(event.deltaY >= 100) {
+            if (event.deltaY >= 100) {
                 event.preventDefault();
                 await that.zoomOut();
             }
         };
-
         // $(document).on('mousemove', (event) => {
         //     let map = $('#map')[0];
         //     const {
@@ -252,18 +330,13 @@ export default {
         //     } = event
         //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
         // });
-        mc.get('pinch').set({ enable: true });
-        let pinchstarted = false;
-        mc.on('pinchin pinchmove pinchend', (ev) => {
-            if (ev.type === 'pinchmove' && !pinchstarted) {
-                pinchstarted = true;
-                if(ev.additionalEvent === "pinchin")
-                    that.zoomOut();
-                if(ev.additionalEvent === "pinchout")
-                    that.zoomIn();
-                setTimeout(()=>{
-                    pinchstarted = false;
-                }, 2500);
+
+
+        mc.get('pinch').set({enable: true});
+        mc.on('pinchstart pinchmove pinchend', (ev) => {
+            if (ev.type === 'pinchmove') {
+                that.mapAltered = true;
+                that.scale(ev.scale);
             }
         });
     },
@@ -282,7 +355,7 @@ export default {
             await this.goTo(newValue);
         },
 
-        fullZoomOutTrigger(newValue){
+        fullZoomOutTrigger(newValue) {
             this.fullZoomOut();
         },
 
@@ -295,6 +368,11 @@ export default {
             this.clipShow = false;
             this.position = {"x": left, "y": top};
             $(`#${data['id']}`).click();
+        },
+
+        level(){
+            this.storeCache();
+            console.log(this.cache);
         }
     }
 }
@@ -310,7 +388,7 @@ export default {
     height: 100vh;
     cursor: grab;
 
-    &:active{
+    &:active {
         cursor: grabbing;
     }
 

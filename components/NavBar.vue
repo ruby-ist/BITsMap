@@ -5,7 +5,7 @@
             GeoBITs
         </a>
         <div class="right menu">
-            <DirectionBar v-if="navigation" @success="transport"/>
+            <DirectionBar v-if="navigation"/>
             <SearchBar v-else class="item" />
             <div class="ui compact labeled icon menu" id="toggle-direction" @click="toggleNavigation">
                 <a class="item">
@@ -27,10 +27,6 @@ export default {
         ...mapWritableState(useSearchStore, ['navigation'])
     },
     methods: {
-        transport(obj){
-            this.$emit('draw', obj)
-        },
-
         toggleNavigation(){
             this.navigation = !this.navigation;
             $('.cls-2').css('visibility','hidden');
