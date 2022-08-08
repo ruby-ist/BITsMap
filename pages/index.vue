@@ -41,8 +41,6 @@ export default {
             direction: null,
             mapAltered: false,
             cache: {},
-            // latitude: 0,
-            // longitude: 0,
         }
     },
 
@@ -141,7 +139,6 @@ export default {
             this.locationY = y;
             this.cache["locationX"] = x;
             this.cache["locationY"] = y;
-            console.log(this.cache);
         },
 
         async geoLocate() {
@@ -331,7 +328,6 @@ export default {
         //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
         // });
 
-
         mc.get('pinch').set({enable: true});
         mc.on('pinchstart pinchmove pinchend', (ev) => {
             if (ev.type === 'pinchmove') {
@@ -363,8 +359,8 @@ export default {
             let data = await this.$http.$get(`https://geobits.herokuapp.com/map/location/${newValue}`);
             let left = parseInt(data["left"].slice(0, -2));
             let top = parseInt(data["top"].slice(0, -2));
-            this.fullZoomIn();
-            this.setPin(left - 20, top - 10);
+            await this.fullZoomIn();
+            await this.setPin(left - 20, top - 10);
             this.clipShow = false;
             this.position = {"x": left, "y": top};
             $(`#${data['id']}`).click();
@@ -372,7 +368,6 @@ export default {
 
         level(){
             this.storeCache();
-            console.log(this.cache);
         }
     }
 }
