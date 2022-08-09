@@ -36,6 +36,15 @@ export default {
             });
         },
     },
+    mounted(){
+        let details = $('.direction-box')[0];
+        let directionBox = new Hammer(details);
+        let that = this;
+        directionBox.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+        directionBox.on("swipedown", function(){
+            that.getDown();
+        });
+    }
 }
 </script>
 

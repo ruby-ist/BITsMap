@@ -1,11 +1,13 @@
 <template>
-    <div>
+    <div id="direction-bar">
         <FromToBar class="item" placeholder="From" @setPlace="setFrom"/>
-        <FromToBar class="item" placeholder="To" @setPlace="setTo" />
+        <FromToBar class="item" placeholder="To" @setPlace="setTo"/>
+
 
         <button ref="goBtn" class='ui teal disabled button' @click="findRoute">
             <i class="directions icon"></i> Go
         </button>
+
     </div>
 </template>
 
@@ -19,32 +21,51 @@ export default {
     },
     methods: {
         ...mapActions(useDirectionStore, ['findRoute']),
-        setFrom(id){
+        setFrom(id) {
             this.fromId = id;
         },
-        setTo(id){
+        setTo(id) {
             this.toId = id;
         },
-        checkValue(){
-            if(this.fromId !== "" && this.toId !== "")
+        checkValue() {
+            if (this.fromId !== "" && this.toId !== "")
                 this.$refs.goBtn.classList.remove('disabled');
             else
                 this.$refs.goBtn.classList.add('disabled');
         }
     },
     watch: {
-        toId(newValue){
+        toId(newValue) {
             this.checkValue();
         },
-        fromId(newValue){
+        fromId(newValue) {
             this.checkValue();
         }
     }
 }
 </script>
 
-<style scoped>
-    button.ui.teal.button{
-        margin-right: 1.5rem ;
+<style scoped lang="scss">
+    button.ui.teal.button {
+        margin-right: 1.5rem;
+    }
+
+    @media screen and (max-width: 520px) {
+        #direction-bar {
+            padding: 20px 15px 0;
+
+
+            button{
+                position: absolute;
+                margin-right: 0;
+                right: 8vw;
+            }
+
+
+            .item {
+                margin-right: 3px;
+                margin-bottom: 20px;
+            }
+        }
     }
 </style>

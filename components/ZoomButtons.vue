@@ -1,28 +1,52 @@
 <template>
-    <div id="main">
-        <button class="ui icon teal button" @click="$emit('zoomin')">
-            <i class="plus icon"></i>
+    <div id="main" class="map-buttons">
+        <Compass/>
+        <button class="ui teal icon button" @click="toggleNavigation">
+            <i class="large icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
         </button>
-        <br/>
-        <br/>
-        <button class="ui icon teal button" @click="$emit('zoomout')">
-            <i class="minus icon"></i>
+        <button class="ui teal icon button" @click="$emit('zoomin')">
+            <i class=" large plus icon"></i>
+        </button>
+        <button class="ui teal icon button" @click="$emit('zoomout')">
+            <i class="large minus icon"></i>
         </button>
     </div>
 </template>
 
 <script>
+import {mapWritableState} from "pinia";
+import {useSearchStore} from "~/store/search";
+
 export default {
-    emits: ['zoomin', 'zoomout']
+    emits: ['zoomin', 'zoomout'],
+    computed: {
+        ...mapWritableState(useSearchStore, ['navigation'])
+    },
+    methods: {
+        toggleNavigation(){
+            this.navigation = !this.navigation;
+            $('.cls-2').css('visibility','hidden');
+            $('.route-pin').hide();
+            $('.direction-box').css({
+                'bottom': "-50vh",
+                'height': '0',
+            });
+        }
+    }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #main {
     position: fixed;
     right: 50px;
-    bottom: 60px;
+    bottom: 30px;
     z-index: 3;
+
+    button{
+        display: block;
+        margin: 25px auto;
+    }
 }
 
 button.ui.icon.teal.button {
@@ -32,7 +56,7 @@ button.ui.icon.teal.button {
 
 @media screen and (max-width: 520px) {
     #main{
-        right: 25px;
+        right: 30px;
     }
 }
 </style>

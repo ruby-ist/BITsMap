@@ -1,12 +1,16 @@
 <template>
-    <div id="main">
-        <button class="ui icon teal button" @click="$emit('getLocation')">
-            <i class="street view icon"></i>
+    <div id="main" class="map-buttons">
+        <button class="ui teal icon button">
+            <i class="large info icon"></i>
         </button>
-        <br/>
-        <br/>
-        <button class="ui icon teal button" @click="$emit('change')">
-            <i class="map icon" :class="{ outline: !lined }"></i>
+        <button class="ui teal icon button">
+            <i class="large moon icon"></i>
+        </button>
+        <button class="ui teal icon button" @click="$emit('getLocation')">
+            <i class="large street view icon"></i>
+        </button>
+        <button class="ui teal icon button" @click="$emit('change')">
+            <i class="large map icon" :class="{ outline: !lined }"></i>
         </button>
     </div>
 </template>
@@ -18,12 +22,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #main {
     position: fixed;
     left: 50px;
-    bottom: 60px;
+    bottom: 30px;
     z-index: 3;
+
+    button {
+        display: block;
+        margin: 25px auto;
+    }
 }
 
 button.ui.icon.teal.button {
@@ -32,8 +41,8 @@ button.ui.icon.teal.button {
 }
 
 @media screen and (max-width: 520px) {
-    #main{
-        left: 25px;
+    #main {
+        left: 30px;
     }
 }
 </style>

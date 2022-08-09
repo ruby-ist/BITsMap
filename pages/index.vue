@@ -3,16 +3,15 @@
         <NavBar />
         <div id="map">
             <img class="the-map" v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width"
-                 alt="svg Map">
+                 alt="svg Map" oncontextmenu="return false">
             <img class="the-map" v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width"
-                 alt="satellite Map">
+                 alt="satellite Map" oncontextmenu="return false">
             <MapRoute :height="height" :width="width"/>
 
             <MapTags :level="level"/>
             <MapLegends :level="level"/>
             <Pin :left="pinLeft" :top="pinTop" :svg="svg" :zoomlevel="level" :show="clipShow"/>
             <Location :left="locationX" :top="locationY"/>
-            <Compass/>
         </div>
 
         <ViewButtons @change="changeView" @getLocation="geoLocate" :lined="svg"/>
@@ -334,6 +333,14 @@ export default {
                 that.mapAltered = true;
                 that.scale(ev.scale);
             }
+        });
+
+        let input = $('input');
+        input.on('focusin', function(){
+            $('.map-buttons').hide();
+        });
+        input.on('focusout', function(){
+            $('.map-buttons').show();
         });
     },
 

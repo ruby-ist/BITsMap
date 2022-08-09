@@ -85,6 +85,14 @@ export default {
         .header{
             display: none;
         }
+
+        #toggle-direction{
+            display: none;
+        }
+
+        div.right.menu{
+            margin-right: auto;
+        }
     }
 }
 

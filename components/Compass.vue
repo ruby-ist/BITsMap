@@ -16,11 +16,12 @@ export default {
         height: 8rem;
         width: 8rem;
         position: fixed;
-        top: 12vh;
+        bottom: 35%;
         right: 2rem;
         z-index: 5;
 
         img{
+            position: absolute;
             z-index: 6;
         }
 
@@ -28,8 +29,14 @@ export default {
             position: absolute;
             height: 100%;
             width: 100%;
-            background: radial-gradient(#686D76, transparent, transparent);
+            background: radial-gradient(#fff, transparent, transparent);
             z-index: 4;
+        }
+    }
+
+    @media screen and (max-width: 520px) {
+        #compass{
+            right: 15px;
         }
     }
 </style>

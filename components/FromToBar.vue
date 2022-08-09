@@ -9,6 +9,7 @@
                    @keydown.delete="setBarValue('')"
                    type="text"
                    :placeholder="placeholder">
+            <i class="times circle grey link icon" @click="deleteHandler"></i>
             <i class="map marker alternate icon"
                @click="provideLocation"
                :class="{grey: locationUsed, teal: !locationUsed, link: !locationUsed}"></i>
@@ -89,6 +90,11 @@ export default {
 
         enterHandler(){
             $('.selected').click();
+        },
+
+        deleteHandler(){
+            this.query = "";
+            this.setBarValue('');
         },
 
         hoverSelection(event) {
@@ -188,11 +194,20 @@ export default {
 
 <style lang="scss" scoped>
 
+.input-wrapper{
+    text-align: left;
+
+    i.times.circle.icon{
+        margin-right: 25px;
+    }
+}
+
 div.ui.large.icon.input {
     input {
         width: 21vw;
         border-radius: 5px;
         border: 1px solid #16A89D;
+        padding-right: 4rem;
     }
 
     &.success{
@@ -218,6 +233,7 @@ div.ui.large.icon.input {
     top: 130%;
     border: 1px solid teal;
     border-radius: 10px;
+    z-index: 6;
 
     .suggestion {
         padding: 20px;
@@ -247,7 +263,7 @@ div.ui.large.icon.input {
 @media screen and (max-width: 520px) {
     div.ui.large.icon.input {
         input {
-            width: 80vw;
+            width: 65vw;
         }
     }
 

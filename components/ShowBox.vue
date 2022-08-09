@@ -85,6 +85,16 @@ export default {
         }
     },
 
+    mounted() {
+        let details = $('.show-box')[0];
+        let showbox = new Hammer(details);
+        let that = this;
+        showbox.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+        showbox.on("swipedown", function(){
+            that.getDown();
+        });
+    },
+
     updated() {
         this.goToFloor(this.initialFloor);
     },
