@@ -55,7 +55,7 @@ export default {
         }
     },
     computed: {
-        ...mapWritableState(useDirectionStore, ['top', 'left', 'locationUsed', 'fromName', 'toId', 'toName']),
+        ...mapWritableState(useDirectionStore, ['myTop', 'myLeft', 'locationUsed', 'fromName', 'toId', 'toName']),
     },
     methods: {
         async getSuggestion() {
@@ -143,8 +143,8 @@ export default {
         success(position){
             let x = position.coords.longitude.toPrecision(7) * 100000;
             let y = position.coords.latitude.toPrecision(7) * 100000;
-            this.left = (x - 7727333) * (3420 / 907.0);
-            this.top = 3876 - (y - 1149133) * (3876 / 1016.0);
+            this.myLeft = (x - 7727333) * (3420 / 907.0);
+            this.myTop = 3876 - (y - 1149133) * (3876 / 1016.0);
 
             this.query = "Your Location";
             this.setNameInTheStore("Your Location");
@@ -265,6 +265,14 @@ div.ui.large.icon.input {
         padding: 3% 6%;
         color: teal;
         font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 840px){
+    div.ui.large.icon.input {
+        input {
+            width: 25vw;
+        }
     }
 }
 

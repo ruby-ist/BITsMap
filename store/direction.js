@@ -8,8 +8,10 @@ export const useDirectionStore = defineStore('direction', {
             fromName: "",
             toId: "",
             toName: "",
-            top: 0,
-            left: 0,
+            myTop: 0,
+            myLeft: 0,
+            pinTop: 0,
+            pinLeft: 0,
             locationUsed: false,
         }
     },

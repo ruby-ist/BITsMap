@@ -1,12 +1,14 @@
 <template>
-    <div id="pin" :style="{left: `${left}px`, top: `${top}px`}">
+    <div id="pin" :style="{left: `${x}px`, top: `${y}px`}">
         <img :src="require(`~/assets/images/pin.svg`)">
-        <div id="clipboard" v-show="show">
+        <div id="clipboard">
             <div class="ui action input">
                 <input type="text" :value="url" ref="urlInput" disabled>
-                <button class="ui teal right labeled icon button" @click="copy">
+                <button class="ui violet right icon button" @click="goTo">
+                    <i class="directions icon"></i>
+                </button>
+                <button class="ui blue right icon button" @click="copy">
                     <i class="copy icon"></i>
-                    <span ref="copyButton">Copy</span>
                 </button>
             </div>
         </div>
@@ -14,31 +16,48 @@
 </template>
 
 <script>
+import {mapWritableState} from "pinia";
+import {useDirectionStore} from "@/store/direction";
+import {useSearchStore} from "@/store/search";
+
 export default {
     props: {
-        left: Number,
-        top: Number,
+        x: Number,
+        y: Number,
         svg: Boolean,
-        zoomlevel: Number,
-        show: Boolean,
+        zoomLevel: Number,
     },
     data() {
         return {
-            url: `https://geobits.onrender.com/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomlevel}`,
+            url: `https://geobits.onrender.com/?left=${this.x}&top=${this.y}&svg=${this.svg}&level=${this.zoomLevel}`,
         }
     },
+    computed: {
+        ...mapWritableState(useSearchStore, ['navigation']),
+        ...mapWritableState(useDirectionStore, ['toId','toName','pinTop','pinLeft']),
+    },
     methods:{
-      copy(){
+        copy() {
             navigator.clipboard.writeText(this.$refs.urlInput.value);
-            this.$refs.copyButton.innerText = "Copied!";
-      }
+            // this.$refs.copyButton.innerText = "Copied!";
+        },
+        goTo() {
+            this.navigation = true;
+            this.pinLeft = this.x * (1.5 ** (4 - this.zoomLevel));
+            this.pinTop = this.y * (1.5 ** (4 - this.zoomLevel));
+            this.toName = "";
+            setTimeout(() => {
+                this.toId = "pinned-location";
+                this.toName = "Pinned Location";
+            }, 500);
+        }
     },
     mounted() {
         $('#pin').hide();
     },
     updated() {
-        this.url = `https://geobits.onrender.com/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomlevel}`;
-        this.$refs.copyButton.innerText = "Copy";
+        this.url = `https://geobits.onrender.com/?left=${this.x}&top=${this.y}&svg=${this.svg}&level=${this.zoomLevel}`;
+        // this.$refs.copyButton.innerText = "Copy";
     }
 }
 </script>

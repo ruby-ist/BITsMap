@@ -10,12 +10,12 @@
 
             <MapTags :level="level"/>
             <MapLegends :level="level"/>
-            <Pin :left="pinLeft" :top="pinTop" :svg="svg" :zoomlevel="level" :show="clipShow"/>
-            <Location :left="locationX" :top="locationY"/>
+            <Pin :x="pinLeft" :y="pinTop" :svg="svg" :zoomLevel="level"/>
+            <Location :left="locationX" :top="locationY" :svg="svg" :zoomLevel="level"/>
         </div>
 
         <ViewButtons @change="changeView" @getLocation="geoLocate" :lined="svg"/>
-        <ZoomButtons @zoomin="zoomIn" @zoomout="zoomOut"/>
+        <ZoomButtons @zoomin="handleZoomIn" @zoomout="handleZoomOut"/>
     </div>
 </template>
 
@@ -41,6 +41,7 @@ export default {
             direction: null,
             mapAltered: false,
             cache: {},
+            minLevel: 1,
         }
     },
 
@@ -56,6 +57,7 @@ export default {
         },
 
         async zoomIn() {
+            let newLevel = this.level;
             let map = $('#map')[0];
             if (this.height < 3800 && this.width < 3400) {
                 if(this.mapAltered)
@@ -70,12 +72,14 @@ export default {
                 this.startY = this.startY * 1.5;
                 this.endX = this.endX * 1.5;
                 this.endY = this.endY * 1.5;
-                this.level++;
+                newLevel++;
                 this.mapAltered = false;
             }
             this.showBox = false;
+            return newLevel;
         },
         async zoomOut() {
+            let newLevel = this.level;
             let map = $('#map')[0];
             if (this.height > 1148.46 && this.width > 1013.34) {
                 if (this.unShrinkable(1.5))
@@ -92,31 +96,47 @@ export default {
                 this.startY = this.startY / 1.5;
                 this.endX = this.endX / 1.5;
                 this.endY = this.endY / 1.5;
-                this.level--;
+                newLevel--;
                 this.mapAltered = false;
             }
             this.showBox = false;
+            return newLevel;
+        },
+
+        handleZoomIn(){
+            let that = this;
+            this.zoomIn().then(function(result){
+                if(result !== undefined)
+                    that.level = result;
+            });
+        },
+
+        handleZoomOut(){
+            let that = this;
+            this.zoomOut().then(function(result){
+                if(result !== undefined)
+                    that.level = result;
+            });
         },
 
         changeView() {
             this.svg = !this.svg;
         },
 
-        fullZoomIn() {
-            let diff = 4 - this.level;
-            let map = $('#map')[0];
+        async fullZoomIn() {
+            let times = 4 - this.level;
+            while(times--){
+                await this.zoomIn();
+            }
             this.level = 4;
-            this.height = 3876;
-            this.width = 3420;
-            map.scrollTop = map.scrollTop * (1.5 ** diff);
-            map.scrollLeft = map.scrollLeft * (1.5 ** diff)
-            this.mapAltered = false;
         },
 
-        fullZoomOut() {
-            let times = this.level;
-            while (times--)
-                setTimeout(async ()=>{await this.zoomOut()}, 250);
+        async fullZoomOut() {
+            let times = this.level - 1;
+            while(times--){
+                await this.zoomOut();
+            }
+            this.level = this.minLevel;
         },
 
         goTo(pos) {
@@ -149,8 +169,8 @@ export default {
             }
         },
 
-        success(position) {
-            this.fullZoomIn();
+        async success(position) {
+            await this.fullZoomIn();
             let x = position.coords.longitude * 100000;
             let y = position.coords.latitude * 100000;
             x = (x - 7727333) * (this.width / 907.0);
@@ -308,24 +328,22 @@ export default {
             $('#pin').hide();
         });
 
-        map.onwheel = async function (event) {
+        map.onwheel = function (event) {
             if (event.deltaY <= -100) {
                 event.preventDefault();
-                await that.zoomIn();
+                that.zoomIn().then((result) => {
+                    if(result !== undefined)
+                        that.level = result;
+                });
             }
             if (event.deltaY >= 100) {
                 event.preventDefault();
-                await that.zoomOut();
+                that.zoomOut().then((result) => {
+                    if(result !== undefined)
+                        that.level = result;
+                });
             }
         };
-        // $(document).on('mousemove', (event) => {
-        //     let map = $('#map')[0];
-        //     const {
-        //         clientX,
-        //         clientY
-        //     } = event
-        //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
-        // });
 
         mc.get('pinch').set({enable: true});
         mc.on('pinchstart pinchmove pinchend', (ev) => {
@@ -334,6 +352,23 @@ export default {
                 that.scale(ev.scale);
             }
         });
+
+        let minHeight = 1148.44;
+        let minWidth = 1013.34;
+        while(!(minHeight > screen.height && minWidth > screen.width)){
+            this.minLevel++;
+            minHeight *= 1.5;
+            minWidth *= 1.5;
+        }
+
+        // $(document).on('mousemove', (event) => {
+        //     let map = $('#map')[0];
+        //     const {
+        //         clientX,
+        //         clientY
+        //     } = event
+        //     console.log(map.scrollTop + clientY - 100, map.scrollLeft + clientX - 20);
+        // });
     },
 
     updated() {

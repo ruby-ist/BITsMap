@@ -79,12 +79,21 @@ export default {
     }
 }
 
-@media screen and (max-width: 520px){
+@media screen and (max-width: 840px){
     #main{
-        justify-content: center;
         .header{
             display: none;
         }
+
+        div.right.menu{
+            margin-right: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 520px){
+    #main{
+        justify-content: center;
 
         #toggle-direction{
             display: none;

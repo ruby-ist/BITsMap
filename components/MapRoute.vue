@@ -597,7 +597,7 @@ export default {
     computed: {
         ...mapWritableState(useMapStore, ['svg', 'level']),
         ...mapWritableState(usePinStore, ['startX', 'startY', 'endX', 'endY']),
-        ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'top', 'left']),
+        ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'myTop', 'myLeft','pinLeft', 'pinTop']),
         ...mapWritableState(useDetailsBoxStore, ['directionBox', 'showBox'])
     },
     methods: {
@@ -611,15 +611,16 @@ export default {
     },
     watch: {
         async directionTrigger(newValue) {
+            $('#pin').hide();
             this.showBox = false;
             this.svg = false;
-            this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}&top=${this.top}&left=${this.left}`);
+            this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}&my-top=${this.myTop}&my-left=${this.myLeft}&pin-top=${this.pinTop}&pin-left=${this.pinLeft}`);
             let times = 4 - this.level;
             this.startX = this.path["starting-point"]['x'] / (1.5 ** times);
             this.startY = this.path["starting-point"]['y'] / (1.5 ** times);
             this.endX = this.path["ending-point"]['x'] / (1.5 ** times);
             this.endY = this.path["ending-point"]['y'] / (1.5 ** times);
-            this.fullZoomOut();
+            await this.fullZoomOut();
         },
         path: {
             handler(newValue) {
