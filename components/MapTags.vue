@@ -14,6 +14,9 @@
 </template>
 
 <script>
+import {mapWritableState} from "pinia";
+import {useDetailsBoxStore} from "@/store/detailsBox";
+
 export default {
     props: ['level'],
     data() {
@@ -21,6 +24,9 @@ export default {
             tags: [],
             details: {}
         }
+    },
+    computed: {
+        ...mapWritableState(useDetailsBoxStore, ['showBox'])
     },
     methods: {
         async getTags(level) {
@@ -30,10 +36,7 @@ export default {
 
         async getDetails(id) {
             this.details = await this.$http.$get(`https://geobits.herokuapp.com/map/details/${id}?level=${this.level}`);
-            $('.show-box').css({
-                'bottom' : '0',
-                'height' : 'initial'
-            });
+            this.showBox = true;
         },
     },
 

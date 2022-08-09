@@ -24,7 +24,7 @@
                 <i class="directions icon"></i>
             </div>
 
-            <div class="ui huge circular icon button" @click="getDown">
+            <div class="ui huge circular icon button" @click="showBox = false">
                 <i class="angle double down teal icon"></i>
             </div>
         </div>
@@ -32,9 +32,10 @@
 </template>
 
 <script>
-import {mapActions, mapWritableState} from "pinia";
+import {mapWritableState} from "pinia";
 import {useSearchStore} from "@/store/search";
 import {useDirectionStore} from "@/store/direction";
+import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     props: ['details'],
@@ -47,10 +48,17 @@ export default {
 
     computed: {
         ...mapWritableState(useSearchStore, ['floorNum', 'navigation']),
-        ...mapWritableState(useDirectionStore,['toId', 'toName'])
+        ...mapWritableState(useDirectionStore,['toId', 'toName']),
+        ...mapWritableState(useDetailsBoxStore, [['showBox']])
     },
 
     methods: {
+        showUp(){
+            $('.show-box').css({
+                'bottom' : '0',
+                'height' : 'initial'
+            });
+        },
         getDown() {
             $('.show-box').css({
                 'bottom': "-50vh",
@@ -91,7 +99,7 @@ export default {
         let that = this;
         showbox.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
         showbox.on("swipedown", function(){
-            that.getDown();
+            that.showBox = false;
         });
     },
 
@@ -102,6 +110,13 @@ export default {
     watch: {
         floorNum(newValue) {
             this.initialFloor = newValue;
+        },
+
+        showBox(newValue){
+            if(newValue)
+                this.showUp();
+            else
+                this.getDown();
         }
     }
 }
@@ -127,6 +142,7 @@ export default {
         font-weight: 500;
         margin-bottom: 20px;
         font-family: 'Nunito Sans', sans-serif;
+        width: 60%;
     }
 
     div.ui.secondary.pointing.menu {

@@ -1,5 +1,5 @@
 <template>
-    <div id="main" class="map-buttons">
+    <div id="view-buttons" class="map-buttons">
         <button class="ui teal icon button">
             <i class="large info icon"></i>
         </button>
@@ -16,14 +16,36 @@
 </template>
 
 <script>
+import {mapState} from "pinia";
+import {useDetailsBoxStore} from "@/store/detailsBox";
+
 export default {
     props: {lined: Boolean},
     emits: ["change"],
+    computed: {
+        ...mapState(useDetailsBoxStore, ['showBox', 'directionBox'])
+    },
+    methods: {
+        toggleButtons(){
+            if(this.showBox || this.directionBox)
+                $('#view-buttons').hide();
+            else
+                $('#view-buttons').show();
+        }
+    },
+    watch: {
+        showBox(){
+            this.toggleButtons();
+        },
+        directionBox(){
+            this.toggleButtons();
+        }
+    }
 }
 </script>
 
 <style scoped lang="scss">
-#main {
+#view-buttons {
     position: fixed;
     left: 50px;
     bottom: 30px;
@@ -41,7 +63,7 @@ button.ui.icon.teal.button {
 }
 
 @media screen and (max-width: 520px) {
-    #main {
+    #view-buttons {
         left: 30px;
     }
 }

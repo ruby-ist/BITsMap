@@ -3,16 +3,16 @@
         <div class="ui large teal header">Distance: {{ Math.round(distance) }} m</div>
         <br/>
         <div class="details">
-            <div class="place-name"> From :</div>
+            <div class="place-name"> From:</div>
             <div class="ui teal label"> {{ fromName }} </div>
             <br/>
             <br/>
-            <div class="place-name"> To :</div>
+            <div class="place-name"> To:</div>
             <div class="ui teal label"> {{ toName }} </div>
         </div>
 
         <div class="icon-boxes">
-            <div class="ui huge circular icon button" @click="getDown">
+            <div class="ui huge circular icon button" @click="directionBox = false">
                 <i class="angle double down teal icon"></i>
             </div>
         </div>
@@ -20,15 +20,23 @@
 </template>
 
 <script>
-import {mapState} from "pinia";
+import {mapState, mapWritableState} from "pinia";
 import {useDirectionStore} from "@/store/direction";
+import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     props: ['distance'],
     computed: {
         ...mapState(useDirectionStore, ['fromName', 'toName']),
+        ...mapWritableState(useDetailsBoxStore, ['directionBox'])
     },
     methods: {
+        showUp(){
+            $('.direction-box').css({
+                'bottom': "0vh",
+                'height': 'initial',
+            });
+        },
         getDown() {
             $('.direction-box').css({
                 'bottom': "-50vh",
@@ -42,8 +50,16 @@ export default {
         let that = this;
         directionBox.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
         directionBox.on("swipedown", function(){
-            that.getDown();
+            that.directionBox = false;
         });
+    },
+    watch: {
+        directionBox(newValue){
+            if(newValue)
+                this.showUp();
+            else
+                this.getDown();
+        }
     }
 }
 </script>
@@ -96,9 +112,13 @@ export default {
 }
 
 @media screen and (max-width: 520px) {
-    .show-box {
+    .direction-box {
         width: 100vw;
         padding: 6% 8%;
+
+        div.ui.large.header{
+            margin-top: 12px;
+        }
     }
 }
 </style>

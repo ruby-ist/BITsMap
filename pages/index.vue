@@ -24,6 +24,7 @@ import {mapState, mapWritableState} from 'pinia'
 import {useSearchStore} from "@/store/search";
 import {useMapStore} from "@/store/map";
 import {usePinStore} from "@/store/pin";
+import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     data() {
@@ -46,7 +47,8 @@ export default {
     computed: {
         ...mapWritableState(useMapStore, ['svg', 'level', 'fullZoomOutTrigger']),
         ...mapWritableState(usePinStore, ['startX', 'startY', 'endX', 'endY']),
-        ...mapState(useSearchStore, ['searchId'])
+        ...mapState(useSearchStore, ['searchId']),
+        ...mapWritableState(useDetailsBoxStore, ['showBox'])
     },
     methods: {
         unShrinkable(scale) {
@@ -71,11 +73,7 @@ export default {
                 this.level++;
                 this.mapAltered = false;
             }
-            $('.show-box').css({
-                'bottom': "-50vh",
-                'height': '0',
-            });
-            $('#pin').hide();
+            this.showBox = false;
         },
         async zoomOut() {
             let map = $('#map')[0];
@@ -97,27 +95,28 @@ export default {
                 this.level--;
                 this.mapAltered = false;
             }
-            $('.show-box').css({
-                'bottom': "-50vh",
-                'height': '0',
-            });
-            $('#pin').hide();
+            this.showBox = false;
         },
 
         changeView() {
             this.svg = !this.svg;
         },
 
-        async fullZoomIn() {
-            let times = 4 - this.level;
-            while (times--)
-                await this.zoomIn();
+        fullZoomIn() {
+            let diff = 4 - this.level;
+            let map = $('#map')[0];
+            this.level = 4;
+            this.height = 3876;
+            this.width = 3420;
+            map.scrollTop = map.scrollTop * (1.5 ** diff);
+            map.scrollLeft = map.scrollLeft * (1.5 ** diff)
+            this.mapAltered = false;
         },
 
-        async fullZoomOut() {
+        fullZoomOut() {
             let times = this.level;
             while (times--)
-                await this.zoomOut();
+                setTimeout(async ()=>{await this.zoomOut()}, 250);
         },
 
         goTo(pos) {
@@ -151,6 +150,7 @@ export default {
         },
 
         success(position) {
+            this.fullZoomIn();
             let x = position.coords.longitude * 100000;
             let y = position.coords.latitude * 100000;
             x = (x - 7727333) * (this.width / 907.0);
@@ -334,14 +334,6 @@ export default {
                 that.scale(ev.scale);
             }
         });
-
-        let input = $('input');
-        input.on('focusin', function(){
-            $('.map-buttons').hide();
-        });
-        input.on('focusout', function(){
-            $('.map-buttons').show();
-        });
     },
 
     updated() {
@@ -358,8 +350,8 @@ export default {
             await this.goTo(newValue);
         },
 
-        fullZoomOutTrigger(newValue) {
-            this.fullZoomOut();
+        async fullZoomOutTrigger() {
+            await this.fullZoomOut();
         },
 
         async searchId(newValue) {

@@ -1,5 +1,5 @@
 <template>
-    <div id="main" class="map-buttons">
+    <div id="zoom-buttons" class="map-buttons">
         <Compass/>
         <button class="ui teal icon button" @click="toggleNavigation">
             <i class="large icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
@@ -14,13 +14,15 @@
 </template>
 
 <script>
-import {mapWritableState} from "pinia";
+import {mapState, mapWritableState} from "pinia";
 import {useSearchStore} from "~/store/search";
+import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     emits: ['zoomin', 'zoomout'],
     computed: {
-        ...mapWritableState(useSearchStore, ['navigation'])
+        ...mapWritableState(useSearchStore, ['navigation']),
+        ...mapState(useDetailsBoxStore, ['showBox', 'directionBox'])
     },
     methods: {
         toggleNavigation(){
@@ -31,13 +33,28 @@ export default {
                 'bottom': "-50vh",
                 'height': '0',
             });
+        },
+
+        toggleButtons(){
+            if(this.showBox || this.directionBox)
+                $('#zoom-buttons').hide();
+            else
+                $('#zoom-buttons').show();
+        }
+    },
+    watch: {
+        showBox(){
+            this.toggleButtons();
+        },
+        directionBox(){
+            this.toggleButtons();
         }
     }
 }
 </script>
 
 <style scoped lang="scss">
-#main {
+#zoom-buttons {
     position: fixed;
     right: 50px;
     bottom: 30px;
@@ -55,7 +72,7 @@ button.ui.icon.teal.button {
 }
 
 @media screen and (max-width: 520px) {
-    #main{
+    #zoom-buttons{
         right: 30px;
     }
 }

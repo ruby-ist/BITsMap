@@ -2,12 +2,13 @@
     <div class="input-wrapper">
         <div class="ui large icon input">
             <input v-model="query"
+                   @keyup="getSuggestion"
                    @keydown.down.prevent="moveDown"
                    @keydown.up.prevent="moveUp"
-                   @keydown.enter="getSuggestion"
                    ref="input"
                    type="text"
                    placeholder="Search...">
+            <i  v-show="query !== ''" class="times circle grey link icon" @click="deleteHandler"></i>
             <i class="search link teal icon" id="search-icon" @click="getSuggestion"></i>
         </div>
         <div class="suggestion-box" ref="suggestion-box">
@@ -108,7 +109,11 @@ export default {
         clickHandler(id, f_no){
             this.searchId = id;
             this.floorNum = f_no;
-        }
+        },
+
+        deleteHandler(){
+            this.query = "";
+        },
     },
 
     mounted() {
@@ -117,6 +122,14 @@ export default {
         $('body').on('click', function (event) {
             if(event.target.id !== "search-icon")
                 element.hide();
+        });
+
+        let input = $('input');
+        input.on('focusin', function(){
+            $('.map-buttons').hide();
+        });
+        input.on('focusout', function(){
+            $('.map-buttons').show();
         });
     },
 
@@ -134,11 +147,16 @@ div.ui.large.icon.input {
         width: 50vw;
         border-radius: 20px;
         border: 1px solid #16A89D;
+        padding-right: 4em;
     }
 }
 
 .input-wrapper {
     position: relative;
+
+    i.times.circle.icon{
+        margin-right: 25px;
+    }
 }
 
 .suggestion-box {

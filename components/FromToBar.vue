@@ -9,7 +9,7 @@
                    @keydown.delete="setBarValue('')"
                    type="text"
                    :placeholder="placeholder">
-            <i class="times circle grey link icon" @click="deleteHandler"></i>
+            <i v-show="query !== ''" class="times circle grey link icon" @click="deleteHandler"></i>
             <i class="map marker alternate icon"
                @click="provideLocation"
                :class="{grey: locationUsed, teal: !locationUsed, link: !locationUsed}"></i>
@@ -164,6 +164,14 @@ export default {
         $('body:not(.suggestion-box)').on('click', function () {
             this.response = [];
             element.hide();
+        });
+
+        let input = $('input');
+        input.on('focusin', function(){
+            $('.map-buttons').hide();
+        });
+        input.on('focusout', function(){
+            $('.map-buttons').show();
         });
     },
 

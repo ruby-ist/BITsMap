@@ -585,6 +585,7 @@ import {mapState, mapWritableState, mapActions} from "pinia";
 import {useMapStore} from "@/store/map";
 import {useDirectionStore} from "@/store/direction";
 import {usePinStore} from "@/store/pin";
+import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     props: ["height", "width"],
@@ -597,28 +598,20 @@ export default {
         ...mapWritableState(useMapStore, ['svg', 'level']),
         ...mapWritableState(usePinStore, ['startX', 'startY', 'endX', 'endY']),
         ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'top', 'left']),
+        ...mapWritableState(useDetailsBoxStore, ['directionBox', 'showBox'])
     },
     methods: {
         ...mapActions(useMapStore, ['fullZoomOut']),
-        directionBoxUp() {
-            $('.direction-box').css({
-                'bottom': "0vh",
-                'height': 'initial',
-            });
-        }
     },
     mounted() {
         let that = this;
         $('.cls-2').on('click', function () {
-            that.directionBoxUp();
+            that.directionBox = true;
         });
     },
     watch: {
         async directionTrigger(newValue) {
-            $('.show-box').css({
-                'bottom': "-50vh",
-                'height': '0',
-            });
+            this.showBox = false;
             this.svg = false;
             this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}&top=${this.top}&left=${this.left}`);
             let times = 4 - this.level;
@@ -636,7 +629,7 @@ export default {
                 for (let i = 0; i < path.length - 1; i++)
                     $(`#J${path[i]}${path[i + 1]}, #J${path[i + 1]}${path[i]}`).css('visibility', 'visible');
                 $('.route-pin').show();
-                this.directionBoxUp();
+                this.directionBox = true;
             },
             deep: true,
         },
