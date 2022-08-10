@@ -1,19 +1,19 @@
 <template>
     <div class="direction-box">
-        <div class="ui large teal header">Distance: {{ Math.round(distance) }} m</div>
+        <div class="ui large blue header">Distance: {{ Math.round(distance) }} m</div>
         <br/>
         <div class="details">
             <div class="place-name"> From:</div>
-            <div class="ui teal label"> {{ fromName }} </div>
+            <div class="ui blue label"> {{ fromName }} </div>
             <br/>
             <br/>
             <div class="place-name"> To:</div>
-            <div class="ui teal label"> {{ toName }} </div>
+            <div class="ui blue label"> {{ toName }} </div>
         </div>
 
         <div class="icon-boxes">
             <div class="ui huge circular icon button" @click="directionBox = false">
-                <i class="angle double down teal icon"></i>
+                <i class="angle double down blue icon"></i>
             </div>
         </div>
     </div>
@@ -66,15 +66,43 @@ export default {
 
 <style lang="scss" scoped>
 .direction-box {
+    color: var(--box-secondary);
+
+    i.icon{
+        color:  var(--box-background);
+    }
+
+    i.blue.icon, .ui.blue.header{
+        color: var(--nav-btn-bg) !important;
+    }
+
+    .ui.blue.label{
+        background-color: var(--box-primary);
+        border-collapse: var(--box-primary);
+        color: var(--box-background)
+    }
+
+    .ui.button{
+        background-color: var(--box-background);
+    }
+
+    .ui.blue.button, .ui.blue.button:hover, .ui.blue.button:focus{
+        background-color: var(--box-primary);
+    }
+
+    i.grey.icon{
+        color: var(--nav-text);
+    }
+
+
     position: fixed;
     bottom: -50vh;
     width: 80vw;
     left: 50%;
     transform: translateX(-50%);
-    background: whitesmoke;
+    background: var(--box-background);
     z-index: 3;
-    border: 1px solid teal;
-    border-top: 6px solid teal;
+    border-top: var(--box-border) solid var(--box-primary);
     border-radius: 20px 20px 0 0;
     padding: 3% 4%;
     transition: bottom .75s ease-out;
@@ -82,22 +110,23 @@ export default {
     cursor: default;
 
     .details{
-        background: white;
-        border: 1px solid lightslategray;
+        background: var(--box-background);
+        border: 1px solid var(--segment-border);
         border-radius: 5px;
         padding: 2rem 3rem;
+        box-shadow: 0 1px 5px 0 var(--segment-shadow) inset;
     }
 
     .place-name {
         display: inline-block;
     }
 
-    div.ui.teal.label{
+    div.ui.blue.label{
         cursor: pointer;
     }
 
     div.ui.circular.icon.button {
-        border: 1px solid teal;
+        border: 1px solid var(--box-primary);
     }
 
     .icon-boxes{

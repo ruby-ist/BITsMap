@@ -1,7 +1,7 @@
 <template>
     <div class="show-box">
-        <div class="ui large teal header title">{{ details['name'] }}</div>
-        <div class="ui small teal label main">{{ details['main'] }}</div>
+        <div class="ui large blue header title">{{ details['name'] }}</div>
+        <div class="ui small blue label main">{{ details['main'] }}</div>
 
         <div class="ui pointing secondary menu">
             <a v-for="(floor, index) in details['floors']"
@@ -19,13 +19,13 @@
         </div>
 
         <div class="icon-boxes">
-            <div class="ui huge circular teal icon button" id="direction-btn"
+            <div class="ui huge circular blue icon button" id="direction-btn"
                  @click="goTo(details['id'], details['name'])">
                 <i class="directions icon"></i>
             </div>
 
             <div class="ui huge circular icon button" @click="showBox = false">
-                <i class="angle double down teal icon"></i>
+                <i class="angle double down blue icon"></i>
             </div>
         </div>
     </div>
@@ -124,22 +124,50 @@ export default {
 
 <style lang="scss" scoped>
 .show-box {
+    color: var(--box-secondary);
+
+    i.icon{
+        color:  var(--box-background);
+    }
+
+    i.blue.icon, .ui.blue.header{
+        color: var(--nav-btn-bg) !important;
+    }
+
+    .ui.blue.label{
+        background-color: var(--box-primary);
+        border-collapse: var(--box-primary);
+        color: var(--box-background)
+    }
+
+    .ui.button{
+        background-color: var(--box-background);
+    }
+
+    .ui.blue.button, .ui.blue.button:hover, .ui.blue.button:focus{
+        background-color: var(--box-primary);
+    }
+
+    i.grey.icon{
+        color: var(--nav-text);
+    }
+
     position: fixed;
     bottom: -50vh;
     width: 80vw;
     left: 50%;
     transform: translateX(-50%);
-    background: whitesmoke;
+    background: var(--box-background);
     z-index: 3;
-    border: 1px solid teal;
-    border-top: 6px solid teal;
-    border-radius: 20px 20px 0 0;
+    border-top: var(--box-border) solid var(--box-primary);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
     padding: 3% 4%;
     transition: bottom .75s ease-out;
     cursor: default;
 
     .title {
-        font-weight: 500;
+        font-weight: 900;
         margin-bottom: 20px;
         font-family: 'Nunito Sans', sans-serif;
         width: 60%;
@@ -147,8 +175,14 @@ export default {
 
     div.ui.secondary.pointing.menu {
 
+        border-bottom: 2px solid var(--box-menu-line);
+
+        a.item{
+            color:var(--box-secondary);
+        }
+
         a.active.item {
-            color: teal;
+            color: var(--box-primary);
         }
 
     }
@@ -156,32 +190,24 @@ export default {
     div.ui.tab.segment {
         max-height: 18vh;
         overflow-y: scroll;
-        background: white;
+        background: var(--box-background);
+        border-color: var(--segment-border);
         font-size: 1rem;
-        box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15) inset;
+        box-shadow: 0 1px 5px 0 var(--segment-shadow) inset;
         font-family: monospace;
 
         ul {
             list-style: none;
 
             li {
-                margin: 5px 0;
-            }
-
-            li::before {
-                content: "\2022";
-                color: teal;
-                font-weight: bold;
-                display: inline-block;
-                width: 1.1em;
-                margin-left: -1em;
+                margin: 10px 0;
             }
 
         }
     }
 
     div.ui.circular.icon.button {
-        border: 1px solid teal;
+        border: 1px solid var(--box-primary);
     }
 
     .icon-boxes{
@@ -200,6 +226,10 @@ export default {
         width: 100vw;
         padding: 6% 8%;
 
+        .ui.large.header{
+            margin-top: 20px;
+        }
+
         div.ui.secondary.pointing.menu {
             overflow-x: auto;
             overflow-y: hidden;
@@ -217,6 +247,10 @@ export default {
         div.ui.tab.segment {
             min-height: 20vh;
             padding: 20px 10% 20px 5%;
+
+            ul{
+                padding-left: 20px;
+            }
         }
     }
 }

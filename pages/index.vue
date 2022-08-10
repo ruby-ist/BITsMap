@@ -2,7 +2,9 @@
     <div>
         <NavBar />
         <div id="map">
-            <img class="the-map" v-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width"
+            <img class="the-map" v-if="svg && darkTheme" :src="require(`~/assets/images/Map-dark.svg`)" :height="height" :width="width"
+                 alt="svg Map" oncontextmenu="return false">
+            <img class="the-map" v-else-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width"
                  alt="svg Map" oncontextmenu="return false">
             <img class="the-map" v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width"
                  alt="satellite Map" oncontextmenu="return false">
@@ -14,7 +16,7 @@
             <Location :left="locationX" :top="locationY" :svg="svg" :zoomLevel="level"/>
         </div>
 
-        <ViewButtons @change="changeView" @getLocation="geoLocate" :lined="svg"/>
+        <ViewButtons @changeSVG="changeView" @changeTheme="toggleTheme" @getLocation="geoLocate" :lined="svg" :isDark="darkTheme"/>
         <ZoomButtons @zoomin="handleZoomIn" @zoomout="handleZoomOut"/>
     </div>
 </template>
@@ -42,6 +44,7 @@ export default {
             mapAltered: false,
             cache: {},
             minLevel: 1,
+            darkTheme: false,
         }
     },
 
@@ -121,6 +124,19 @@ export default {
 
         changeView() {
             this.svg = !this.svg;
+        },
+
+        toggleTheme() {
+            this.darkTheme = !this.darkTheme;
+            let main = $('#main');
+            if(this.darkTheme){
+                main.removeClass('light')
+                main.addClass('dark');
+            }
+            else{
+                main.removeClass('dark')
+                main.addClass('light');
+            }
         },
 
         async fullZoomIn() {
@@ -256,6 +272,10 @@ export default {
             });
             $('#pin').hide();
         },
+
+        setTheme(theme){
+            this.darkTheme = theme;
+        }
     },
 
     beforeCreate() {
@@ -268,6 +288,12 @@ export default {
     },
 
     mounted() {
+        this.darkTheme = $('#main')[0].classList[0] === 'dark';
+        let that = this;
+        let media = window.matchMedia('(prefers-color-scheme: dark)');
+        media.addEventListener('change', event => {
+            that.darkTheme = event.matches;
+        });
         let query = this.$route.query;
         if (typeof query.level !== "undefined") {
             let givenLevel = 4 - parseInt(query.level)
@@ -315,7 +341,6 @@ export default {
         });
 
         let mc = new Hammer(map, {touchAction: 'manipulation'});
-        let that = this;
         mc.get('press').set({time: 700});
         mc.on('press', function (event) {
             let x = event.srcEvent.layerX - 16;

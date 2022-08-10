@@ -4,7 +4,7 @@
         <FromToBar class="item" placeholder="To" @setPlace="setTo"/>
 
 
-        <button ref="goBtn" class='ui teal disabled button' @click="findRoute">
+        <button ref="goBtn" class='ui blue disabled button' @click="findRoute">
             <i class="directions icon"></i> Go
         </button>
 
@@ -48,6 +48,10 @@ export default {
 <style scoped lang="scss">
     button.ui.teal.button {
         margin-right: 1.5rem;
+    }
+
+    button.blue.button{
+        background-color: var(--nav-btn-bg) !important;
     }
 
     @media screen and (max-width: 520px) {

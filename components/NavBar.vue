@@ -1,5 +1,5 @@
 <template>
-    <div id="main" class="ui secondary menu">
+    <div id="navbar" class="ui secondary menu">
 
         <a class="item ui huge header">
             GeoBITs
@@ -9,7 +9,7 @@
             <SearchBar v-else class="item" />
             <div class="ui compact labeled icon menu" id="toggle-direction" @click="toggleNavigation">
                 <a class="item">
-                    <i class="large link teal icon"
+                    <i class="large link blue icon"
                        :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
                     {{ navigation ? "Search" : "Direction" }}
                 </a>
@@ -41,15 +41,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#main {
+#navbar {
     position: fixed;
     top: 0;
     z-index: 4;
     width: 103vw;
     min-height: 85px;
-    background: #EAF6F6;
+    background: var(--nav-background);
     display: flex;
-    border-bottom: 1px solid #16A89D;
+    border-bottom: 1px solid var(--nav-bottom);
+
+    i.blue.icon{
+        color: var(--nav-btn-bg) !important;
+    }
+
+    i.grey.icon{
+        color: var(--nav-text);
+    }
 
     div.labeled.menu{
         background: transparent;
@@ -59,13 +67,13 @@ export default {
 
         a.item{
             margin: 0;
-            color: teal;
-            border-left: 1px solid teal;
+            color: var(--nav-btn-bg);
+            border-left: 1px solid var(--nav-btn-bg);
         }
     }
 
     .header {
-        color: #16A89D !important;
+        color: var(--nav-btn-bg) !important;
         padding-left: 6vw;
         background: transparent;
         font-weight: 600;
@@ -80,7 +88,7 @@ export default {
 }
 
 @media screen and (max-width: 840px){
-    #main{
+    #navbar{
         .header{
             display: none;
         }
@@ -92,7 +100,7 @@ export default {
 }
 
 @media screen and (max-width: 520px){
-    #main{
+    #navbar{
         justify-content: center;
 
         #toggle-direction{

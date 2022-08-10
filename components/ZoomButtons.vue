@@ -1,13 +1,13 @@
 <template>
     <div id="zoom-buttons" class="map-buttons">
         <Compass/>
-        <button class="ui teal icon button" @click="toggleNavigation">
+        <button class="ui blue icon button" @click="toggleNavigation">
             <i class="large icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
         </button>
-        <button class="ui teal icon button" @click="$emit('zoomin')">
+        <button class="ui blue icon button" @click="$emit('zoomin')">
             <i class=" large plus icon"></i>
         </button>
-        <button class="ui teal icon button" @click="$emit('zoomout')">
+        <button class="ui blue icon button" @click="$emit('zoomout')">
             <i class="large minus icon"></i>
         </button>
     </div>
@@ -66,8 +66,19 @@ export default {
     }
 }
 
-button.ui.icon.teal.button {
-    border: 1px solid black;
+button.blue.button{
+    background-color: var(--button-background);
+
+    &:hover, &:focus{
+        background-color: var(--button-background);
+    }
+
+    i.icon{
+        color: var(--button-icon);
+    }
+}
+
+button.ui.icon.button {
     box-shadow: 0 0 2px black;
 }
 

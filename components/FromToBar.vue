@@ -12,7 +12,7 @@
             <i v-show="query !== ''" class="times circle grey link icon" @click="deleteHandler"></i>
             <i class="map marker alternate icon"
                @click="provideLocation"
-               :class="{grey: locationUsed, teal: !locationUsed, link: !locationUsed}"></i>
+               :class="{grey: locationUsed, blue: !locationUsed, link: !locationUsed}"></i>
         </div>
         <div class="suggestion-box" ref="suggestion-box">
             <section v-if="response.length !== 0">
@@ -22,7 +22,7 @@
                      @click="clickHandler(match['id'], match['name'])"
                      @mouseleave="$event.target.classList.remove('selected')">
                     <div>
-                        <div class="ui medium teal header">{{ match["match"] }}</div>
+                        <div class="ui medium blue header">{{ match["match"] }}</div>
                         <div>{{ match["floor"] }}, {{ match["name"] }}</div>
                     </div>
                 </div>
@@ -202,6 +202,14 @@ export default {
 
 <style lang="scss" scoped>
 
+i.grey.icon{
+    color: var(--nav-text) !important;
+}
+
+i.blue.icon{
+    color: var(--nav-btn-bg) !important;
+}
+
 .input-wrapper{
     text-align: left;
 
@@ -213,14 +221,25 @@ export default {
 div.ui.large.icon.input {
     input {
         width: 21vw;
-        border-radius: 5px;
-        border: 1px solid #16A89D;
+        border-radius: 10px;
+        border: 1px solid var(--nav-border);
+        background: var(--nav-background);
         padding-right: 4rem;
+        color: var(--nav-text);
+    }
+
+    ::placeholder {
+        color: var(--nav-text);
+        opacity: 1;
+    }
+
+    :-ms-input-placeholder {
+        color: var(--nav-text);
     }
 
     &.success{
         input{
-            color: teal;
+            color: var(--nav-success-text);
         }
     }
 }
@@ -237,23 +256,28 @@ div.ui.large.icon.input {
     overflow: scroll;
     width: 25vw;
     position: absolute;
-    background: white;
+    background: var(--suggestion-bg);
     top: 130%;
-    border: 1px solid teal;
+    border: 1px solid var(--nav-text);
     border-radius: 10px;
     z-index: 6;
 
     .suggestion {
+        color: var(--nav-text);
         padding: 20px;
         cursor: pointer;
-        border-bottom: 1px solid #EAF6F6;
+        border-bottom: 1px solid var(--nav-text);
 
         &.selected {
-            background: #EAF6F6;
+            background-color: var(--selected);
         }
 
         .ui.header {
             padding-left: 0;
+        }
+
+        .ui.blue.header{
+            color: var(--box-primary)
         }
     }
 
@@ -263,7 +287,7 @@ div.ui.large.icon.input {
 
     .no-result{
         padding: 3% 6%;
-        color: teal;
+        color: var(--nav-success-text);
         font-size: 1.2rem;
     }
 }

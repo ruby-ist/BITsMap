@@ -1,15 +1,15 @@
 <template>
     <div id="view-buttons" class="map-buttons">
-        <button class="ui teal icon button">
+        <button class="ui blue icon button">
             <i class="large info icon"></i>
         </button>
-        <button class="ui teal icon button">
-            <i class="large moon icon"></i>
+        <button class="ui blue icon button">
+            <i class="large icon" :class="{ moon: !isDark, sun: isDark}" @click="$emit('changeTheme')"></i>
         </button>
-        <button class="ui teal icon button" @click="$emit('getLocation')">
+        <button class="ui blue icon button" @click="$emit('getLocation')">
             <i class="large street view icon"></i>
         </button>
-        <button class="ui teal icon button" @click="$emit('change')">
+        <button class="ui blue icon button" @click="$emit('changeSVG')">
             <i class="large map icon" :class="{ outline: !lined }"></i>
         </button>
     </div>
@@ -20,8 +20,8 @@ import {mapState} from "pinia";
 import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
-    props: {lined: Boolean},
-    emits: ["change"],
+    props: {lined: Boolean, isDark: Boolean},
+    emits: ["changeSVG", "changeTheme"],
     computed: {
         ...mapState(useDetailsBoxStore, ['showBox', 'directionBox'])
     },
@@ -57,8 +57,19 @@ export default {
     }
 }
 
-button.ui.icon.teal.button {
-    border: 1px solid black;
+button.blue.button{
+    background-color: var(--button-background);
+
+    &:hover, &:focus{
+        background-color: var(--button-background);
+    }
+
+    i.icon{
+        color: var(--button-icon);
+    }
+}
+
+button.ui.icon.button {
     box-shadow: 0 0 2px black;
 }
 
