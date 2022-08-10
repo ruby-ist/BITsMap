@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-for="tag in tags">
-            <div :id="tag['id']" :style="{ top: tag['top'], left: tag['left'] }" class="tag"
+        <div class="tags">
+            <div v-for="tag in tags" :id="tag['id']" :style="{ top: tag['top'], left: tag['left'] }" class="tag"
                  @click="getDetails(tag['id'])">
                 {{ tag["name"] }}
             </div>
@@ -53,13 +53,13 @@ export default {
 </script>
 
 <style scoped>
-.tag {
+.tag{
     position: absolute;
     font-weight: 400;
     font-size: 1rem;
     text-align: center;
-    color: white;
-    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+    color: var(--tag-initial);
+    text-shadow: var(--tag-shadow);
     font-family: 'Inter', sans-serif;
     width: 60px;
     text-wrap: normal;

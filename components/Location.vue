@@ -4,7 +4,7 @@
         <div id="location-clipboard">
             <div class="ui action input">
                 <input type="text" :value="url" ref="urlInput" disabled>
-                <button class="ui teal right labeled icon button" @click="copy">
+                <button class="ui blue right labeled icon button" @click="copy">
                     <i class="share icon"></i>
                     <span ref="copyButton">Share</span>
                 </button>
@@ -69,6 +69,20 @@ export default {
 
         input {
             opacity: 1;
+            background-color: var(--selected);
+            color: var(--nav-success-text);
+            border: 1px solid var(--nav-border);
+            border-right: none;
+        }
+
+        .ui.icon.blue.button {
+            background-color: var(--box-primary);
+            border-color: var(--box-primary);
+            color: var(--box-background);
+
+            .icon {
+                color: var(--box-background);
+            }
         }
     }
 }

@@ -29,7 +29,7 @@ export default {
     methods: {
         toggleNavigation(){
             this.navigation = !this.navigation;
-            $('.cls-2').css('visibility','hidden');
+            $('#routes .cls-2').css('visibility','hidden');
             $('.route-pin').hide();
             $('.direction-box').css({
                 'bottom': "-50vh",

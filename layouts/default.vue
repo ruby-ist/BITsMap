@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
     :root{
         color-scheme: light dark;
     }
@@ -51,6 +51,45 @@ export default {
 
         --suggestion-bg: #F2F2F5;
         --selected: #B6D3F7;
+
+        --tag-initial: #7a88ef;
+        --tag-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+
+        .tag:nth-child(2n){
+            color: #ee9a25
+        }
+
+        .tag:nth-child(3n){
+            color: #f27025;
+        }
+
+        .tag:nth-child(4n){
+            color: #ab765e;
+        }
+
+        .tag:nth-child(5n){
+            color: #d36db8;
+        }
+
+        .tag:nth-child(6n){
+            color: #ed5d69;
+        }
+
+        .tag:nth-child(7n){
+            color: #a083ff;
+        }
+
+        .tag:nth-child(8n){
+            color: #35a470;
+        }
+
+        .tag:nth-child(9n){
+            color: #419dd3;
+        }
+
+        .tag:nth-child(10n){
+            color: #5a91fe;
+        }
     }
 
     .light {
@@ -69,7 +108,7 @@ export default {
 
         --box-border: 6px;
         --box-background: #F2F2F5;
-        --box-primary: #116CFF;
+        --box-primary: #356dfa;
         --box-secondary: #757575;
         --box-menu-line: #75757555;
         --segment-border: #757575;
@@ -77,6 +116,9 @@ export default {
 
         --suggestion-bg: #F2F2F5;
         --selected:  #B6D3F7;
+
+        --tag-initial: #ffffff;
+        --tag-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
     }
 
     body{
