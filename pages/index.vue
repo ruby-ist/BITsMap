@@ -192,7 +192,7 @@ export default {
             x = (x - 7727333) * (this.width / 907.0);
             y = this.height - (y - 1149133) * (this.height / 1016.0);
 
-            x += 85;
+            x += 45;
             y -= 28;
             this.setLocation(x, y);
             this.position = {'x': x, 'y': y}

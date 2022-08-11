@@ -109,12 +109,14 @@ export default {
 
         div.right.menu{
             margin-right: auto;
+            justify-content: right;
         }
 
         .symbol{
-            width: 56px;
+            width: 44px;
             display: block;
-            margin-left: 2vw;
+            margin-left: 10vw;
+            margin-right: 4vw;
         }
     }
 }
