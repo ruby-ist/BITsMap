@@ -3,11 +3,9 @@
         <FromToBar class="item" placeholder="From" @setPlace="setFrom"/>
         <FromToBar class="item" placeholder="To" @setPlace="setTo"/>
 
-
         <button ref="goBtn" class='ui blue disabled button' @click="findRoute">
             <i class="directions icon"></i> Go
         </button>
-
     </div>
 </template>
 
@@ -58,13 +56,13 @@ export default {
         #direction-bar {
             padding: 20px 15px 0;
 
-
             button{
                 position: absolute;
                 margin-right: 0;
                 right: 8vw;
+                top: 50%;
+                transform: translateY(-50%);
             }
-
 
             .item {
                 margin-right: 3px;

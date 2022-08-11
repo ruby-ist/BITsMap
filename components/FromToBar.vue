@@ -169,9 +169,13 @@ export default {
         let input = $('input');
         input.on('focusin', function(){
             $('.map-buttons').hide();
+            $('.show-box').hide();
+            $('.direction-box').hide();
         });
         input.on('focusout', function(){
             $('.map-buttons').show();
+            $('.show-box').show();
+            $('.direction-box').show();
         });
     },
 
@@ -308,7 +312,7 @@ div.ui.large.icon.input {
     }
 
     .suggestion-box {
-        width: 80vw;
+        width: 65vw;
     }
 }
 </style>

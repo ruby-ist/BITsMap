@@ -19,20 +19,19 @@
 <script>
 import {mapWritableState} from "pinia";
 import {useSearchStore} from "~/store/search";
+import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     computed: {
-        ...mapWritableState(useSearchStore, ['navigation'])
+        ...mapWritableState(useSearchStore, ['navigation']),
+        ...mapWritableState(useDetailsBoxStore, ['directionBox'])
     },
     methods: {
         toggleNavigation(){
             this.navigation = !this.navigation;
             $('#routes .cls-2').css('visibility','hidden');
             $('.route-pin').hide();
-            $('.direction-box').css({
-                'bottom': "-50vh",
-                'height': '0',
-            });
+            this.directionBox = false;
         }
     },
 }
@@ -113,9 +112,9 @@ export default {
         }
 
         .symbol{
-            width: 44px;
+            width: 36px;
             display: block;
-            margin-left: 10vw;
+            margin-left: 6vw;
             margin-right: 4vw;
         }
     }

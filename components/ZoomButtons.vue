@@ -44,10 +44,10 @@ export default {
         },
 
         toggleButtons(){
-            if(this.showBox || this.directionBox)
-                $('#zoom-buttons').hide();
+            if(screen.width < 540 && (this.showBox || this.directionBox))
+                gsap.to('#zoom-buttons button', {xPercent: 200, duration: 0.4});
             else
-                $('#zoom-buttons').show();
+                gsap.to('#zoom-buttons button', {xPercent: 0, duration: 0.4, stagger: 0.2});
         },
 
         compassHandler(){

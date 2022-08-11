@@ -158,7 +158,7 @@ export default {
         goTo(pos) {
             let map = $('#map')[0];
             map.scrollLeft = pos["x"] - screen.width / 2;
-            map.scrollTop = pos["y"] - screen.height / 2 + 200;
+            map.scrollTop = pos["y"] - screen.height / 2 + 300;
         },
 
         setPin(x, y) {
@@ -266,11 +266,7 @@ export default {
             this.endX = this.endX * scale;
             this.endY = this.endY * scale;
 
-            $('.show-box').css({
-                'bottom': "-50vh",
-                'height': '0',
-            });
-            $('#pin').hide();
+            this.showBox = false;
         },
 
         setTheme(theme){

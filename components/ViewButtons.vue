@@ -27,10 +27,10 @@ export default {
     },
     methods: {
         toggleButtons(){
-            if(this.showBox || this.directionBox)
-                $('#view-buttons').hide();
+            if(screen.width < 540 && (this.showBox || this.directionBox))
+                gsap.to('#view-buttons button', {xPercent: -200, duration: 0.4});
             else
-                $('#view-buttons').show();
+                gsap.to('#view-buttons button', {xPercent: 0, duration: 0.4, stagger: 0.2});
         }
     },
     watch: {

@@ -1,5 +1,5 @@
 <template>
-    <div class="show-box">
+    <div id="show-box">
         <div class="ui large blue header title">{{ details['name'] }}</div>
         <div class="ui small blue label main">{{ details['main'] }}</div>
 
@@ -54,15 +54,16 @@ export default {
 
     methods: {
         showUp(){
-            $('.show-box').css({
-                'bottom' : '0',
-                'height' : 'initial'
+            gsap.to('#show-box',{
+                yPercent: 0,
+                duration: 0.75,
+                ease: "power4"
             });
         },
         getDown() {
-            $('.show-box').css({
-                'bottom': "-50vh",
-                'height': '0',
+            gsap.to('#show-box',{
+                yPercent: 100,
+                duration: 0.5
             });
             $('#pin').hide();
         },
@@ -94,13 +95,15 @@ export default {
     },
 
     mounted() {
-        let details = $('.show-box')[0];
+        let details = $('#show-box')[0];
         let showbox = new Hammer(details);
         let that = this;
         showbox.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
         showbox.on("swipedown", function(){
             that.showBox = false;
         });
+
+        gsap.set('#show-box',{yPercent: 100});
     },
 
     updated() {
@@ -123,7 +126,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.show-box {
+#show-box {
     color: var(--box-secondary);
 
     i.icon{
@@ -153,17 +156,16 @@ export default {
     }
 
     position: fixed;
-    bottom: -50vh;
+    bottom: 0;
     width: 80vw;
     left: 50%;
     transform: translateX(-50%);
     background: var(--box-background);
-    z-index: 3;
+    z-index: 4;
     border-top: var(--box-border) solid var(--box-primary);
     border-bottom: none;
     border-radius: 10px 10px 0 0;
     padding: 3% 4%;
-    transition: bottom .75s ease-out;
     cursor: default;
 
     .title {
@@ -215,7 +217,7 @@ export default {
     }
 
     div.ui.circular.icon.button {
-        border: 1px solid var(--box-primary);
+        border: 2px solid var(--box-primary);
     }
 
     .icon-boxes{
@@ -230,7 +232,7 @@ export default {
 }
 
 @media screen and (max-width: 520px) {
-    .show-box {
+    #show-box {
         width: 100vw;
         padding: 6% 8%;
 

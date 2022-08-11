@@ -1,5 +1,5 @@
 <template>
-    <div class="direction-box">
+    <div id="direction-box">
         <div class="ui large blue header">Distance: {{ Math.round(distance) }} m</div>
         <br/>
         <div class="details">
@@ -32,26 +32,28 @@ export default {
     },
     methods: {
         showUp(){
-            $('.direction-box').css({
-                'bottom': "0vh",
-                'height': 'initial',
+            gsap.to('#direction-box',{
+                yPercent: 0,
+                duration: 0.75,
             });
         },
         getDown() {
-            $('.direction-box').css({
-                'bottom': "-50vh",
-                'height': '0',
+            gsap.to('#direction-box',{
+                yPercent: 100,
+                duration: 0.5
             });
         },
     },
     mounted(){
-        let details = $('.direction-box')[0];
+        let details = $('#direction-box')[0];
         let directionBox = new Hammer(details);
         let that = this;
         directionBox.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
         directionBox.on("swipedown", function(){
             that.directionBox = false;
         });
+
+        gsap.set('#direction-box',{yPercent: 100});
     },
     watch: {
         directionBox(newValue){
@@ -65,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.direction-box {
+#direction-box {
     color: var(--box-secondary);
 
     i.icon{
@@ -96,16 +98,15 @@ export default {
 
 
     position: fixed;
-    bottom: -50vh;
+    bottom: 0;
     width: 80vw;
     left: 50%;
     transform: translateX(-50%);
     background: var(--box-background);
-    z-index: 3;
+    z-index: 4;
     border-top: var(--box-border) solid var(--box-primary);
     border-radius: 20px 20px 0 0;
     padding: 3% 4%;
-    transition: bottom .75s ease-out;
     font-family: monospace;
     cursor: default;
 
@@ -126,7 +127,7 @@ export default {
     }
 
     div.ui.circular.icon.button {
-        border: 1px solid var(--box-primary);
+        border: 2px solid var(--box-primary);
     }
 
     .icon-boxes{
@@ -141,7 +142,7 @@ export default {
 }
 
 @media screen and (max-width: 520px) {
-    .direction-box {
+    #direction-box {
         width: 100vw;
         padding: 6% 8%;
 
