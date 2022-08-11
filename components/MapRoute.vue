@@ -595,7 +595,7 @@ export default {
         }
     },
     computed: {
-        ...mapWritableState(useMapStore, ['svg', 'level']),
+        ...mapWritableState(useMapStore, ['level']),
         ...mapWritableState(usePinStore, ['startX', 'startY', 'endX', 'endY']),
         ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'myTop', 'myLeft','pinLeft', 'pinTop']),
         ...mapWritableState(useDetailsBoxStore, ['directionBox', 'showBox'])
@@ -613,7 +613,6 @@ export default {
         async directionTrigger(newValue) {
             $('#pin').hide();
             this.showBox = false;
-            this.svg = false;
             this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}&my-top=${this.myTop}&my-left=${this.myLeft}&pin-top=${this.pinTop}&pin-left=${this.pinLeft}`);
             let times = 4 - this.level;
             this.startX = this.path["starting-point"]['x'] / (1.5 ** times);

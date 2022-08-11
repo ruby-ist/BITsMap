@@ -1,8 +1,11 @@
 <template>
     <div id="zoom-buttons" class="map-buttons">
-        <Compass/>
+        <Compass v-show="compass"/>
         <button class="ui blue icon button" @click="toggleNavigation">
             <i class="large icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
+        </button>
+        <button class="ui blue icon button" @click="compassHandler">
+            <i class="large compass icon" :class="{outline: compass}"></i>
         </button>
         <button class="ui blue icon button" @click="$emit('zoomin')">
             <i class=" large plus icon"></i>
@@ -20,6 +23,11 @@ import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     emits: ['zoomin', 'zoomout'],
+    data(){
+        return {
+            compass: false,
+        }
+    },
     computed: {
         ...mapWritableState(useSearchStore, ['navigation']),
         ...mapState(useDetailsBoxStore, ['showBox', 'directionBox'])
@@ -40,6 +48,11 @@ export default {
                 $('#zoom-buttons').hide();
             else
                 $('#zoom-buttons').show();
+        },
+
+        compassHandler(){
+            this.compass = !this.compass;
+            $('#compass').toggle();
         }
     },
     watch: {

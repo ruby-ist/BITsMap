@@ -35,11 +35,11 @@ export default {
 
 <style lang="scss" scoped>
     #compass{
-        height: 8rem;
-        width: 8rem;
+        height: 6.2rem;
+        width: 6.2rem;
         position: fixed;
-        bottom: 35%;
-        right: 2rem;
+        top: 150px;
+        right: 2.75rem;
         z-index: 5;
 
         .cls-1, .cls-3 {

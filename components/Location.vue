@@ -34,6 +34,7 @@ export default {
     },
     mounted() {
         $('#location').hide();
+        $('#location-clipboard').hide();
         let location = $('#location img');
         location.on('click', ()=>{
             $('#location-clipboard').toggle();
