@@ -2,6 +2,7 @@
     <div id="navbar" class="ui secondary menu">
         <MainLogo class="logo" />
         <div class="right menu">
+            <MiniLogo class="symbol" v-show="!navigation"/>
             <DirectionBar v-if="navigation"/>
             <SearchBar v-else class="item" />
             <div class="ui compact labeled icon menu" id="toggle-direction" @click="toggleNavigation">
@@ -39,6 +40,10 @@ export default {
 
 <style lang="scss" scoped>
 #navbar {
+    .symbol{
+        display: none;
+    }
+
     .logo{
         width: 150px;
         margin-left: 6vw;
@@ -104,6 +109,12 @@ export default {
 
         div.right.menu{
             margin-right: auto;
+        }
+
+        .symbol{
+            width: 56px;
+            display: block;
+            margin-left: 2vw;
         }
     }
 }

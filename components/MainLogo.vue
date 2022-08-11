@@ -91,49 +91,6 @@ export default {
             duration: 0,
             repeatDelay: 4
         })
-        gsap.to('#b-blink-1, #b-blink-2', {
-            fill: "#262626",
-            duration: 0,
-        });
-        gsap.to('#stripes', {
-            yPercent: -18,
-            repeat: -1,
-            repeatDelay: 0,
-            ease: "none",
-            duration: 1
-        });
-        // gsap.fromTo('#t-see-saw', {
-        //     transformOrigin: "center",
-        //     rotate: -10,
-        //     repeat: -1,
-        //     yoyo: true,
-        //     duration: 2,
-        //     repeatDelay: 0.3
-        // }, {
-        //     transformOrigin: "center",
-        //     rotate: 10,
-        //     repeat: -1,
-        //     yoyo: true,
-        //     duration: 2,
-        //     repeatDelay: 0
-        // });
-
-        gsap.to("#big-needle", {
-            rotation: 450,
-            duration: 2,
-            repeatDelay: 0,
-            transformOrigin: "left",
-            repeat: -1,
-            ease: "none"
-        });
-
-        gsap.to("#small-needle", {
-            rotation: 450,
-            duration: 6,
-            repeatDelay: 0,
-            repeat: -1,
-            ease: "none"
-        });
 
         gsap.to('#s-letter', {
             scaleY: 1.25,

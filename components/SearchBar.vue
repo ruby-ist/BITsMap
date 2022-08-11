@@ -181,7 +181,7 @@ div.ui.large.icon.input {
 .suggestion-box {
     min-height: 100px;
     max-height: 500px;
-    overflow: scroll;
+    overflow-y: scroll;
     width: 50vw;
     position: absolute;
     background: var(--suggestion-bg);
@@ -222,12 +222,12 @@ div.ui.large.icon.input {
 @media screen and (max-width: 520px) {
     div.ui.large.icon.input{
         input{
-            width: 80vw;
+            width: 70vw;
         }
     }
 
     .suggestion-box{
-        width: 80vw;
+        width: 70vw;
     }
 }
 </style>

@@ -77,7 +77,6 @@ export default {
 
         --suggestion-bg: #F2F2F5;
         --selected:  #B6D3F7;
-
     }
 
     body{

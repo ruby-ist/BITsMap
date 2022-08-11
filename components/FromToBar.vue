@@ -253,7 +253,7 @@ div.ui.large.icon.input {
 .suggestion-box {
     min-height: 100px;
     max-height: 500px;
-    overflow: scroll;
+    overflow-y: scroll;
     width: 25vw;
     position: absolute;
     background: var(--suggestion-bg);
