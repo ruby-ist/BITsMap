@@ -35,8 +35,6 @@
                 </radialGradient>
             </defs>
             <ellipse class="cls-1" cx="145.59015" cy="138.69958" rx="145.59015" ry="138.69958"/>
-            <circle id="ring-3" class="cls-2" cx="145.59015" cy="138.69958" r="32"/>
-            <circle id="ring-2" class="cls-2" cx="145.59015" cy="138.69958" r="32"/>
             <circle id="ring-1" class="cls-2" cx="145.59015" cy="138.69958" r="32"/>
             <g>
                 <path id="dot" class="cls-3" d="M228.19114,109.92123a32,32,0,1,0,32,32A31.99909,31.99909,0,0,0,228.19114,109.92123Zm0,56.09226a24.09226,24.09226,0,1,1,24.09229-24.0923A24.11893,24.11893,0,0,1,228.19114,166.01349Z" transform="translate(-82.60103 -3.22165)"/>
@@ -91,22 +89,6 @@ export default {
             duration: 2,
             repeatDelay: -0.1
         });
-        // gsap.to('#ring-2',{
-        //     scale: 5,
-        //     opacity: 0,
-        //     transformOrigin: 'center',
-        //     repeat: -1,
-        //     duration: 9,
-        //     delay: 3,
-        // });
-        // gsap.to('#ring-3',{
-        //     scale: 5,
-        //     opacity: 0,
-        //     transformOrigin: 'center',
-        //     repeat: -1,
-        //     duration: 9,
-        //     delay: 6,
-        // });
     },
     updated() {
         this.url = `https://geobits.onrender.com/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomLevel}`;
@@ -120,7 +102,6 @@ export default {
 #location{
     position: absolute;
     z-index: 2;
-    transform: translate(-50%, -50%);
 
     svg{
         height: 96px;
