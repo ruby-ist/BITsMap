@@ -45,7 +45,6 @@ export default {
     methods:{
         copy() {
             navigator.clipboard.writeText(this.$refs.urlInput.value);
-            // this.$refs.copyButton.innerText = "Copied!";
         },
         goTo() {
             this.navigation = true;
@@ -69,7 +68,6 @@ export default {
     },
     updated() {
         this.url = `https://geobits.onrender.com/?left=${this.x}&top=${this.y}&svg=${this.svg}&level=${this.zoomLevel}`;
-        // this.$refs.copyButton.innerText = "Copy";
     }
 }
 </script>

@@ -1,9 +1,6 @@
 <template>
     <div id="navbar" class="ui secondary menu">
-
-        <a class="item ui huge header">
-            GeoBITs
-        </a>
+        <MainLogo class="logo" />
         <div class="right menu">
             <DirectionBar v-if="navigation"/>
             <SearchBar v-else class="item" />
@@ -42,6 +39,11 @@ export default {
 
 <style lang="scss" scoped>
 #navbar {
+    .logo{
+        width: 150px;
+        margin-left: 6vw;
+    }
+
     position: fixed;
     top: 0;
     z-index: 4;
@@ -72,13 +74,6 @@ export default {
         }
     }
 
-    .header {
-        color: var(--nav-btn-bg) !important;
-        padding-left: 6vw;
-        background: transparent;
-        font-weight: 600;
-    }
-
     div.right.menu{
         display: flex;
         justify-content: space-between;
@@ -89,7 +84,7 @@ export default {
 
 @media screen and (max-width: 840px){
     #navbar{
-        .header{
+        .logo{
             display: none;
         }
 

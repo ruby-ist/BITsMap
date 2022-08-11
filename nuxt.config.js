@@ -33,7 +33,8 @@ export default {
             {src: "https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.js"},
             {src: "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"},
             {src: "https://hammerjs.github.io/dist/hammer.min.js"},
-            {src: "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.js"}
+            {src: "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.js"},
+            {src: "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"}
         ]
     },
 

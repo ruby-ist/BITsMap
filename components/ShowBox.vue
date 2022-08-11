@@ -203,6 +203,14 @@ export default {
                 margin: 10px 0;
             }
 
+            li::before {
+                content: "\2022";
+                color: var(--box-primary);
+                font-weight: bold;
+                display: inline-block;
+                width: 1em;
+                margin-left: -1em;
+            }
         }
     }
 

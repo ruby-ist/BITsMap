@@ -52,18 +52,57 @@ export default {
 }
 </script>
 
-<style scoped>
-.tag{
+<style scoped lang="scss">
+.tag {
     position: absolute;
     font-weight: 400;
     font-size: 1rem;
     text-align: center;
-    color: var(--tag-initial);
-    text-shadow: var(--tag-shadow);
+    color: #ffffff;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
     font-family: 'Inter', sans-serif;
     width: 60px;
     text-wrap: normal;
     z-index: 1;
     cursor: pointer;
+}
+
+.dark-tags {
+    .tag{
+        color: #7a88ef;
+        text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+    }
+
+    .tag:nth-child(2n) {
+        color: #ee9a25
+    }
+
+    .tag:nth-child(3n) {
+        color: #f27025;
+    }
+
+    .tag:nth-child(4n) {
+        color: #d36db8;
+    }
+
+    .tag:nth-child(5n) {
+        color: #ed5d69;
+    }
+
+    .tag:nth-child(6n) {
+        color: #a083ff;
+    }
+
+    .tag:nth-child(7n) {
+        color: #35a470;
+    }
+
+    .tag:nth-child(8n) {
+        color: #419dd3;
+    }
+
+    .tag:nth-child(9n) {
+        color: #5a91fe;
+    }
 }
 </style>

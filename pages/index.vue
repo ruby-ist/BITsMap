@@ -10,7 +10,7 @@
                  alt="satellite Map" oncontextmenu="return false">
             <MapRoute :height="height" :width="width"/>
 
-            <MapTags :level="level"/>
+            <MapTags :level="level" :class="{'dark-tags': (darkTheme && svg)}"/>
             <MapLegends :level="level"/>
             <Pin :x="pinLeft" :y="pinTop" :svg="svg" :zoomLevel="level"/>
             <Location :left="locationX" :top="locationY" :svg="svg" :zoomLevel="level"/>
