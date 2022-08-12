@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="legend in legends">
-      <img :id="legend['id']" :src="require(`~/assets/legends/${getName(legend['link'])}.svg`)" :style="{ top: legend['top'], left: legend['left'] }" class="legend" />
+      <img :id="legend['id']" :src="require(`~/static/legends/${getName(legend['link'])}.svg`)" :style="{ top: legend['top'], left: legend['left'] }" class="legend" />
     </div>
   </div>
 </template>

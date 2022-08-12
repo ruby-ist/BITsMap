@@ -1,16 +1,36 @@
 <template>
     <div id="zoom-buttons" class="map-buttons">
         <Compass v-show="compass"/>
-        <button class="ui blue icon button" @click="toggleNavigation">
+        <button class="ui blue icon button"
+                id="routes-btn"
+                data-content="Find routes"
+                data-position="left center"
+                data-variation="tiny inverted"
+                @click="toggleNavigation">
             <i class="large icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
         </button>
-        <button class="ui blue icon button" @click="compassHandler">
+        <button class="ui blue icon button"
+                data-tooltip="Compass"
+                data-position="left center"
+                data-inverted=""
+                data-variation="tiny"
+                @click="compassHandler">
             <i class="large compass icon" :class="{outline: compass}"></i>
         </button>
-        <button class="ui blue icon button" @click="$emit('zoomin')">
+        <button class="ui blue icon button"
+                data-tooltip="Zoom in"
+                data-position="left center"
+                data-inverted=""
+                data-variation="tiny"
+                @click="$emit('zoomin')">
             <i class=" large plus icon"></i>
         </button>
-        <button class="ui blue icon button" @click="$emit('zoomout')">
+        <button class="ui blue icon button"
+                data-tooltip="Zoom out"
+                data-position="left center"
+                data-inverted=""
+                data-variation="tiny"
+                @click="$emit('zoomout')">
             <i class="large minus icon"></i>
         </button>
     </div>

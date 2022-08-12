@@ -2,11 +2,11 @@
     <div>
         <NavBar />
         <div id="map">
-            <img class="the-map" v-if="svg && darkTheme" :src="require(`~/assets/images/Map-dark.svg`)" :height="height" :width="width"
+            <img class="the-map" v-if="svg && darkTheme" :src="require(`~/static/Map-dark.svg`)" :height="height" :width="width"
                  alt="svg Map" oncontextmenu="return false">
-            <img class="the-map" v-else-if="svg" :src="require(`~/assets/images/Map.svg`)" :height="height" :width="width"
+            <img class="the-map" v-else-if="svg" :src="require(`~/static/Map.svg`)" :height="height" :width="width"
                  alt="svg Map" oncontextmenu="return false">
-            <img class="the-map" v-else :src="require(`~/assets/images/Map.webp`)" :height="height" :width="width"
+            <img class="the-map" v-else :src="require(`~/static/Map.webp`)" :height="height" :width="width"
                  alt="satellite Map" oncontextmenu="return false">
             <MapRoute :height="height" :width="width"/>
 
@@ -195,7 +195,8 @@ export default {
             x += 45;
             y -= 28;
             this.setLocation(x, y);
-            this.position = {'x': x, 'y': y}
+            this.position = {'x': x, 'y': y};
+            $('#location').popup('show');
         },
 
         error() {
@@ -381,6 +382,16 @@ export default {
             minHeight *= 1.5;
             minWidth *= 1.5;
         }
+
+        $('#location-btn').popup('show');
+        $('#routes-btn').popup('show');
+        $('#navbar').popup('show');
+
+        setTimeout(()=>{
+            $('#location-btn').popup('hide');
+            $('#routes-btn').popup('hide');
+            $('#navbar').popup('hide');
+        }, 5000);
 
         // $(document).on('mousemove', (event) => {
         //     let map = $('#map')[0];

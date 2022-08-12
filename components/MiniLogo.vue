@@ -25,14 +25,14 @@ export default {
             });
         },
         rotateOnce(){
-            let t2 = gsap.timeline().to('#omega',{
+            let t2 = gsap.timeline({repeat: 1}).to('#omega',{
                 scaleX: 0,
                 transformOrigin: "center",
-                duration: 0.3
+                duration: 0.2
             }).to('#omega',{
                 scaleX: 1,
                 transformOrigin: "center",
-                duration: 0.3,
+                duration: 0.2
             });
 
             t2.play();

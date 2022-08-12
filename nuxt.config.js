@@ -24,6 +24,11 @@ export default {
                 type: "text/css",
                 href: "https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"
             },
+            {
+                rel: "icon",
+                type: "image/x-icon",
+                href: "/favicon.ico?v=1.1"
+            },
             {rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.css"},
             {rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/popup.min.css"},
             {rel: "stylesheet",  href:"https://fonts.googleapis.com/css2?family=Yeon+Sung&family=Nunito+Sans:wght@300;400;500&family=Inter&family=Quicksand:wght@400;500;600&family=Overlock&family=Special+Elite&display=swap"}

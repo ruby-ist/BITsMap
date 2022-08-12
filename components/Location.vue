@@ -93,7 +93,6 @@ export default {
     updated() {
         this.url = `https://geobits.onrender.com/?left=${this.left}&top=${this.top}&svg=${this.svg}&level=${this.zoomLevel}`;
         this.$refs.copyButton.innerText = "Share";
-        $('#location').popup('show');
     }
 }
 </script>
