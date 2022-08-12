@@ -36,6 +36,7 @@ export default {
             });
 
             t2.play();
+            $('#main-popup').popup('show');
         }
     },
     mounted(){

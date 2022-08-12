@@ -1,5 +1,5 @@
 <template>
-    <div id="navbar" class="ui secondary menu" data-content="Hold anywhere to pin the location. Double tap to hide the pin and your location" data-position="bottom center" data-variation="small inverted basic">
+    <div id="navbar" class="ui secondary menu">
         <MainLogo class="logo" />
         <div class="right menu">
             <MiniLogo class="symbol" v-show="!navigation"/>

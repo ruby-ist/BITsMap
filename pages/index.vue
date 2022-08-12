@@ -1,6 +1,7 @@
 <template>
     <div>
         <NavBar />
+        <div id="main-popup" data-content="Hold anywhere to pin the location. Double tap to hide the pin and your location" data-position="bottom center" data-variation="small inverted basic"></div>
         <div id="map">
             <img class="the-map" v-if="svg && darkTheme" :src="require(`~/static/Map-dark.svg`)" :height="height" :width="width"
                  alt="svg Map" oncontextmenu="return false">
@@ -16,8 +17,8 @@
             <Location :left="locationX" :top="locationY" :svg="svg" :zoomLevel="level"/>
         </div>
 
-        <ViewButtons @changeSVG="changeView" @changeTheme="toggleTheme" @getLocation="geoLocate" :lined="svg" :isDark="darkTheme"/>
-        <ZoomButtons @zoomin="handleZoomIn" @zoomout="handleZoomOut"/>
+        <ViewButtons @changeSVG="changeView" @changeTheme="toggleTheme" :lined="svg" :isDark="darkTheme"/>
+        <ZoomButtons @zoomin="handleZoomIn" @zoomout="handleZoomOut" @getLocation="geoLocate"/>
     </div>
 </template>
 
@@ -196,7 +197,6 @@ export default {
             y -= 28;
             this.setLocation(x, y);
             this.position = {'x': x, 'y': y};
-            $('#location').popup('show');
         },
 
         error() {
@@ -385,12 +385,12 @@ export default {
 
         $('#location-btn').popup('show');
         $('#routes-btn').popup('show');
-        $('#navbar').popup('show');
+        $('#main-popup').popup('show');
 
         setTimeout(()=>{
-            $('#location-btn').popup('hide');
-            $('#routes-btn').popup('hide');
-            $('#navbar').popup('hide');
+            $('#location-btn').popup('destroy');
+            $('#routes-btn').popup('destroy');
+            $('#main-popup').popup('hide');
         }, 5000);
 
         // $(document).on('mousemove', (event) => {
@@ -430,6 +430,12 @@ export default {
             this.clipShow = false;
             this.position = {"x": left, "y": top};
             $(`#${data['id']}`).click();
+        },
+
+        callBackId(){
+            setTimeout(() => {
+                $('#location').popup('show')
+            }, 1000);
         },
 
         level(){

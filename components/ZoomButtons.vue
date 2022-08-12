@@ -10,27 +10,17 @@
             <i class="large icon" :class="{search: navigation, location: navigation, map: !navigation, signs: !navigation }"></i>
         </button>
         <button class="ui blue icon button"
-                data-tooltip="Compass"
+                id="location-btn"
+                data-content="Find your location"
                 data-position="left center"
-                data-inverted=""
-                data-variation="tiny"
-                @click="compassHandler">
-            <i class="large compass icon" :class="{outline: compass}"></i>
+                data-variation="tiny inverted"
+                @click="$emit('getLocation')">
+            <i class="large crosshairs icon"></i>
         </button>
-        <button class="ui blue icon button"
-                data-tooltip="Zoom in"
-                data-position="left center"
-                data-inverted=""
-                data-variation="tiny"
-                @click="$emit('zoomin')">
+        <button class="ui blue icon button" @click="$emit('zoomin')">
             <i class=" large plus icon"></i>
         </button>
-        <button class="ui blue icon button"
-                data-tooltip="Zoom out"
-                data-position="left center"
-                data-inverted=""
-                data-variation="tiny"
-                @click="$emit('zoomout')">
+        <button class="ui blue icon button" @click="$emit('zoomout')">
             <i class="large minus icon"></i>
         </button>
     </div>
@@ -42,7 +32,7 @@ import {useSearchStore} from "~/store/search";
 import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
-    emits: ['zoomin', 'zoomout'],
+    emits: ['zoomin', 'zoomout', 'getLocation'],
     data(){
         return {
             compass: false,
@@ -69,11 +59,6 @@ export default {
             else
                 gsap.to('#zoom-buttons button', {xPercent: 0, duration: 0.4, stagger: 0.2});
         },
-
-        compassHandler(){
-            this.compass = !this.compass;
-            $('#compass').toggle();
-        }
     },
     watch: {
         showBox(){

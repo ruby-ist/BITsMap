@@ -1,19 +1,9 @@
 <template>
     <div id="view-buttons" class="map-buttons">
-        <button class="ui blue icon button"
-                data-tooltip="Info"
-                data-position="right center"
-                data-inverted=""
-                data-variation="tiny">
+        <button class="ui blue icon button">
             <i class="large info icon"></i>
         </button>
-
-        <button class="ui blue icon button"
-                :data-tooltip="(isDark) ? 'Light mode' : 'Dark mode'"
-                data-position="right center"
-                data-inverted=""
-                data-variation="tiny"
-                @click="$emit('changeTheme')">
+        <button class="ui blue icon button" @click="$emit('changeTheme')">
             <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 193.32642 190.67239">
                 <g id="round">
                     <path id="half-round" class="cls-1"
@@ -64,21 +54,10 @@
                 </g>
             </svg>
         </button>
-
-        <button class="ui blue icon button"
-                id="location-btn"
-                data-content="Find your location"
-                data-position="right center"
-                data-variation="tiny inverted"
-                @click="$emit('getLocation')">
-            <i class="large street view icon"></i>
+        <button class="ui blue icon button" @click="compassHandler">
+            <i class="large compass icon" :class="{outline: compass}"></i>
         </button>
-        <button class="ui blue icon button"
-                :data-tooltip="(lined) ? 'Satellite map' : 'SVG map'"
-                data-position="right center"
-                data-inverted=""
-                data-variation="tiny"
-                @click="$emit('changeSVG')">
+        <button class="ui blue icon button" @click="$emit('changeSVG')">
             <i class="large map icon" :class="{ outline: !lined }"></i>
         </button>
     </div>
@@ -92,6 +71,7 @@ export default {
     props: {lined: Boolean, isDark: Boolean},
     data(){
         return{
+            compass: false,
             timeLine: {}
         }
     },
@@ -105,6 +85,11 @@ export default {
                 gsap.to('#view-buttons button', {xPercent: -200, duration: 0.4});
             else
                 gsap.to('#view-buttons button', {xPercent: 0, duration: 0.4, stagger: 0.2});
+        },
+
+        compassHandler(){
+            this.compass = !this.compass;
+            $('#compass').toggle();
         },
 
         animation() {
@@ -138,6 +123,7 @@ export default {
         this.timeLine = this.animation();
         if(!this.isDark)
             this.timeLine.play();
+        $('#info-btn').popup();
     },
     watch: {
         showBox() {
