@@ -2,33 +2,6 @@
     <div id="location" data-content="Click to share location" data-position="top center" :style="{left: `${left-48}px`, top: `${top-48}px`}">
         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 291.1803 277.39916">
             <defs>
-                <style>
-                    .cls-1 {
-                        fill: url(#radial-gradient);
-                    }
-
-                    .cls-2 {
-                        fill: none;
-                        stroke-width: 2px;
-                    }
-
-                    .cls-2, .cls-4 {
-                        stroke: #116cff;
-                    }
-
-                    .cls-2, .cls-3, .cls-4 {
-                        stroke-miterlimit: 10;
-                    }
-
-                    .cls-3 {
-                        fill: #fff;
-                        stroke: #000;
-                    }
-
-                    .cls-4 {
-                        fill: #116cff;
-                    }
-                </style>
                 <radialGradient id="radial-gradient" cx="181.73333" cy="92.90683" r="81.22867" gradientTransform="translate(-180.13945 -19.94068) scale(1.79235 1.70752)" gradientUnits="userSpaceOnUse">
                     <stop offset="0.14222" stop-color="#116cff"/>
                     <stop offset="1" stop-color="#116cff" stop-opacity="0.25"/>
@@ -82,6 +55,7 @@ export default {
         });
 
         gsap.to('#ring-1',{
+            visibility: 'visible',
             scale: 5,
             opacity: 0,
             transformOrigin: 'center',
@@ -101,6 +75,32 @@ export default {
 #location{
     position: absolute;
     z-index: 2;
+
+    .cls-1 {
+        fill: url(#radial-gradient);
+    }
+
+    .cls-2 {
+        fill: none;
+        stroke-width: 2px;
+    }
+
+    .cls-2, .cls-4 {
+        stroke: #116cff;
+    }
+
+    .cls-2, .cls-3, .cls-4 {
+        stroke-miterlimit: 10;
+    }
+
+    .cls-3 {
+        fill: #fff;
+        stroke: #000;
+    }
+
+    .cls-4 {
+        fill: #116cff;
+    }
 
     svg{
         height: 96px;

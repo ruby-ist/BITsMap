@@ -435,7 +435,7 @@ export default {
         callBackId(){
             setTimeout(() => {
                 $('#location').popup('show')
-            }, 1000);
+            }, 500);
         },
 
         level(){
