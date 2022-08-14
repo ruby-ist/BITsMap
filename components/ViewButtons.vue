@@ -1,8 +1,10 @@
 <template>
     <div id="view-buttons" class="map-buttons">
-        <button class="ui blue icon button">
+        <NuxtLink to="/about">
+            <button class="ui blue icon button">
             <i class="large info icon"></i>
-        </button>
+            </button>
+        </NuxtLink>
         <button class="ui blue icon button" @click="$emit('changeTheme')">
             <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 193.32642 190.67239">
                 <g id="round">
