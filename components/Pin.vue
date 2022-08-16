@@ -1,5 +1,5 @@
 <template>
-    <div id="pin" :style="{left: `${x}px`, top: `${y}px`}">
+    <div id="pin" :style="{left: `${x - 16}px`, top: `${y - 32}px`}">
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 346 437.4" style="enable-background:new 0 0 346 437.4;" xml:space="preserve">
                     <path class="st0" d="M333.2,132.3C299.8,3,145.8-29.7,59.3,52.4c-63.6,60.4-69.5,162.5-13.1,232.3c37.1,46,75,91.4,112.6,137
@@ -14,7 +14,7 @@
                     <i class="directions icon"></i>
                 </button>
                 <button id="pin-copy" class="ui black right icon button" @click="copy">
-                    <i class="copy icon"></i>
+                    <i class="share alternate icon"></i>
                 </button>
             </div>
         </div>
@@ -47,7 +47,7 @@ export default {
             try {
                 await navigator.share({
                     title: 'GeoBITs',
-                    text: 'You got a location 📌 pinned for you: ',
+                    text: 'You got a location 📌 pinned for you:',
                     url: this.$refs.urlInput.value
                 });
             } catch (err) {

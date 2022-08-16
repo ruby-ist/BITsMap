@@ -41,13 +41,10 @@ export default {
     },
     methods:{
         async copy(){
-            // navigator.clipboard.writeText(this.$refs.urlInput.value);
-            // this.$refs.copyButton.innerText = "Copied!";
-
             try {
                 await navigator.share({
                     title: 'GeoBITs',
-                    text: 'Your friend has shared their location with you: ',
+                    text: "🗺 Locate me at:",
                     url: this.$refs.urlInput.value
                 });
             } catch (err) {

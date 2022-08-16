@@ -302,7 +302,7 @@ export default {
                 this.width /= 1.5
             }
             this.position = {'x': x, 'y': y};
-            this.setPin(x - 16, y - 32);
+            this.setPin(x, y);
         }
 
         this.goTo(this.position);
@@ -340,8 +340,8 @@ export default {
         let mc = new Hammer(map, {touchAction: 'manipulation'});
         mc.get('press').set({time: 700});
         mc.on('press', function (event) {
-            let x = event.srcEvent.layerX - 16;
-            let y = event.srcEvent.layerY - 32;
+            let x = event.srcEvent.layerX;
+            let y = event.srcEvent.layerY;
             that.setPin(x, y);
             that.clipShow = true;
         });
@@ -426,7 +426,7 @@ export default {
             let left = parseInt(data["left"].slice(0, -2));
             let top = parseInt(data["top"].slice(0, -2));
             await this.fullZoomIn();
-            await this.setPin(left - 20, top - 10);
+            await this.setPin(left - 15, top + 35);
             this.clipShow = false;
             this.position = {"x": left, "y": top};
             $(`#${data['id']}`).click();
