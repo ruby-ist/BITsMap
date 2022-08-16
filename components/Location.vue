@@ -40,9 +40,20 @@ export default {
         }
     },
     methods:{
-        copy(){
-            navigator.clipboard.writeText(this.$refs.urlInput.value);
-            this.$refs.copyButton.innerText = "Copied!";
+        async copy(){
+            // navigator.clipboard.writeText(this.$refs.urlInput.value);
+            // this.$refs.copyButton.innerText = "Copied!";
+
+            try {
+                await navigator.share({
+                    title: 'GeoBITs',
+                    text: 'Your friend has shared their location with you: ',
+                    url: this.$refs.urlInput.value
+                });
+            } catch (err) {
+                await navigator.clipboard.writeText(this.$refs.urlInput.value);
+                this.$refs.copyButton.innerText = "Copied!";
+            }
         }
     },
     mounted() {

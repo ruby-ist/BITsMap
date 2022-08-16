@@ -302,7 +302,7 @@ export default {
                 this.width /= 1.5
             }
             this.position = {'x': x, 'y': y};
-            this.setPin(x, y);
+            this.setPin(x - 16, y - 32);
         }
 
         this.goTo(this.position);

@@ -43,8 +43,16 @@ export default {
         ...mapWritableState(useDirectionStore, ['toId','toName','pinTop','pinLeft']),
     },
     methods:{
-        copy() {
-            navigator.clipboard.writeText(this.$refs.urlInput.value);
+        async copy() {
+            try {
+                await navigator.share({
+                    title: 'GeoBITs',
+                    text: 'You got a location 📌 pinned for you: ',
+                    url: this.$refs.urlInput.value
+                });
+            } catch (err) {
+                await navigator.clipboard.writeText(this.$refs.urlInput.value);
+            }
         },
         goTo() {
             this.navigation = true;
