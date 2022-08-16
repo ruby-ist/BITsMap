@@ -10,12 +10,19 @@
 </template>
 
 <script>
-import {mapWritableState, mapActions} from "pinia";
+import {mapState, mapWritableState, mapActions} from "pinia";
 import {useDirectionStore} from "@/store/direction";
+import {useSearchStore} from "@/store/search";
 
 export default {
+    data(){
+        return{
+            interval: 0,
+        }
+    },
     computed: {
-        ...mapWritableState(useDirectionStore, ['fromId', 'toId'])
+        ...mapState(useSearchStore, ['navigation']),
+        ...mapWritableState(useDirectionStore, ['myTop', 'myLeft', 'fromId', 'toId'])
     },
     methods: {
         ...mapActions(useDirectionStore, ['findRoute']),
@@ -30,15 +37,53 @@ export default {
                 this.$refs.goBtn.classList.remove('disabled');
             else
                 this.$refs.goBtn.classList.add('disabled');
+        },
+        async provideLocation(){
+            if (!navigator.geolocation)
+                alert("Geolocation is not supported in this browser.");
+            else
+                navigator.geolocation.getCurrentPosition(await this.success, this.error);
+        },
+        success(position){
+            let x = position.coords.longitude.toPrecision(7) * 100000;
+            let y = position.coords.latitude.toPrecision(7) * 100000;
+            this.myLeft = (x - 7727333) * (3420 / 907.0);
+            this.myTop = 3876 - (y - 1149133) * (3876 / 1016.0);
+            if(!this.$refs.goBtn.classList.contains('disabled'))
+                this.findRoute();
+        },
+        error(){
+            alert("Unable to get your location.");
+        },
+        setTimer(){
+            this.interval = setInterval(this.provideLocation, 10000);
+        },
+        clearTimer(){
+            clearInterval(this.interval);
         }
     },
+    beforeDestroy(){
+        this.clearTimer();
+    },
     watch: {
-        toId(newValue) {
+        toId(newValue, oldValue) {
             this.checkValue();
+
+            if(newValue === "my-location" && this.navigation)
+                this.setTimer();
+
+            if(oldValue === "my-location")
+                this.clearTimer();
         },
-        fromId(newValue) {
+        fromId(newValue, oldValue) {
             this.checkValue();
-        }
+
+            if(newValue === "my-location" && this.navigation)
+                this.setTimer();
+
+            if(oldValue === "my-location")
+                this.clearTimer();
+        },
     }
 }
 </script>

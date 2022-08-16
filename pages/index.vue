@@ -393,14 +393,14 @@ export default {
             $('#main-popup').popup('hide');
         }, 5000);
 
-        $(document).on('mousemove', (event) => {
-            let map = $('#map')[0];
-            const {
-                clientX,
-                clientY
-            } = event
-            console.log(map.scrollLeft + clientX, map.scrollTop + clientY);
-        });
+        // $(document).on('mousemove', (event) => {
+        //     let map = $('#map')[0];
+        //     const {
+        //         clientX,
+        //         clientY
+        //     } = event
+        //     console.log(map.scrollTop + clientY - 85, map.scrollLeft + clientX -2);
+        // });
     },
 
     updated() {

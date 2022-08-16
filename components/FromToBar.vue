@@ -194,7 +194,7 @@ export default {
                 this.locationUsed = false
         },
 
-        toName(newValue){
+        toName(){
             if(this.placeholder === "To") {
                 this.query = this.toName;
                 this.successClass = true;

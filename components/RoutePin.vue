@@ -1,5 +1,5 @@
 <template>
-    <div v-if="type === 'start'" class="route-pin" :style="{left: `${startX - 16}px`, top: `${startY - 16}px`}">
+    <div v-if="type === 'start'" class="route-pin" :style="{left: `${startX - 16}px`, top: `${startY - 32}px`}">
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 346 437.4" style="enable-background:new 0 0 346 437.4;" xml:space="preserve">
                     <path class="st0" d="M333.2,132.3C299.8,3,145.8-29.7,59.3,52.4c-63.6,60.4-69.5,162.5-13.1,232.3c37.1,46,75,91.4,112.6,137
@@ -8,7 +8,7 @@
                     />
         </svg>
     </div>
-    <div v-else class="route-pin" :style="{left: `${endX - 16}px`, top: `${endY - 16}px`}">
+    <div v-else class="route-pin" :style="{left: `${endX - 16}px`, top: `${endY - 32}px`}">
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              viewBox="0 0 346 437.4" style="enable-background:new 0 0 346 437.4;" xml:space="preserve">
                     <path class="st0" d="M333.2,132.3C299.8,3,145.8-29.7,59.3,52.4c-63.6,60.4-69.5,162.5-13.1,232.3c37.1,46,75,91.4,112.6,137
