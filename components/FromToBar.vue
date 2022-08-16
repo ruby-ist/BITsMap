@@ -199,6 +199,13 @@ export default {
                 this.query = this.toName;
                 this.successClass = true;
             }
+        },
+
+        fromName(){
+            if(this.placeholder === "From") {
+                this.query = this.fromName;
+                this.successClass = true;
+            }
         }
     }
 }

@@ -1,9 +1,10 @@
 <template>
     <div id="direction-bar">
         <FromToBar class="item" placeholder="From" @setPlace="setFrom"/>
+        <i class="exchange alternate blue large link icon" @click="swap"></i>
         <FromToBar class="item" placeholder="To" @setPlace="setTo"/>
 
-        <button ref="goBtn" class='ui blue disabled button' @click="findRoute">
+        <button ref="goBtn" class='ui blue disabled button' @click="goHandler">
             <i class="directions icon"></i> Go
         </button>
     </div>
@@ -22,28 +23,39 @@ export default {
     },
     computed: {
         ...mapState(useSearchStore, ['navigation']),
-        ...mapWritableState(useDirectionStore, ['myTop', 'myLeft', 'fromId', 'toId'])
+        ...mapWritableState(useDirectionStore, ['myTop', 'myLeft', 'fromId', 'toId', 'fromName', 'toName'])
     },
     methods: {
         ...mapActions(useDirectionStore, ['findRoute']),
+
         setFrom(id) {
             this.fromId = id;
         },
+
         setTo(id) {
             this.toId = id;
         },
+
         checkValue() {
             if (this.fromId !== "" && this.toId !== "")
                 this.$refs.goBtn.classList.remove('disabled');
             else
                 this.$refs.goBtn.classList.add('disabled');
         },
+
+        goHandler(){
+            this.findRoute();
+            if(this.fromId === "my-location" || this.toId === "my-location")
+                this.setTimer();
+        },
+
         async provideLocation(){
             if (!navigator.geolocation)
                 alert("Geolocation is not supported in this browser.");
             else
                 navigator.geolocation.getCurrentPosition(await this.success, this.error);
         },
+
         success(position){
             let x = position.coords.longitude.toPrecision(7) * 100000;
             let y = position.coords.latitude.toPrecision(7) * 100000;
@@ -52,44 +64,57 @@ export default {
             if(!this.$refs.goBtn.classList.contains('disabled'))
                 this.findRoute();
         },
+
         error(){
             alert("Unable to get your location.");
         },
+
         setTimer(){
             this.interval = setInterval(this.provideLocation, 10000);
         },
+
         clearTimer(){
             clearInterval(this.interval);
+        },
+
+        swap(){
+            this.clearTimer();
+            [this.fromName, this.toName] = [this.toName, this.fromName];
+            [this.fromId, this.toId] = [this.toId, this.fromId];
         }
     },
+
     beforeDestroy(){
         this.clearTimer();
+        this.fromName = "";
+        this.toName = "";
+        this.fromId = "";
+        this.toId = "";
     },
+
     watch: {
-        toId(newValue, oldValue) {
+        async toId(newValue, oldValue) {
             this.checkValue();
 
-            if(newValue === "my-location" && this.navigation)
-                this.setTimer();
-
             if(oldValue === "my-location")
-                this.clearTimer();
+                await this.clearTimer();
         },
-        fromId(newValue, oldValue) {
+        async fromId(newValue, oldValue) {
             this.checkValue();
 
-            if(newValue === "my-location" && this.navigation)
-                this.setTimer();
-
             if(oldValue === "my-location")
-                this.clearTimer();
+                await this.clearTimer();
         },
     }
 }
 </script>
 
 <style scoped lang="scss">
-    button.ui.teal.button {
+    i.blue.icon{
+        color: var(--nav-btn-bg) !important;
+    }
+
+    button.ui.blue.button {
         margin-right: 1.5rem;
     }
 
@@ -101,12 +126,16 @@ export default {
         #direction-bar {
             padding: 20px 15px 0;
 
+            i.exchange.icon{
+                position: absolute;
+                right: 14vw;
+                transform: rotate(90deg) translateX(10px);
+            }
+
             button{
                 position: absolute;
                 margin-right: 0;
                 right: 8vw;
-                top: 50%;
-                transform: translateY(-50%);
             }
 
             .item {
