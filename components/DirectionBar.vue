@@ -70,7 +70,7 @@ export default {
         },
 
         setTimer(){
-            this.interval = setInterval(this.provideLocation, 10000);
+            this.interval = setInterval(this.provideLocation, 30000);
         },
 
         clearTimer(){
