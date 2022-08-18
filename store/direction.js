@@ -12,6 +12,7 @@ export const useDirectionStore = defineStore('direction', {
             myLeft: 0,
             pinTop: 0,
             pinLeft: 0,
+            type: "pedestrian",
             locationUsed: false,
         }
     },

@@ -597,7 +597,7 @@ export default {
     computed: {
         ...mapWritableState(useMapStore, ['level']),
         ...mapWritableState(usePinStore, ['startX', 'startY', 'endX', 'endY']),
-        ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'myTop', 'myLeft','pinLeft', 'pinTop']),
+        ...mapState(useDirectionStore, ['directionTrigger', 'fromId', 'toId', 'myTop', 'myLeft','pinLeft', 'pinTop', 'type']),
         ...mapWritableState(useDetailsBoxStore, ['directionBox', 'showBox'])
     },
     methods: {
@@ -613,7 +613,7 @@ export default {
         async directionTrigger(newValue) {
             $('#pin').hide();
             this.showBox = false;
-            this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}&my-top=${this.myTop}&my-left=${this.myLeft}&pin-top=${this.pinTop}&pin-left=${this.pinLeft}`);
+            this.path = await this.$http.$get(`https://geobits.herokuapp.com/map/direction?from=${this.fromId}&to=${this.toId}&my-top=${this.myTop}&my-left=${this.myLeft}&pin-top=${this.pinTop}&pin-left=${this.pinLeft}&type=${this.type}`);
             let times = 4 - this.level;
             this.startX = this.path["starting-point"]['x'] / (1.5 ** times);
             this.startY = this.path["starting-point"]['y'] / (1.5 ** times);
@@ -623,7 +623,6 @@ export default {
         },
         path: {
             handler(newValue) {
-                console.log(newValue);
                 $('.cls-2').css('visibility', 'hidden');
                 let path = newValue["path"];
                 for (let i = 0; i < path.length - 1; i++)
@@ -633,6 +632,20 @@ export default {
             },
             deep: true,
         },
+        fromId(newValue){
+            if(newValue === "") {
+                $('.route-pin').hide();
+                $('#routes .cls-2').css('visibility', 'hidden');
+                this.directionBox = false;
+            }
+        },
+        toId(newValue){
+            if(newValue === "") {
+                $('.route-pin').hide();
+                $('#routes .cls-2').css('visibility', 'hidden');
+                this.directionBox = false;
+            }
+        }
     }
 }
 </script>

@@ -1,6 +1,18 @@
 <template>
     <div id="direction-box">
-        <div class="ui large blue header">Distance: {{ Math.round(distance) }} m</div>
+        <div class="type-icons">
+            <div class="ui circular icon button" :class="{blue: isPedestrian}">
+                <i class="walking icon"
+                   @click="changePedestrian"
+                   :class="{blue:  isVehicle, large: isPedestrian, big: isVehicle}"></i>
+            </div>
+            <div class="ui circular icon button" :class="{blue: isVehicle}">
+                <i class="car alternate icon"
+                   @click="changeVehicle"
+                   :class="{blue:  isPedestrian, large: isVehicle, big: isPedestrian}"></i>
+            </div>
+        </div>
+        <div class="ui blue header">Distance: {{ Math.round(distance) }} m</div>
         <br/>
         <div class="details">
             <div class="place-name"> From:</div>
@@ -20,17 +32,24 @@
 </template>
 
 <script>
-import {mapState, mapWritableState} from "pinia";
+import {mapActions, mapWritableState} from "pinia";
 import {useDirectionStore} from "@/store/direction";
 import {useDetailsBoxStore} from "@/store/detailsBox";
 
 export default {
     props: ['distance'],
     computed: {
-        ...mapState(useDirectionStore, ['fromName', 'toName']),
-        ...mapWritableState(useDetailsBoxStore, ['directionBox'])
+        ...mapWritableState(useDirectionStore, ['fromName', 'fromId', 'toName', 'toId', 'type']),
+        ...mapWritableState(useDetailsBoxStore, ['directionBox']),
+        isPedestrian(){
+            return this.type === "pedestrian";
+        },
+        isVehicle(){
+            return this.type === "vehicle";
+        },
     },
     methods: {
+        ...mapActions(useDirectionStore, ['findRoute']),
         showUp(){
             gsap.to('#direction-box',{
                 yPercent: 0,
@@ -42,6 +61,16 @@ export default {
                 yPercent: 100,
                 duration: 0.5
             });
+        },
+        changeVehicle(){
+            this.type = "vehicle";
+            if(this.fromId !== '' && this.toId !== '' )
+                this.findRoute();
+        },
+        changePedestrian(){
+            this.type = "pedestrian";
+            if(this.fromId !== '' && this.toId !== '' )
+                this.findRoute();
         },
     },
     mounted(){
@@ -137,6 +166,12 @@ export default {
 
         .icon{
             margin: 0 6px;
+        }
+    }
+
+    .type-icons{
+        div.ui.icon.button{
+            border: none;
         }
     }
 }
