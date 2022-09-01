@@ -4,7 +4,7 @@
         <i class="exchange alternate blue large link icon" @click="swap"></i>
         <FromToBar class="item" placeholder="To" @setPlace="setTo"/>
 
-        <button ref="goBtn" class='ui blue disabled button' @click="goHandler">
+        <button ref="goBtn" class='ui blue disabled button' @click="findRoute">
             <i class="directions icon"></i> Go
         </button>
     </div>
@@ -23,7 +23,7 @@ export default {
     },
     computed: {
         ...mapState(useSearchStore, ['navigation']),
-        ...mapWritableState(useDirectionStore, ['myTop', 'myLeft', 'fromId', 'toId', 'fromName', 'toName'])
+        ...mapWritableState(useDirectionStore, ['fromId', 'toId', 'fromName', 'toName'])
     },
     methods: {
         ...mapActions(useDirectionStore, ['findRoute']),
@@ -43,49 +43,13 @@ export default {
                 this.$refs.goBtn.classList.add('disabled');
         },
 
-        goHandler(){
-            this.findRoute();
-            if(this.fromId === "my-location" || this.toId === "my-location")
-                this.setTimer();
-        },
-
-        async provideLocation(){
-            if (!navigator.geolocation)
-                alert("Geolocation is not supported in this browser.");
-            else
-                navigator.geolocation.getCurrentPosition(await this.success, this.error);
-        },
-
-        success(position){
-            let x = position.coords.longitude.toPrecision(7) * 100000;
-            let y = position.coords.latitude.toPrecision(7) * 100000;
-            this.myLeft = (x - 7727333) * (3420 / 907.0);
-            this.myTop = 3876 - (y - 1149133) * (3876 / 1016.0);
-            if(!this.$refs.goBtn.classList.contains('disabled'))
-                this.findRoute();
-        },
-
-        error(){
-            alert("Unable to get your location.");
-        },
-
-        setTimer(){
-            this.interval = setInterval(this.provideLocation, 30000);
-        },
-
-        clearTimer(){
-            clearInterval(this.interval);
-        },
-
         swap(){
-            this.clearTimer();
             [this.fromName, this.toName] = [this.toName, this.fromName];
             [this.fromId, this.toId] = [this.toId, this.fromId];
         }
     },
 
     beforeDestroy(){
-        this.clearTimer();
         this.fromName = "";
         this.toName = "";
         this.fromId = "";
@@ -93,17 +57,11 @@ export default {
     },
 
     watch: {
-        async toId(newValue, oldValue) {
+        toId() {
             this.checkValue();
-
-            if(oldValue === "my-location")
-                await this.clearTimer();
         },
-        async fromId(newValue, oldValue) {
+        fromId() {
             this.checkValue();
-
-            if(oldValue === "my-location")
-                await this.clearTimer();
         },
     }
 }
