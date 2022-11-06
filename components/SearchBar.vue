@@ -61,7 +61,7 @@ export default {
             if (this.query !== "") {
                 element.show();
                 this.fetchPending = true;
-                this.response = await this.$http.$get(`http://geobits.ap-south-1.elasticbeanstalk.com/map/search?query=${encodeURIComponent(this.query)}`);
+                this.response = await this.$http.$get(`https://api-geobits.onrender.com/map/search?query=${encodeURIComponent(this.query)}`);
                 this.fetchPending = false;
             } else {
                 element.hide();

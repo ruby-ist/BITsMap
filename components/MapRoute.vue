@@ -285,7 +285,7 @@ export default {
         async directionTrigger(newValue) {
             $('#pin').hide();
             this.showBox = false;
-            this.path = await this.$http.$get(`http://geobits.ap-south-1.elasticbeanstalk.com/map/direction?from=${this.fromId}&to=${this.toId}&my-top=${this.myTop}&my-left=${this.myLeft}&pin-top=${this.pinTop}&pin-left=${this.pinLeft}&type=${this.type}`);
+            this.path = await this.$http.$get(`https://api-geobits.onrender.com/map/direction?from=${this.fromId}&to=${this.toId}&my-top=${this.myTop}&my-left=${this.myLeft}&pin-top=${this.pinTop}&pin-left=${this.pinLeft}&type=${this.type}`);
             let times = 4 - this.level;
             this.startX = this.path["starting-point"]['x'] / (1.5 ** times);
             this.startY = this.path["starting-point"]['y'] / (1.5 ** times);

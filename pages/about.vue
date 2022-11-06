@@ -8,7 +8,7 @@
         <section id="about">
             <MiniLogo class="map-logo" />
             <div class="para">
-                GeoBITs is an online map covering all the places and classes in Bannari Amman Institute of Technology. The idea was to help new students to get familiar with college campus and help them navigate to the places they haven't visited yet in the college campus. You can also share your location with your friends and colleagues. Press or hold at any place in the map to pin point that location and also share it with the url. Searching functionality can be used to find the exam halls and venues of their special classes. Hope it helps to navigate the campus and saves your time.
+                GeoBITs is an online map covering all the classes and places in Bannari Amman Institute of Technology. The idea was to help new students to get familiar with college campus and hostels and help them navigate to the places they haven't visited yet. You can also share your location with your friends and colleagues. Press or hold at any place in the map to pin point that location and share it with the popping url. Searching functionality can be used to find your day-to-day classes, exam halls and venues of their special classes. Hope it helps to navigate the campus and saves your time.
             </div>
             <button class="visit-btn bigger">
                 <NuxtLink to="/">Explore the Campus!</NuxtLink>
@@ -199,6 +199,10 @@ export default {
     color: var(--nav-success-text);
 }
 
+.visit-btn.bigger .nuxt-link-active:hover{
+    color: black;
+}
+
 .nuxt-link-active:hover{
     color: black;
 }
@@ -251,7 +255,7 @@ section{
     align-items: center;
     margin: 20px;
     width: 300px;
-    color: var(--box-secondary);
+    color: #cecece;
 }
 
 .explained-legend{
@@ -284,6 +288,7 @@ section{
 
 #contributors li{
     font-size: 1.2rem;
+    margin-bottom: 8px;
 }
 
 #contributors ul li:before{
@@ -348,7 +353,7 @@ hr{
 }
 
 .info{
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 @media  screen and (max-width: 450px) {
