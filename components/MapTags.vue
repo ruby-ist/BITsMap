@@ -30,12 +30,12 @@ export default {
     },
     methods: {
         async getTags(level) {
-            let response = await this.$http.$get(`https://geobits.herokuapp.com/map/tags/${this.level}`);
+            let response = await this.$http.$get(`http://geobits.ap-south-1.elasticbeanstalk.com/map/tags/${this.level}`);
             this.tags = await response["tags"];
         },
 
         async getDetails(id) {
-            this.details = await this.$http.$get(`https://geobits.herokuapp.com/map/details/${id}?level=${this.level}`);
+            this.details = await this.$http.$get(`http://geobits.ap-south-1.elasticbeanstalk.com/map/details/${id}?level=${this.level}`);
             this.showBox = true;
         },
     },

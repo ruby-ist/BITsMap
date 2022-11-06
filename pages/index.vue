@@ -196,7 +196,7 @@ export default {
             x += 45;
             y -= 28;
             this.setLocation(x, y);
-            this.position = {'x': x, 'y': y - screen.height / 3};
+            this.position = {'x': x, 'y': y - screen.height / 5};
         },
 
         error() {

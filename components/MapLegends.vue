@@ -17,7 +17,7 @@
 
       methods: {
         async getLegends(level){
-          this.legends = await this.$http.$get(`https://geobits.herokuapp.com/map/legends/${this.level}`);
+          this.legends = await this.$http.$get(`http://geobits.ap-south-1.elasticbeanstalk.com/map/legends/${this.level}`);
         },
 
         getName(url){

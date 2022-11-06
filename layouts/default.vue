@@ -44,7 +44,7 @@ export default {
         --box-border: 4px;
         --box-background: #262626;
         --box-primary: #116CFF;
-        --box-secondary: #757575;
+        --box-secondary: #a4a4a4;
         --box-menu-line: #75757555;
         --segment-border: #757575;
         --segment-shadow: #333335;
