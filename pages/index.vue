@@ -422,7 +422,7 @@ export default {
         },
 
         async searchId(newValue) {
-            let data = await this.$http.$get(`https://geobits.herokuapp.com/map/location/${newValue}`);
+            let data = await this.$http.$get(`https://api-geobits.onrender.com/map/location/${newValue}`);
             let left = parseInt(data["left"].slice(0, -2));
             let top = parseInt(data["top"].slice(0, -2));
             await this.fullZoomIn();
